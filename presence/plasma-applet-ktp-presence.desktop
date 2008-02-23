@@ -1,7 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Instant Messaging Presence
+Name[sv]=Direktmeddelande finns
 Comment=Shows your Decibel instant messaging status information
+Comment[sv]=Visar Decibels statusinformation om direktmeddelanden
 Icon=view-history
 Type=Service
 ServiceTypes=Plasma/Applet
