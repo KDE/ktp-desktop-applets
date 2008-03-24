@@ -1,8 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Instant Messaging Presence
+Name[et]=Kohalolek kiirsuhtluses
 Name[sv]=Direktmeddelande finns
 Comment=Shows your Decibel instant messaging status information
+Comment[et]=Decibeli kiirsuhtluse oleku teabe näitamine
 Comment[sv]=Visar Decibels statusinformation om direktmeddelanden
 Icon=view-history
 Type=Service
