@@ -91,7 +91,7 @@ void Presence::init()
 
     m_engine = dataEngine("presence");
 
-    connect(m_engine, SIGNAL(newSource(QString)), this, SLOT(sourceAdded(QString)));
+    connect(m_engine, SIGNAL(sourceAdded(QString)), this, SLOT(sourceAdded(QString)));
     connect(m_engine, SIGNAL(sourceRemoved(QString)), this, SLOT(sourceRemoved(QString)));
 }
 
