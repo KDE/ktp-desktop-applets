@@ -100,7 +100,7 @@ Presence::~Presence()
 
 }
 
-void Presence::constraintsUpdated(Plasma::Constraints constraints)
+void Presence::constraintsEvent(Plasma::Constraints constraints)
 {
     if (constraints & Plasma::SizeConstraint) {
         if (m_layout) {

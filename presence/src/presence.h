@@ -49,7 +49,9 @@ class Presence : public Plasma::Applet
         void sourceAdded(const QString& source);
         void sourceRemoved(const QString& source);
         void dataUpdated(const QString &source, const Plasma::DataEngine::Data &data);
-        void constraintsUpdated(Plasma::Constraints constraints);
+
+    protected:
+        void constraintsEvent(Plasma::Constraints constraints);
 
     private:
         QGraphicsLinearLayout* m_layout;
