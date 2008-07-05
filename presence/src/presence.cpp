@@ -22,6 +22,10 @@
 #include <plasma/theme.h>
 #include <plasma/widgets/icon.h>
 
+#include <QtTapioca/PresenceState>
+
+#include <Decibel/Types>
+
 #include <QString>
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -150,30 +154,16 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
      * row. If not, then we create a new row with
      * the data for that source.
      */
-    QStandardItem *online = new QStandardItem;
-    QStandardItem *status = new QStandardItem;
+    QStandardItem *presence_type = new QStandardItem;
+    QStandardItem *presence_state = new QStandardItem;
     QStandardItem *message = new QStandardItem;
     //online->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
     //status->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
     //message->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
-    QString decibelCurrentPresence = data.value("decibel_current_presence").toString();
-    if(decibelCurrentPresence == "1")
-    {
-       /*
-        * we are offline.
-        */
-        kDebug() << "decibel_current_presence == 1";
-        online->setData(false, Qt::DisplayRole);
-    }
-    else
-    {
-       /*
-        * we are online
-        */
-        kDebug() << "decibel_current_presence != 1";
-        online->setData(true, Qt::DisplayRole);
-    }
-    status->setData(data.value("decibel_current_presence").toString(), Qt::DisplayRole);
+    QtTapioca::PresenceState currentPresence = data.value("current_presence").value<QtTapioca::PresenceState>();
+
+    presence_type->setData(static_cast<int>(currentPresence.type()), Qt::DisplayRole);
+    presence_state->setData(currentPresence.name(), Qt::DisplayRole);
     message->setData(data.value("decibel_presence_message").toString(), Qt::DisplayRole);
     /*
      * so, we need to look in the first column
@@ -192,8 +182,8 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
         id->setData(source, Qt::DisplayRole);
         QList<QStandardItem*> row;
         row.append(id);
-        row.append(online);
-        row.append(status);
+        row.append(presence_type);
+        row.append(presence_state);
         row.append(message);
         m_accountsModel->appendRow(row);
     }
@@ -205,8 +195,8 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
          * is already there for it.
          */
         int row = items.first()->row();
-        m_accountsModel->setItem(row, 1, online);
-        m_accountsModel->setItem(row, 2, status);
+        m_accountsModel->setItem(row, 1, presence_type);
+        m_accountsModel->setItem(row, 2, presence_state);
         m_accountsModel->setItem(row, 3, message);
     }
     else
