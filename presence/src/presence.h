@@ -17,10 +17,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef PRESENCE_H
-#define PRESENCE_H
+#ifndef PLASMA_APPLET_PRESENCE_H
+#define PLASMA_APPLET_PRESENCE_H
 
-#include <plasma/applet.h>
+#include <plasmaappletdialog.h>
 #include <plasma/dataengine.h>
 
 #include <QGraphicsItem>
@@ -28,22 +28,22 @@
 class QString;
 class QStandardItemModel;
 class QTreeView;
-class QGraphicsProxyWidget;
-class QGraphicsLinearLayout;
-class QGraphicsWidget;
+class QVBoxLayout;
+class QWidget;
 
 class KLineEdit;
 
-class Presence : public Plasma::Applet
+class Presence : public PlasmaAppletDialog
 {
         Q_OBJECT
     public:
         Presence(QObject *parent, const QVariantList &args);
         ~Presence();
 
-        QSizeF contentSizeHint() const;
-        virtual void init(void);
-        void paintInterface(QPainter *painter, const QStyleOptionGraphicsItem *option, const QRect &contentsRect);
+     //   QSizeF contentSizeHint() const;
+      //  virtual void init(void);
+     //   void paintInterface(QPainter *painter, const QStyleOptionGraphicsItem *option, const QRect &contentsRect);
+        QWidget * widget();
 
     private slots:
         void sourceAdded(const QString& source);
@@ -51,17 +51,16 @@ class Presence : public Plasma::Applet
         void dataUpdated(const QString &source, const Plasma::DataEngine::Data &data);
 
     protected:
-        void constraintsEvent(Plasma::Constraints constraints);
-
+     //   void constraintsEvent(Plasma::Constraints constraints);
+        void initialize();
     private:
-        QGraphicsLinearLayout* m_layout;
+        QVBoxLayout* m_layout;
         Plasma::DataEngine* m_engine;
         QStandardItemModel *m_accountsModel;
         QTreeView *m_accountsView;
-        QGraphicsProxyWidget *m_accountsViewProxyWidget;
-        QGraphicsProxyWidget *m_messageEditProxyWidget;
-        QGraphicsWidget *m_form;
+        QWidget * m_widget;
         KLineEdit *m_messageEdit;
+
 };
 
 K_EXPORT_PLASMA_APPLET(presence, Presence)

@@ -20,86 +20,84 @@
 #include "presence.h"
 
 #include <plasma/theme.h>
+#include <plasma/widgets/icon.h>
 
-#include <QPainter>
 #include <QString>
 #include <QStandardItemModel>
 #include <QTreeView>
 #include <QHeaderView>
-#include <QGraphicsProxyWidget>
-#include <QGraphicsLinearLayout>
-#include <QGraphicsWidget>
+#include <QWidget>
 #include <QList>
+#include <QVBoxLayout>
 
 #include <KLineEdit>
 #include <KDebug>
 #include <KColorScheme>
+#include <KIcon>
 
 Presence::Presence(QObject *parent, const QVariantList &args)
-    : Plasma::Applet(parent, args),
+    : PlasmaAppletDialog(parent, args),
     m_accountsModel(0),
     m_accountsView(0),
-    m_accountsViewProxyWidget(0),
-    m_messageEditProxyWidget(0),
     m_messageEdit(0)
 {
     m_layout = 0;
-    m_form = 0;
+    m_widget = 0;
 }
 
-void Presence::init() 
+void Presence::initialize()
 {
-    setHasConfigurationInterface(false);
+    kDebug() << "Initializing applet.";
+    // Set up the icon.
+    m_icon = new Plasma::Icon(KIcon("utilities-terminal"), QString(), this);
 
-    /*
-     * set up the accounts model.
-     */
+    // Set up the accounts model.
     m_accountsModel = new QStandardItemModel(this);
     m_accountsModel->setColumnCount(4);
     m_accountsModel->setHeaderData(1, Qt::Horizontal, QVariant("online?"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(2, Qt::Horizontal, QVariant("status"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(3, Qt::Horizontal, QVariant("message"), Qt::DisplayRole);
 
-    /*
-     * set up the accounts view.
-     */
-    m_accountsView = new QTreeView;
-    m_accountsView->setModel(m_accountsModel);
-    m_accountsView->header()->setVisible(true);
-    m_accountsView->setColumnHidden(0, true);   //Hide the source id column
-
-    /*
-     * set up the rest of the view/layout etc. stuff
-     */
-    m_accountsViewProxyWidget = new QGraphicsProxyWidget(this);
-    m_accountsViewProxyWidget->setWidget(m_accountsView);
-    m_accountsView->show();
-    m_accountsViewProxyWidget->show();
-    m_messageEdit = new KLineEdit;
-    m_messageEditProxyWidget = new QGraphicsProxyWidget(this);
-    m_messageEditProxyWidget->setWidget(m_messageEdit);
-    m_messageEdit->show();
-    m_messageEditProxyWidget->show();
-
-    m_form = new QGraphicsWidget(this);
-    m_layout = new QGraphicsLinearLayout(Qt::Vertical, m_form);
-    m_layout->addItem(m_accountsViewProxyWidget);
-    m_layout->addItem(m_messageEditProxyWidget);
-    m_form->setLayout(m_layout);
-
-    updateGeometry();
-
     m_engine = dataEngine("presence");
+
+    QStringList sources = m_engine->sources();
+    foreach(const QString & source, sources)
+    {
+        sourceAdded(source);
+    }
 
     connect(m_engine, SIGNAL(sourceAdded(QString)), this, SLOT(sourceAdded(QString)));
     connect(m_engine, SIGNAL(sourceRemoved(QString)), this, SLOT(sourceRemoved(QString)));
+}
+
+QWidget * Presence::widget()
+{
+    if(!m_widget)
+    {
+        // Set up the accounts view.
+        m_accountsView = new QTreeView;
+        m_accountsView->setModel(m_accountsModel);
+        m_accountsView->header()->setVisible(true);
+        m_accountsView->setColumnHidden(0, true);   //Hide the source id column
+
+        // Set up the rest of the view/layout etc. stuff.
+        m_messageEdit = new KLineEdit;
+
+        m_widget = new QWidget();
+        m_layout = new QVBoxLayout(m_widget);
+        m_layout->addWidget(m_accountsView);
+        m_layout->addWidget(m_messageEdit);
+        m_widget->setLayout(m_layout);
+    }
+
+    return m_widget;
 }
 
 Presence::~Presence()
 {
 
 }
-
+/*
 void Presence::constraintsEvent(Plasma::Constraints constraints)
 {
     if (constraints & Plasma::SizeConstraint) {
@@ -111,22 +109,23 @@ void Presence::constraintsEvent(Plasma::Constraints constraints)
             update();
         }
     }
-}
-
+}*/
+/*
 QSizeF Presence::contentSizeHint() const
 {
     if (m_layout) {
         kDebug() << "Returning the m_form size geometry";
         return m_form->effectiveSizeHint(Qt::PreferredSize, contentSize());
-    }
+    }*/
     /*
      * this is the hardcoded default size
      * of the plasmoid. (apparently not...)
      */
     // FIXME: change this to be a good size...
+    /*
     return QSizeF(300, 300);
 }
-
+*/
 
 void Presence::sourceAdded(const QString& source)
 {
@@ -155,9 +154,9 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
     QStandardItem *online = new QStandardItem;
     QStandardItem *status = new QStandardItem;
     QStandardItem *message = new QStandardItem;
-    online->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
-    status->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
-    message->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
+    //online->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
+    //status->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
+    //message->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
     QString decibelCurrentPresence = data.value("decibel_current_presence").toString();
     if(decibelCurrentPresence == "1")
     {
@@ -222,12 +221,12 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
         kDebug() << "ERROR: two or more rows for the same data source in the model!";
     }
 }
-
+/*
 void Presence::paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect &contentsRect)
 {
     Q_UNUSED(p);
     Q_UNUSED(option);
     Q_UNUSED(contentsRect);
 }
-
+*/
 #include "presence.moc"
