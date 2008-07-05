@@ -97,19 +97,7 @@ Presence::~Presence()
 {
 
 }
-/*
-void Presence::constraintsEvent(Plasma::Constraints constraints)
-{
-    if (constraints & Plasma::SizeConstraint) {
-        if (m_layout) {
-            m_layout->setGeometry(QRectF(QPointF(0,0), contentSize()));
-            m_layout->setPreferredSize(contentSize());
-            m_form->resize(contentSize());
-            prepareGeometryChange();
-            update();
-        }
-    }
-}*/
+
 /*
 QSizeF Presence::contentSizeHint() const
 {
@@ -221,12 +209,5 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
         kDebug() << "ERROR: two or more rows for the same data source in the model!";
     }
 }
-/*
-void Presence::paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect &contentsRect)
-{
-    Q_UNUSED(p);
-    Q_UNUSED(option);
-    Q_UNUSED(contentsRect);
-}
-*/
+
 #include "presence.moc"

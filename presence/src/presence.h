@@ -41,8 +41,6 @@ class Presence : public PlasmaAppletDialog
         ~Presence();
 
      //   QSizeF contentSizeHint() const;
-      //  virtual void init(void);
-     //   void paintInterface(QPainter *painter, const QStyleOptionGraphicsItem *option, const QRect &contentsRect);
         QWidget * widget();
 
     private slots:
@@ -51,7 +49,6 @@ class Presence : public PlasmaAppletDialog
         void dataUpdated(const QString &source, const Plasma::DataEngine::Data &data);
 
     protected:
-     //   void constraintsEvent(Plasma::Constraints constraints);
         void initialize();
     private:
         QVBoxLayout* m_layout;
