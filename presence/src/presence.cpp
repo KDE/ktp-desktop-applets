@@ -34,12 +34,14 @@
 #include <KDebug>
 #include <KColorScheme>
 #include <KIcon>
+#include <KColorScheme>
 
 Presence::Presence(QObject *parent, const QVariantList &args)
     : PlasmaAppletDialog(parent, args),
     m_accountsModel(0),
     m_accountsView(0),
-    m_messageEdit(0)
+    m_messageEdit(0),
+    m_colorScheme(0)
 {
     m_layout = 0;
     m_widget = 0;
@@ -48,8 +50,12 @@ Presence::Presence(QObject *parent, const QVariantList &args)
 void Presence::initialize()
 {
     kDebug() << "Initializing applet.";
+
+    // Set up the color scheme.
+    m_colorScheme = new KColorScheme(QPalette::Active, KColorScheme::View, Plasma::Theme::defaultTheme()->colorScheme());
+
     // Set up the icon.
-    m_icon = new Plasma::Icon(KIcon("utilities-terminal"), QString(), this);
+    m_icon = new Plasma::Icon(KIcon("user-offline"), QString(), this);
 
     // Set up the accounts model.
     m_accountsModel = new QStandardItemModel(this);
@@ -88,6 +94,11 @@ QWidget * Presence::widget()
         m_layout->addWidget(m_accountsView);
         m_layout->addWidget(m_messageEdit);
         m_widget->setLayout(m_layout);
+
+        // Apply the theme's color scheme to the widget.
+        QPalette editPalette = m_widget->palette();
+        editPalette.setColor(QPalette::Window, m_colorScheme->background().color());
+        m_widget->setPalette(editPalette);
     }
 
     return m_widget;
@@ -95,7 +106,7 @@ QWidget * Presence::widget()
 
 Presence::~Presence()
 {
-
+    delete m_colorScheme;
 }
 
 /*
@@ -208,6 +219,65 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
          */
         kDebug() << "ERROR: two or more rows for the same data source in the model!";
     }
+
+    // Update the master presence.
+    updateMasterPresence();
+}
+
+/**
+ * @brief Update the master presence state.
+ *
+ * We must check what presence state each account is in and use that to decide
+ * which icon we display. We must also check the presence message for each
+ * account to see if we can display one overall presence message.
+ */
+void Presence::updateMasterPresence()
+{
+    // Get data we can use to iterate over the contents of the accounts model.
+    int rowCount = m_accountsModel->rowCount();
+
+    // First we workout the overall presence message.
+    QStringList statusMessages;
+    for(int i=0; i<rowCount; i++)
+    {
+        statusMessages << m_accountsModel->data(m_accountsModel->index(i, 3)).toString();
+    }
+
+    bool statusMessagesAllTheSame = true;
+    QString previousStatusMessage;
+    foreach(QString statusMessage, statusMessages)
+    {
+        if(statusMessage == previousStatusMessage)
+        {
+            previousStatusMessage = statusMessage;
+            continue;
+        }
+        else
+        {
+            statusMessagesAllTheSame = false;
+            break;
+        }
+    }
+
+    if(statusMessagesAllTheSame)
+    {
+        // TODO: Set the master presence status message.
+    }
+    else
+    {
+        // TODO: Set the master presence status message to be QString();
+    }
+
+    // Next, we work out the overall presence status.
+    int accountsOffline = 0;
+    int accountsAvailable = 0;
+    int accountsAway = 0;
+    int accountsExtendedAway = 0;
+    int accountsHidden = 0;
+    int accountsBusy = 0;
+
+    // TODO: complete this bit once the decibel AccountManager provides a
+    // QtTapioca::PresenceState object for the presence state.
 }
 
 #include "presence.moc"
