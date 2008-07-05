@@ -265,6 +265,13 @@ void Presence::updateMasterPresence()
     int accountsExtendedAway = 0;
     int accountsHidden = 0;
     int accountsBusy = 0;
+    
+    bool okOffline = true;
+    bool okAvailable = true;
+    bool okAway = true;
+    bool okExtendedAway = true;
+    bool okHidden = true;
+    bool okBusy = true;
 
     // Iterate over all the accounts in the model, and total up how many are
     // in each type of presence state.
@@ -281,18 +288,38 @@ void Presence::updateMasterPresence()
             break;
         case QtTapioca::PresenceState::AvailableType:
             accountsAvailable++;
+            okOffline = false;
+            okHidden = false;
+            okExtendedAway = false;
+            okAway = false;
+            okBusy = false;
             break;
         case QtTapioca::PresenceState::AwayType:
             accountsAway++;
+            okOffline = false;
+            okHidden = false;
+            okExtendedAway = false;
+            okBusy = false;
             break;
         case QtTapioca::PresenceState::ExtendedAwayType:
             accountsExtendedAway++;
+            okOffline = false;
+            okHidden = false;
+            okBusy = false;
             break;
         case QtTapioca::PresenceState::HiddenType:
             accountsHidden++;
+            okOffline = false;
+            okExtendedAway = false;
+            okAway = false;
+            okBusy = false;
             break;
         case QtTapioca::PresenceState::BusyType:
             accountsBusy++;
+            okOffline = false;
+            okHidden = false;
+            okExtendedAway = false;
+            okAway = false;
             break;
         }
     }
@@ -300,9 +327,26 @@ void Presence::updateMasterPresence()
     // Chose a master presence state from this.
     // FIXME: What should be the logic for choosing a master presence state?
     //        Shoud this be user customisable?
-    if(accountsOffline >= 1)
+    //        Currently follows the kopete approach.
+    if(okOffline == true)
     {
         m_icon->setIcon(KIcon("user-offline"));
+    }
+    else if(okHidden == true)
+    {
+        m_icon->setIcon(KIcon("user-invisible"));
+    }
+    else if(okBusy == true)
+    {
+        m_icon->setIcon(KIcon("user-busy"));
+    }
+    else if(okExtendedAway == true)
+    {
+        m_icon->setIcon(KIcon("user-away-extended"));
+    }
+    else if(okAway == true)
+    {
+        m_icon->setIcon(KIcon("user-away"));
     }
     else
     {
