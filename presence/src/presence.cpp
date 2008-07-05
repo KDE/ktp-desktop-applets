@@ -266,8 +266,48 @@ void Presence::updateMasterPresence()
     int accountsHidden = 0;
     int accountsBusy = 0;
 
-    // TODO: complete this bit once the decibel AccountManager provides a
-    // QtTapioca::PresenceState object for the presence state.
+    // Iterate over all the accounts in the model, and total up how many are
+    // in each type of presence state.
+    for(int i=0; i<rowCount; i++)
+    {
+        QtTapioca::PresenceState::Type status_type = 
+            static_cast<QtTapioca::PresenceState::Type>(m_accountsModel->data(m_accountsModel->index(i, 1)).toInt());
+
+        switch(status_type)
+        {
+        case QtTapioca::PresenceState::OfflineType:
+        case QtTapioca::PresenceState::UnsetType:
+            accountsOffline++;
+            break;
+        case QtTapioca::PresenceState::AvailableType:
+            accountsAvailable++;
+            break;
+        case QtTapioca::PresenceState::AwayType:
+            accountsAway++;
+            break;
+        case QtTapioca::PresenceState::ExtendedAwayType:
+            accountsExtendedAway++;
+            break;
+        case QtTapioca::PresenceState::HiddenType:
+            accountsHidden++;
+            break;
+        case QtTapioca::PresenceState::BusyType:
+            accountsBusy++;
+            break;
+        }
+    }
+
+    // Chose a master presence state from this.
+    // FIXME: What should be the logic for choosing a master presence state?
+    //        Shoud this be user customisable?
+    if(accountsOffline >= 1)
+    {
+        m_icon->setIcon(KIcon("user-offline"));
+    }
+    else
+    {
+        m_icon->setIcon(KIcon("user-online"));
+    }
 }
 
 #include "presence.moc"
