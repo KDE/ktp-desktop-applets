@@ -26,6 +26,7 @@
 
 #include <Decibel/Types>
 
+#include <QLabel>
 #include <QString>
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -45,7 +46,8 @@ Presence::Presence(QObject *parent, const QVariantList &args)
     m_accountsModel(0),
     m_accountsView(0),
     m_messageEdit(0),
-    m_colorScheme(0)
+    m_colorScheme(0),
+    m_masterIconLabel(0)
 {
     m_layout = 0;
     m_widget = 0;
@@ -60,6 +62,9 @@ void Presence::initialize()
 
     // Set up the icon.
     m_icon = new Plasma::Icon(KIcon("user-offline"), QString(), this);
+
+    // The icon has been changed.
+    iconChanged();
 
     // Set up the accounts model.
     m_accountsModel = new QStandardItemModel(this);
@@ -90,11 +95,16 @@ QWidget * Presence::widget()
         m_accountsView->header()->setVisible(true);
         m_accountsView->setColumnHidden(0, true);   //Hide the source id column
 
+        // Make sure we have a masterIconPixmap.
+        m_masterIconLabel = new QLabel;
+        iconChanged();
+
         // Set up the rest of the view/layout etc. stuff.
         m_messageEdit = new KLineEdit;
 
         m_widget = new QWidget();
         m_layout = new QVBoxLayout(m_widget);
+        m_layout->addWidget(m_masterIconLabel);
         m_layout->addWidget(m_accountsView);
         m_layout->addWidget(m_messageEdit);
         m_widget->setLayout(m_layout);
@@ -351,6 +361,19 @@ void Presence::updateMasterPresence()
     else
     {
         m_icon->setIcon(KIcon("user-online"));
+    }
+
+    // Call the method to update the masterPresenceIcon.
+    iconChanged();
+}
+
+void Presence::iconChanged()
+{
+    // The icon has been changed. We must update the pixmap of the icon for
+    // display in the main widget.
+    if(m_masterIconLabel)
+    {
+        m_masterIconLabel->setPixmap(m_icon->icon().pixmap(QSize(22, 22)));
     }
 }
 

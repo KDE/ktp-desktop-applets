@@ -30,6 +30,7 @@ class QStandardItemModel;
 class QTreeView;
 class QVBoxLayout;
 class QWidget;
+class QLabel;
 
 class KLineEdit;
 class KColorScheme;
@@ -51,9 +52,13 @@ class Presence : public PlasmaAppletDialog
 
     protected:
         void initialize();
+
+    private Q_SLOTS:
+        void iconChanged();
+
     private:
         void updateMasterPresence();
-    
+
         QVBoxLayout* m_layout;
         Plasma::DataEngine* m_engine;
         QStandardItemModel *m_accountsModel;
@@ -61,6 +66,7 @@ class Presence : public PlasmaAppletDialog
         QWidget * m_widget;
         KLineEdit *m_messageEdit;
         KColorScheme *m_colorScheme;
+        QLabel *m_masterIconLabel;
 };
 
 K_EXPORT_PLASMA_APPLET(presence, Presence)
