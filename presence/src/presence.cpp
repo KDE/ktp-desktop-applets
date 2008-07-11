@@ -276,7 +276,7 @@ PresenceApplet::updateMasterPresence()
     }
 
     bool statusMessagesAllTheSame = true;
-    QString previousStatusMessage;
+    QString previousStatusMessage = statusMessages.at(0);
     foreach(const QString & statusMessage, statusMessages)
     {
         if(statusMessage == previousStatusMessage)
