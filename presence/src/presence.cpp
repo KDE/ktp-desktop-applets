@@ -150,6 +150,8 @@ PresenceApplet::widget()
         QPalette editPalette = m_widget->palette();
         editPalette.setBrush(QPalette::Window,
                              m_colorScheme->background());
+        editPalette.setBrush(QPalette::WindowText,
+                             m_colorScheme->foreground());
         m_widget->setPalette(editPalette);
     }
 
