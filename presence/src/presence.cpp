@@ -201,7 +201,7 @@ PresenceApplet::dataUpdated(const QString & source,
     presence_type->setData(static_cast<int>(currentPresence.type()),
                            Qt::DisplayRole);
     presence_state->setData(currentPresence.name(), Qt::DisplayRole);
-    message->setData(data.value("decibel_presence_message").toString(),
+    message->setData(data.value("status_message").toString(),
                      Qt::DisplayRole);
     /*
      * so, we need to look in the first column
