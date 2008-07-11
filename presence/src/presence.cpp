@@ -32,7 +32,6 @@
 #include <QtTapioca/PresenceState>
 
 #include <QtCore/QList>
-#include <QtCore/QString>
 
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -131,6 +130,7 @@ PresenceApplet::widget()
         m_masterStatusLayout->addWidget(m_masterStatusMessageLabel);
 
         iconChanged();
+        masterStatusMessageChanged(m_masterStatusMessage);
 
         // Set up the rest of the view/layout etc. stuff.
         Q_ASSERT(!m_messageEdit);  // Pointer should still be assigned to 0.
@@ -418,6 +418,9 @@ PresenceApplet::masterStatusMessageChanged(const QString & message)
     {
         m_masterStatusMessageLabel->setText(message);
     }
+
+    // Store the master presence message as a member var.
+    m_masterStatusMessage = message;
 }
 
 #include "presence.moc"

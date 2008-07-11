@@ -24,6 +24,8 @@
 
 #include <plasma/dataengine.h>
 
+#include <QtCore/QString>
+
 class KColorScheme;
 class KLineEdit;
 
@@ -71,6 +73,8 @@ private:
     QTreeView * m_accountsView;
     QVBoxLayout * m_layout;
     QWidget * m_widget;
+
+    QString m_masterStatusMessage;
 
 };
 
