@@ -9,7 +9,7 @@
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details
+ *   GNU Library General Public License for more details
  *
  *   You should have received a copy of the GNU Library General Public
  *   License along with this program; if not, write to the
@@ -21,54 +21,56 @@
 #define PLASMA_APPLET_PRESENCE_H
 
 #include <plasmaappletdialog.h>
+
 #include <plasma/dataengine.h>
 
-#include <QGraphicsItem>
+class KColorScheme;
+class KLineEdit;
 
-class QString;
+class QLabel;
 class QStandardItemModel;
+class QString;
 class QTreeView;
 class QVBoxLayout;
 class QWidget;
-class QLabel;
 
-class KLineEdit;
-class KColorScheme;
-
-class Presence : public PlasmaAppletDialog
+class PresenceApplet : public PlasmaAppletDialog
 {
-        Q_OBJECT
-    public:
-        Presence(QObject *parent, const QVariantList &args);
-        ~Presence();
+    Q_OBJECT
 
-     //   QSizeF contentSizeHint() const;
-        QWidget * widget();
+public:
+    PresenceApplet(QObject * parent, const QVariantList & args);
+    ~PresenceApplet();
 
-    private slots:
-        void sourceAdded(const QString& source);
-        void sourceRemoved(const QString& source);
-        void dataUpdated(const QString &source, const Plasma::DataEngine::Data &data);
+    QWidget * widget();
 
-    protected:
-        void initialize();
+protected:
+    void initialize();
 
-    private Q_SLOTS:
-        void iconChanged();
+private Q_SLOTS:
+    void dataUpdated(const QString & source,
+                     const Plasma::DataEngine::Data & data);
+    void sourceAdded(const QString & source);
+    void sourceRemoved(const QString & source);
 
-    private:
-        void updateMasterPresence();
+private:
+    void iconChanged();
+    void updateMasterPresence();
 
-        QVBoxLayout* m_layout;
-        Plasma::DataEngine* m_engine;
-        QStandardItemModel *m_accountsModel;
-        QTreeView *m_accountsView;
-        QWidget * m_widget;
-        KLineEdit *m_messageEdit;
-        KColorScheme *m_colorScheme;
-        QLabel *m_masterIconLabel;
+    Plasma::DataEngine * m_engine;
+
+    KColorScheme * m_colorScheme;
+    KLineEdit * m_messageEdit;
+
+    QLabel * m_masterIconLabel;
+    QStandardItemModel * m_accountsModel;
+    QTreeView * m_accountsView;
+    QVBoxLayout * m_layout;
+    QWidget * m_widget;
+
 };
 
-K_EXPORT_PLASMA_APPLET(presence, Presence)
+K_EXPORT_PLASMA_APPLET(presence, PresenceApplet)
 
 #endif
+

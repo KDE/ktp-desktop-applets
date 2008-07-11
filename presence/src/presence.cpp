@@ -9,7 +9,7 @@
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details
+ *   GNU Library General Public License for more details
  *
  *   You should have received a copy of the GNU Library General Public
  *   License along with this program; if not, write to the
@@ -22,57 +22,73 @@
 #include <plasma/theme.h>
 #include <plasma/widgets/icon.h>
 
-#include <QtTapioca/PresenceState>
-
 #include <Decibel/Types>
 
-#include <QLabel>
-#include <QString>
-#include <QStandardItemModel>
-#include <QTreeView>
-#include <QHeaderView>
-#include <QWidget>
-#include <QList>
-#include <QVBoxLayout>
-
-#include <KLineEdit>
+#include <KColorScheme>
 #include <KDebug>
-#include <KColorScheme>
 #include <KIcon>
-#include <KColorScheme>
+#include <KLineEdit>
 
-Presence::Presence(QObject *parent, const QVariantList &args)
-    : PlasmaAppletDialog(parent, args),
+#include <QtTapioca/PresenceState>
+
+#include <QtCore/QList>
+#include <QtCore/QString>
+
+#include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
+#include <QtGui/QStandardItemModel>
+#include <QtGui/QTreeView>
+#include <QtGui/QWidget>
+#include <QtGui/QVBoxLayout>
+
+PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
+  : PlasmaAppletDialog(parent, args),
+    m_engine(0),
+    m_colorScheme(0),
+    m_messageEdit(0),
+    m_masterIconLabel(0),
     m_accountsModel(0),
     m_accountsView(0),
-    m_messageEdit(0),
-    m_colorScheme(0),
-    m_masterIconLabel(0)
+    m_layout(0),
+    m_widget(0)
+{ }
+
+PresenceApplet::~PresenceApplet()
 {
-    m_layout = 0;
-    m_widget = 0;
+    delete m_colorScheme;
 }
 
-void Presence::initialize()
+void
+PresenceApplet::initialize()
 {
     kDebug() << "Initializing applet.";
 
     // Set up the color scheme.
-    m_colorScheme = new KColorScheme(QPalette::Active, KColorScheme::View, Plasma::Theme::defaultTheme()->colorScheme());
+    Q_ASSERT(!m_colorScheme);  // Pointer should still be assigned to 0.
+    m_colorScheme = new KColorScheme(QPalette::Active, 
+                                     KColorScheme::View,
+                                     Plasma::Theme::defaultTheme()->colorScheme());
 
     // Set up the icon.
+    Q_ASSERT(!m_icon);  // Pointer should still be assigned to 0.
     m_icon = new Plasma::Icon(KIcon("user-offline"), QString(), this);
 
     // The icon has been changed.
     iconChanged();
 
     // Set up the accounts model.
+    Q_ASSERT(!m_accountsModel);  //Pointer should still be assigned to 0.
     m_accountsModel = new QStandardItemModel(this);
     m_accountsModel->setColumnCount(4);
-    m_accountsModel->setHeaderData(1, Qt::Horizontal, QVariant("online?"), Qt::DisplayRole);
-    m_accountsModel->setHeaderData(2, Qt::Horizontal, QVariant("status"), Qt::DisplayRole);
-    m_accountsModel->setHeaderData(3, Qt::Horizontal, QVariant("message"), Qt::DisplayRole);
 
+    m_accountsModel->setHeaderData(1, Qt::Horizontal,
+                                   QVariant("online?"), Qt::DisplayRole);
+    m_accountsModel->setHeaderData(2, Qt::Horizontal,
+                                   QVariant("status"), Qt::DisplayRole);
+    m_accountsModel->setHeaderData(3, Qt::Horizontal,
+                                   QVariant("message"), Qt::DisplayRole);
+
+    Q_ASSERT(!m_engine);  // Pointer should still be assigned to 0.
     m_engine = dataEngine("presence");
 
     QStringList sources = m_engine->sources();
@@ -81,27 +97,35 @@ void Presence::initialize()
         sourceAdded(source);
     }
 
-    connect(m_engine, SIGNAL(sourceAdded(QString)), this, SLOT(sourceAdded(QString)));
-    connect(m_engine, SIGNAL(sourceRemoved(QString)), this, SLOT(sourceRemoved(QString)));
+    connect(m_engine, SIGNAL(sourceAdded(QString)),
+            this, SLOT(sourceAdded(QString)));
+    connect(m_engine, SIGNAL(sourceRemoved(QString)),
+            this, SLOT(sourceRemoved(QString)));
 }
 
-QWidget * Presence::widget()
+QWidget *
+PresenceApplet::widget()
 {
     if(!m_widget)
     {
         // Set up the accounts view.
+        Q_ASSERT(!m_accountsView);  // Pointer should still be assigned to 0.
         m_accountsView = new QTreeView;
         m_accountsView->setModel(m_accountsModel);
         m_accountsView->header()->setVisible(true);
         m_accountsView->setColumnHidden(0, true);   //Hide the source id column
 
         // Make sure we have a masterIconPixmap.
+        Q_ASSERT(!m_masterIconLabel);  // Pointer should still be assigned to 0.
         m_masterIconLabel = new QLabel;
         iconChanged();
 
         // Set up the rest of the view/layout etc. stuff.
+        Q_ASSERT(!m_messageEdit);  // Pointer should still be assigned to 0.
         m_messageEdit = new KLineEdit;
 
+        Q_ASSERT(!m_widget);  // Pointer should still be assigned to 0.
+        Q_ASSERT(!m_layout);  // Pointer should still be assigned to 0.
         m_widget = new QWidget();
         m_layout = new QVBoxLayout(m_widget);
         m_layout->addWidget(m_masterIconLabel);
@@ -111,49 +135,36 @@ QWidget * Presence::widget()
 
         // Apply the theme's color scheme to the widget.
         QPalette editPalette = m_widget->palette();
-        editPalette.setColor(QPalette::Window, m_colorScheme->background().color());
+        editPalette.setColor(QPalette::Window,
+                             m_colorScheme->background().color());
         m_widget->setPalette(editPalette);
     }
+
+    Q_ASSERT(m_widget);  // We must have a valid m_widget by now.
 
     return m_widget;
 }
 
-Presence::~Presence()
+void
+PresenceApplet::sourceAdded(const QString & source)
 {
-    delete m_colorScheme;
-}
-
-/*
-QSizeF Presence::contentSizeHint() const
-{
-    if (m_layout) {
-        kDebug() << "Returning the m_form size geometry";
-        return m_form->effectiveSizeHint(Qt::PreferredSize, contentSize());
-    }*/
-    /*
-     * this is the hardcoded default size
-     * of the plasmoid. (apparently not...)
-     */
-    // FIXME: change this to be a good size...
-    /*
-    return QSizeF(300, 300);
-}
-*/
-
-void Presence::sourceAdded(const QString& source)
-{
+    Q_ASSERT(m_engine);  // Engine must be valid.
     kDebug() << "started with source: " << source;
     m_engine->connectSource(source, this);
 }
 
 
-void Presence::sourceRemoved(const QString& source)
+void
+PresenceApplet::sourceRemoved(const QString & source)
 {
+    Q_ASSERT(m_engine);  // Engine must be valid.
     kDebug() << "started with source: " << source;
     m_engine->disconnectSource(source, this);
 }
 
-void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data &data)
+void
+PresenceApplet::dataUpdated(const QString & source,
+                            const Plasma::DataEngine::Data & data)
 {
     kDebug() << "Started with source: " << source; 
     /*
@@ -164,31 +175,36 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
      * row. If not, then we create a new row with
      * the data for that source.
      */
-    QStandardItem *presence_type = new QStandardItem;
-    QStandardItem *presence_state = new QStandardItem;
-    QStandardItem *message = new QStandardItem;
+    QStandardItem * presence_type = new QStandardItem;
+    QStandardItem * presence_state = new QStandardItem;
+    QStandardItem * message = new QStandardItem;
+    // FIXME: Reimplement the lines below using new plasma API
     //online->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
     //status->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
     //message->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
-    QtTapioca::PresenceState currentPresence = data.value("current_presence").value<QtTapioca::PresenceState>();
+    QtTapioca::PresenceState currentPresence
+        = data.value("current_presence").value<QtTapioca::PresenceState>();
 
-    presence_type->setData(static_cast<int>(currentPresence.type()), Qt::DisplayRole);
+    presence_type->setData(static_cast<int>(currentPresence.type()),
+                           Qt::DisplayRole);
     presence_state->setData(currentPresence.name(), Qt::DisplayRole);
-    message->setData(data.value("decibel_presence_message").toString(), Qt::DisplayRole);
+    message->setData(data.value("decibel_presence_message").toString(),
+                     Qt::DisplayRole);
     /*
      * so, we need to look in the first column
      * to see if we can find a row with that value
      */
+    Q_ASSERT(m_accountsModel);  // This must exist now.
     QList<QStandardItem*> items;
     items = m_accountsModel->findItems(source, Qt::MatchExactly, 0);
     int itemsCount = items.count();
-    if ( 0 == itemsCount )
+    if(0 == itemsCount)
     {
         /*
          * the source is new, so create
          * a new row for it.
          */
-        QStandardItem *id = new QStandardItem;
+        QStandardItem * id = new QStandardItem;
         id->setData(source, Qt::DisplayRole);
         QList<QStandardItem*> row;
         row.append(id);
@@ -197,7 +213,7 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
         row.append(message);
         m_accountsModel->appendRow(row);
     }
-    else if ( 1 == itemsCount )
+    else if(1 == itemsCount)
     {
         /*
          * the data source is NOT new,
@@ -231,8 +247,11 @@ void Presence::dataUpdated(const QString &source, const Plasma::DataEngine::Data
  * which icon we display. We must also check the presence message for each
  * account to see if we can display one overall presence message.
  */
-void Presence::updateMasterPresence()
+void
+PresenceApplet::updateMasterPresence()
 {
+    Q_ASSERT(m_accountsModel);
+    Q_ASSERT(m_icon);
     // Get data we can use to iterate over the contents of the accounts model.
     int rowCount = m_accountsModel->rowCount();
 
@@ -245,7 +264,7 @@ void Presence::updateMasterPresence()
 
     bool statusMessagesAllTheSame = true;
     QString previousStatusMessage;
-    foreach(QString statusMessage, statusMessages)
+    foreach(const QString & statusMessage, statusMessages)
     {
         if(statusMessage == previousStatusMessage)
         {
@@ -367,7 +386,8 @@ void Presence::updateMasterPresence()
     iconChanged();
 }
 
-void Presence::iconChanged()
+void
+PresenceApplet::iconChanged()
 {
     // The icon has been changed. We must update the pixmap of the icon for
     // display in the main widget.
@@ -377,4 +397,6 @@ void Presence::iconChanged()
     }
 }
 
+
 #include "presence.moc"
+
