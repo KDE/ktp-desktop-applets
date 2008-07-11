@@ -27,6 +27,7 @@
 class KColorScheme;
 class KLineEdit;
 
+class QHBoxLayout;
 class QLabel;
 class QStandardItemModel;
 class QString;
@@ -55,6 +56,7 @@ private Q_SLOTS:
 
 private:
     void iconChanged();
+    void masterStatusMessageChanged(const QString & message);
     void updateMasterPresence();
 
     Plasma::DataEngine * m_engine;
@@ -62,7 +64,9 @@ private:
     KColorScheme * m_colorScheme;
     KLineEdit * m_messageEdit;
 
+    QHBoxLayout * m_masterStatusLayout;
     QLabel * m_masterIconLabel;
+    QLabel * m_masterStatusMessageLabel;
     QStandardItemModel * m_accountsModel;
     QTreeView * m_accountsView;
     QVBoxLayout * m_layout;

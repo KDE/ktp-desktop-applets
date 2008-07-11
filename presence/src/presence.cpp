@@ -46,7 +46,9 @@ PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
     m_engine(0),
     m_colorScheme(0),
     m_messageEdit(0),
+    m_masterStatusLayout(0),
     m_masterIconLabel(0),
+    m_masterStatusMessageLabel(0),
     m_accountsModel(0),
     m_accountsView(0),
     m_layout(0),
@@ -115,9 +117,19 @@ PresenceApplet::widget()
         m_accountsView->header()->setVisible(true);
         m_accountsView->setColumnHidden(0, true);   //Hide the source id column
 
-        // Make sure we have a masterIconPixmap.
+        // Set up the master status section.
+        Q_ASSERT(!m_masterStatusLayout);  // Pointer should still be assigned to 0.
         Q_ASSERT(!m_masterIconLabel);  // Pointer should still be assigned to 0.
+        Q_ASSERT(!m_masterStatusMessageLabel);  // Pointer should still be assigned to 0.
+
+        m_masterStatusLayout = new QHBoxLayout(m_widget);
+
         m_masterIconLabel = new QLabel;
+        m_masterStatusMessageLabel = new QLabel;
+
+        m_masterStatusLayout->addWidget(m_masterIconLabel);
+        m_masterStatusLayout->addWidget(m_masterStatusMessageLabel);
+
         iconChanged();
 
         // Set up the rest of the view/layout etc. stuff.
@@ -128,15 +140,16 @@ PresenceApplet::widget()
         Q_ASSERT(!m_layout);  // Pointer should still be assigned to 0.
         m_widget = new QWidget();
         m_layout = new QVBoxLayout(m_widget);
-        m_layout->addWidget(m_masterIconLabel);
+        m_layout->addLayout(m_masterStatusLayout);
         m_layout->addWidget(m_accountsView);
         m_layout->addWidget(m_messageEdit);
         m_widget->setLayout(m_layout);
 
         // Apply the theme's color scheme to the widget.
+        Q_ASSERT(m_colorScheme);
         QPalette editPalette = m_widget->palette();
-        editPalette.setColor(QPalette::Window,
-                             m_colorScheme->background().color());
+        editPalette.setBrush(QPalette::Window,
+                             m_colorScheme->background());
         m_widget->setPalette(editPalette);
     }
 
@@ -280,11 +293,11 @@ PresenceApplet::updateMasterPresence()
 
     if(statusMessagesAllTheSame)
     {
-        // TODO: Set the master presence status message.
+        masterStatusMessageChanged(previousStatusMessage);
     }
     else
     {
-        // TODO: Set the master presence status message to be QString();
+        masterStatusMessageChanged(QString());
     }
 
     // Next, we work out the overall presence status.
@@ -294,7 +307,7 @@ PresenceApplet::updateMasterPresence()
     int accountsExtendedAway = 0;
     int accountsHidden = 0;
     int accountsBusy = 0;
-    
+
     bool okOffline = true;
     bool okAvailable = true;
     bool okAway = true;
@@ -393,10 +406,19 @@ PresenceApplet::iconChanged()
     // display in the main widget.
     if(m_masterIconLabel)
     {
-        m_masterIconLabel->setPixmap(m_icon->icon().pixmap(QSize(22, 22)));
+        m_masterIconLabel->setPixmap(m_icon->icon().pixmap(QSize(32, 32)));
     }
 }
 
+void
+PresenceApplet::masterStatusMessageChanged(const QString & message)
+{
+    // If m_masterStatusMessageLabel points to a valid QLabel, update it.
+    if(m_masterStatusMessageLabel)
+    {
+        m_masterStatusMessageLabel->setText(message);
+    }
+}
 
 #include "presence.moc"
 
