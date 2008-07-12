@@ -27,7 +27,6 @@
 #include <QtCore/QString>
 
 class KColorScheme;
-class KLineEdit;
 
 class QHBoxLayout;
 class QLabel;
@@ -64,7 +63,6 @@ private:
     Plasma::DataEngine * m_engine;
 
     KColorScheme * m_colorScheme;
-    KLineEdit * m_messageEdit;
 
     QHBoxLayout * m_masterStatusLayout;
     QLabel * m_masterIconLabel;

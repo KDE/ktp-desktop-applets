@@ -19,6 +19,8 @@
 
 #include "presence.h"
 
+#include "presenceitemdelegate.h"
+
 #include <plasma/theme.h>
 #include <plasma/widgets/icon.h>
 
@@ -27,7 +29,6 @@
 #include <KColorScheme>
 #include <KDebug>
 #include <KIcon>
-#include <KLineEdit>
 
 #include <QtTapioca/PresenceState>
 
@@ -44,7 +45,6 @@ PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
   : PlasmaAppletDialog(parent, args),
     m_engine(0),
     m_colorScheme(0),
-    m_messageEdit(0),
     m_masterStatusLayout(0),
     m_masterIconLabel(0),
     m_masterStatusMessageLabel(0),
@@ -83,11 +83,11 @@ PresenceApplet::initialize()
     m_accountsModel->setColumnCount(4);
 
     m_accountsModel->setHeaderData(1, Qt::Horizontal,
-                                   QVariant("online?"), Qt::DisplayRole);
+                                   QVariant("status-type"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(2, Qt::Horizontal,
-                                   QVariant("status"), Qt::DisplayRole);
+                                   QVariant("status-name"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(3, Qt::Horizontal,
-                                   QVariant("message"), Qt::DisplayRole);
+                                   QVariant("status-message"), Qt::DisplayRole);
 
     Q_ASSERT(!m_engine);  // Pointer should still be assigned to 0.
     m_engine = dataEngine("presence");
@@ -112,6 +112,7 @@ PresenceApplet::widget()
         // Set up the accounts view.
         Q_ASSERT(!m_accountsView);  // Pointer should still be assigned to 0.
         m_accountsView = new QTreeView;
+        m_accountsView->setItemDelegate(new PresenceItemDelegate);
         m_accountsView->setModel(m_accountsModel);
         m_accountsView->header()->setVisible(true);
         m_accountsView->setColumnHidden(0, true);   //Hide the source id column
@@ -133,16 +134,12 @@ PresenceApplet::widget()
         masterStatusMessageChanged(m_masterStatusMessage);
 
         // Set up the rest of the view/layout etc. stuff.
-        Q_ASSERT(!m_messageEdit);  // Pointer should still be assigned to 0.
-        m_messageEdit = new KLineEdit;
-
         Q_ASSERT(!m_widget);  // Pointer should still be assigned to 0.
         Q_ASSERT(!m_layout);  // Pointer should still be assigned to 0.
         m_widget = new QWidget();
         m_layout = new QVBoxLayout(m_widget);
         m_layout->addLayout(m_masterStatusLayout);
         m_layout->addWidget(m_accountsView);
-        m_layout->addWidget(m_messageEdit);
         m_widget->setLayout(m_layout);
 
         // Apply the theme's color scheme to the widget.
