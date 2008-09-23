@@ -1,26 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Instant Messaging Presence
-Name[el]=Παρουσία στιγμιαίων μηνυμάτων
 Name[et]=Kohalolek kiirsuhtluses
-Name[gl]=Presenza na mensaxeiría instantánea
-Name[km]=កា​របង្ហាញ​សារ​បន្ទាន់
-Name[pt]=Presença nas Mensagens Instantâneas
-Name[pt_BR]=Presença nas Mensagens Instantâneas
 Name[sv]=Direktmeddelande finns
-Name[uk]=Присутність у обміні повідомленнями
-Name[x-test]=xxInstant Messaging Presencexx
 Comment=Shows your Decibel instant messaging status information
-Comment[el]=Εμφανίζει πληροφορίες της κατάστασης στιγμιαίων μηνυμάτων του Decibel
 Comment[et]=Decibeli kiirsuhtluse oleku teabe näitamine
-Comment[fr]=Vous montre des informations sur votre état dans la messagerie instantanée Decibel
-Comment[gl]=Mostra información do seu estado na mensaxeiría instantánea con Decibel
-Comment[km]=បង្ហាញ​ព័ត៌មាន​ស្ថានភាព​សារ​បន្ទាន់​នៃ Decibel របស់​អ្នក
-Comment[pt]=Mostra a sua informação de estado das mensagens instantâneas no Decibel
-Comment[pt_BR]=Mostra a sua informação de estado das mensagens instantâneas no Decibel
 Comment[sv]=Visar Decibels statusinformation om direktmeddelanden
-Comment[uk]=Показує інформацію про ваш стан у обміні повідомленнями Децибел
-Comment[x-test]=xxShows your Decibel instant messaging status informationxx
 Icon=view-history
 Type=Service
 ServiceTypes=Plasma/Applet
