@@ -50,8 +50,7 @@ public:
 
     QWidget * widget();
 
-protected:
-    void initialize();
+    void init();
 
 private Q_SLOTS:
     void dataUpdated(const QString & source,

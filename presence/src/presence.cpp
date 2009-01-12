@@ -25,13 +25,12 @@
 #include <plasma/widgets/iconwidget.h>
 #include <plasma/dialog.h>
 
-#include <Decibel/Types>
-
 #include <KColorScheme>
 #include <KDebug>
 #include <KIcon>
 
-#include <QtTapioca/PresenceState>
+#include <TelepathyQt4/Types>
+#include <TelepathyQt4/Constants>
 
 #include <QtCore/QList>
 
@@ -52,7 +51,8 @@ PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
     m_accountsModel(0),
     m_accountsView(0),
     m_layout(0),
-    m_widget(0)
+    m_widget(0),
+    m_icon(0)
 { }
 
 PresenceApplet::~PresenceApplet()
@@ -60,8 +60,7 @@ PresenceApplet::~PresenceApplet()
     delete m_colorScheme;
 }
 
-void
-PresenceApplet::initialize()
+void PresenceApplet::init()
 {
     kDebug() << "Initializing applet.";
 
@@ -73,7 +72,8 @@ PresenceApplet::initialize()
 
     // Set up the icon.
     Q_ASSERT(!m_icon);  // Pointer should still be assigned to 0.
-    m_icon = new Plasma::IconWidget(KIcon("user-offline"), QString(), this);
+    //m_icon = new Plasma::IconWidget(KIcon("user-offline"), QString(), this);
+    m_icon = new Plasma::IconWidget(this);
 
     // The icon has been changed.
     iconChanged();
@@ -105,8 +105,7 @@ PresenceApplet::initialize()
             this, SLOT(sourceRemoved(QString)));
 }
 
-QWidget *
-PresenceApplet::widget()
+QWidget *PresenceApplet::widget()
 {
     if(!m_widget)
     {
@@ -158,8 +157,7 @@ PresenceApplet::widget()
     return m_widget;
 }
 
-void
-PresenceApplet::sourceAdded(const QString & source)
+void PresenceApplet::sourceAdded(const QString & source)
 {
     Q_ASSERT(m_engine);  // Engine must be valid.
     kDebug() << "started with source: " << source;
@@ -167,16 +165,14 @@ PresenceApplet::sourceAdded(const QString & source)
 }
 
 
-void
-PresenceApplet::sourceRemoved(const QString & source)
+void PresenceApplet::sourceRemoved(const QString & source)
 {
     Q_ASSERT(m_engine);  // Engine must be valid.
     kDebug() << "started with source: " << source;
     m_engine->disconnectSource(source, this);
 }
 
-void
-PresenceApplet::dataUpdated(const QString & source,
+void PresenceApplet::dataUpdated(const QString & source,
                             const Plasma::DataEngine::Data & data)
 {
     kDebug() << "Started with source: " << source; 
@@ -264,8 +260,7 @@ PresenceApplet::dataUpdated(const QString & source,
  * which icon we display. We must also check the presence message for each
  * account to see if we can display one overall presence message.
  */
-void
-PresenceApplet::updateMasterPresence()
+void PresenceApplet::updateMasterPresence()
 {
     Q_ASSERT(m_accountsModel);
     Q_ASSERT(m_icon);
@@ -323,16 +318,16 @@ PresenceApplet::updateMasterPresence()
     // in each type of presence state.
     for(int i=0; i<rowCount; i++)
     {
-        QtTapioca::PresenceState::Type status_type = 
-            static_cast<QtTapioca::PresenceState::Type>(m_accountsModel->data(m_accountsModel->index(i, 1)).toInt());
+        Telepathy::ConnectionPresenceType status_type = 
+            static_cast<Telepathy::ConnectionPresenceType>(m_accountsModel->data(m_accountsModel->index(i, 1)).toUInt());
 
         switch(status_type)
         {
-        case QtTapioca::PresenceState::OfflineType:
-        case QtTapioca::PresenceState::UnsetType:
+        case Telepathy::ConnectionPresenceTypeOffline:
+        case Telepathy::ConnectionPresenceTypeUnknown:
             accountsOffline++;
             break;
-        case QtTapioca::PresenceState::AvailableType:
+        case Telepathy::ConnectionPresenceTypeAvailable:
             accountsAvailable++;
             okOffline = false;
             okHidden = false;
@@ -340,33 +335,36 @@ PresenceApplet::updateMasterPresence()
             okAway = false;
             okBusy = false;
             break;
-        case QtTapioca::PresenceState::AwayType:
+        case Telepathy::ConnectionPresenceTypeAway:
             accountsAway++;
             okOffline = false;
             okHidden = false;
             okExtendedAway = false;
             okBusy = false;
             break;
-        case QtTapioca::PresenceState::ExtendedAwayType:
+        case Telepathy::ConnectionPresenceTypeExtendedAway:
             accountsExtendedAway++;
             okOffline = false;
             okHidden = false;
             okBusy = false;
             break;
-        case QtTapioca::PresenceState::HiddenType:
+        case Telepathy::ConnectionPresenceTypeHidden:
             accountsHidden++;
             okOffline = false;
             okExtendedAway = false;
             okAway = false;
             okBusy = false;
             break;
-        case QtTapioca::PresenceState::BusyType:
+        case Telepathy::ConnectionPresenceTypeBusy:
             accountsBusy++;
             okOffline = false;
             okHidden = false;
             okExtendedAway = false;
             okAway = false;
             break;
+        case Telepathy::ConnectionPresenceTypeUnset:
+        case Telepathy::ConnectionPresenceTypeError:
+        	break;
         }
     }
 
@@ -403,8 +401,7 @@ PresenceApplet::updateMasterPresence()
     iconChanged();
 }
 
-void
-PresenceApplet::iconChanged()
+void PresenceApplet::iconChanged()
 {
     // The icon has been changed. We must update the pixmap of the icon for
     // display in the main widget.
@@ -414,8 +411,7 @@ PresenceApplet::iconChanged()
     }
 }
 
-void
-PresenceApplet::masterStatusMessageChanged(const QString & message)
+void PresenceApplet::masterStatusMessageChanged(const QString & message)
 {
     // If m_masterStatusMessageLabel points to a valid QLabel, update it.
     if(m_masterStatusMessageLabel)
