@@ -186,10 +186,11 @@ void PresenceApplet::dataUpdated(const QString & source,
     QStandardItem * presence_type = new QStandardItem;
     QStandardItem * presence_state = new QStandardItem;
     QStandardItem * message = new QStandardItem;
-    // FIXME: Reimplement the lines below using new plasma API
-    //online->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
-    //status->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
-    //message->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
+    
+    // \brief: setup color roles
+    presence_type->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
+    presence_state->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
+    message->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
 
     // FIXME: TelepathyQt4
 /*
