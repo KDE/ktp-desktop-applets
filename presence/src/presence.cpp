@@ -192,17 +192,14 @@ void PresenceApplet::dataUpdated(const QString & source,
     presence_state->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
     message->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
 
-    // FIXME: TelepathyQt4
-/*
-    QtTapioca::PresenceState currentPresence
-        = data.value("current_presence").value<QtTapioca::PresenceState>();
+    // \brief: setup account presence
+    Telepathy::SimplePresence currentPresence
+    	= data.value("current_presence").value<Telepathy::SimplePresence>();
+    presence_type->setData(static_cast<uint>(currentPresence.type),
+    						Qt::DisplayRole);
+    presence_state->setData(currentPresence.status, Qt::DisplayRole);
+    message->setData(currentPresence.statusMessage, Qt::DisplayRole);
 
-    presence_type->setData(static_cast<int>(currentPresence.type()),
-                           Qt::DisplayRole);
-    presence_state->setData(currentPresence.name(), Qt::DisplayRole);
-    message->setData(data.value("status_message").toString(),
-                     Qt::DisplayRole);
-*/
     /*
      * so, we need to look in the first column
      * to see if we can find a row with that value
