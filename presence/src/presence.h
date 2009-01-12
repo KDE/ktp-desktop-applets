@@ -20,9 +20,13 @@
 #ifndef PLASMA_APPLET_PRESENCE_H
 #define PLASMA_APPLET_PRESENCE_H
 
-#include <plasmaappletdialog.h>
-
+#include <plasma/applet.h>
 #include <plasma/dataengine.h>
+
+namespace Plasma
+{
+	class IconWidget;
+}
 
 #include <QtCore/QString>
 
@@ -36,7 +40,7 @@ class QTreeView;
 class QVBoxLayout;
 class QWidget;
 
-class PresenceApplet : public PlasmaAppletDialog
+class PresenceApplet : public Plasma::Applet
 {
     Q_OBJECT
 
@@ -61,6 +65,7 @@ private:
     void updateMasterPresence();
 
     Plasma::DataEngine * m_engine;
+    Plasma::IconWidget *m_icon;
 
     KColorScheme * m_colorScheme;
 

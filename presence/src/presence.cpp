@@ -22,7 +22,8 @@
 #include "presenceitemdelegate.h"
 
 #include <plasma/theme.h>
-#include <plasma/widgets/icon.h>
+#include <plasma/widgets/iconwidget.h>
+#include <plasma/dialog.h>
 
 #include <Decibel/Types>
 
@@ -42,7 +43,7 @@
 #include <QtGui/QVBoxLayout>
 
 PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
-  : PlasmaAppletDialog(parent, args),
+  : Plasma::Applet(parent, args),
     m_engine(0),
     m_colorScheme(0),
     m_masterStatusLayout(0),
@@ -72,7 +73,7 @@ PresenceApplet::initialize()
 
     // Set up the icon.
     Q_ASSERT(!m_icon);  // Pointer should still be assigned to 0.
-    m_icon = new Plasma::Icon(KIcon("user-offline"), QString(), this);
+    m_icon = new Plasma::IconWidget(KIcon("user-offline"), QString(), this);
 
     // The icon has been changed.
     iconChanged();
@@ -194,6 +195,9 @@ PresenceApplet::dataUpdated(const QString & source,
     //online->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
     //status->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
     //message->setData(Plasma::Theme::self()->textColor(), Qt::ForegroundRole);
+
+    // FIXME: TelepathyQt4
+/*
     QtTapioca::PresenceState currentPresence
         = data.value("current_presence").value<QtTapioca::PresenceState>();
 
@@ -202,6 +206,7 @@ PresenceApplet::dataUpdated(const QString & source,
     presence_state->setData(currentPresence.name(), Qt::DisplayRole);
     message->setData(data.value("status_message").toString(),
                      Qt::DisplayRole);
+*/
     /*
      * so, we need to look in the first column
      * to see if we can find a row with that value
