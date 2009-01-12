@@ -72,8 +72,8 @@ void PresenceApplet::init()
 
     // Set up the icon.
     Q_ASSERT(!m_icon);  // Pointer should still be assigned to 0.
-    //m_icon = new Plasma::IconWidget(KIcon("user-offline"), QString(), this);
     m_icon = new Plasma::IconWidget(this);
+    m_icon->setIcon(KIcon("user-offline"));
 
     // The icon has been changed.
     iconChanged();
@@ -163,7 +163,6 @@ void PresenceApplet::sourceAdded(const QString & source)
     kDebug() << "started with source: " << source;
     m_engine->connectSource(source, this);
 }
-
 
 void PresenceApplet::sourceRemoved(const QString & source)
 {
