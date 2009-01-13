@@ -75,7 +75,7 @@ void PresenceApplet::init()
     // Set up the icon.
     Q_ASSERT(!m_icon);  // Pointer should still be assigned to 0.
     m_icon = new Plasma::IconWidget(this);
-    m_icon->setIcon(KIcon("user-online"));
+    m_icon->setIcon(KIcon("user-offline"));
 
     // The icon has been changed.
     iconChanged();
@@ -124,7 +124,7 @@ QWidget *PresenceApplet::widget()
         Q_ASSERT(!m_masterIconLabel);  // Pointer should still be assigned to 0.
         Q_ASSERT(!m_masterStatusMessageLabel);  // Pointer should still be assigned to 0.
 
-        m_masterStatusLayout = new QHBoxLayout();
+        m_masterStatusLayout = new QHBoxLayout(m_widget);
 
         m_masterIconLabel = new QLabel;
         m_masterStatusMessageLabel = new QLabel;
@@ -138,8 +138,8 @@ QWidget *PresenceApplet::widget()
         // Set up the rest of the view/layout etc. stuff.
         Q_ASSERT(!m_widget);  // Pointer should still be assigned to 0.
         Q_ASSERT(!m_layout);  // Pointer should still be assigned to 0.
-        m_widget = new QWidget;
-        m_layout = new QVBoxLayout();
+        m_widget = new QWidget();
+        m_layout = new QVBoxLayout(m_widget);
         m_layout->addLayout(m_masterStatusLayout);
         m_layout->addWidget(m_accountsView);
         m_widget->setLayout(m_layout);
