@@ -23,7 +23,6 @@
 
 #include <plasma/theme.h>
 #include <plasma/widgets/iconwidget.h>
-#include <plasma/dialog.h>
 
 #include <KColorScheme>
 #include <KDebug>
@@ -38,11 +37,14 @@
 #include <QtGui/QLabel>
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QTreeView>
-#include <QtGui/QWidget>
+#include <QtGui/QGraphicsProxyWidget>
 #include <QtGui/QVBoxLayout>
 
+
 PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
-  : Plasma::Applet(parent, args),
+  : Plasma::PopupApplet(parent, args),
+    m_icon(0),
+    m_widget(0),
     m_engine(0),
     m_colorScheme(0),
     m_masterStatusLayout(0),
@@ -50,13 +52,13 @@ PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
     m_masterStatusMessageLabel(0),
     m_accountsModel(0),
     m_accountsView(0),
-    m_layout(0),
-    m_widget(0),
-    m_icon(0)
+    m_layout(0)
 { }
 
 PresenceApplet::~PresenceApplet()
 {
+	if(m_widget)
+		delete m_widget;
     delete m_colorScheme;
 }
 
@@ -73,7 +75,7 @@ void PresenceApplet::init()
     // Set up the icon.
     Q_ASSERT(!m_icon);  // Pointer should still be assigned to 0.
     m_icon = new Plasma::IconWidget(this);
-    m_icon->setIcon(KIcon("user-offline"));
+    m_icon->setIcon(KIcon("user-online"));
 
     // The icon has been changed.
     iconChanged();
@@ -107,7 +109,7 @@ void PresenceApplet::init()
 
 QWidget *PresenceApplet::widget()
 {
-    if(!m_widget)
+	if(!m_widget)
     {
         // Set up the accounts view.
         Q_ASSERT(!m_accountsView);  // Pointer should still be assigned to 0.
@@ -122,7 +124,7 @@ QWidget *PresenceApplet::widget()
         Q_ASSERT(!m_masterIconLabel);  // Pointer should still be assigned to 0.
         Q_ASSERT(!m_masterStatusMessageLabel);  // Pointer should still be assigned to 0.
 
-        m_masterStatusLayout = new QHBoxLayout(m_widget);
+        m_masterStatusLayout = new QHBoxLayout();
 
         m_masterIconLabel = new QLabel;
         m_masterStatusMessageLabel = new QLabel;
@@ -136,8 +138,8 @@ QWidget *PresenceApplet::widget()
         // Set up the rest of the view/layout etc. stuff.
         Q_ASSERT(!m_widget);  // Pointer should still be assigned to 0.
         Q_ASSERT(!m_layout);  // Pointer should still be assigned to 0.
-        m_widget = new QWidget();
-        m_layout = new QVBoxLayout(m_widget);
+        m_widget = new QWidget;
+        m_layout = new QVBoxLayout();
         m_layout->addLayout(m_masterStatusLayout);
         m_layout->addWidget(m_accountsView);
         m_widget->setLayout(m_layout);
@@ -153,7 +155,7 @@ QWidget *PresenceApplet::widget()
     }
 
     Q_ASSERT(m_widget);  // We must have a valid m_widget by now.
-
+    
     return m_widget;
 }
 
@@ -305,7 +307,6 @@ void PresenceApplet::updateMasterPresence()
     int accountsBusy = 0;
 
     bool okOffline = true;
-    bool okAvailable = true;
     bool okAway = true;
     bool okExtendedAway = true;
     bool okHidden = true;

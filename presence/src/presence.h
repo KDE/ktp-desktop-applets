@@ -20,7 +20,7 @@
 #ifndef PLASMA_APPLET_PRESENCE_H
 #define PLASMA_APPLET_PRESENCE_H
 
-#include <plasma/applet.h>
+#include <plasma/popupapplet.h>
 #include <plasma/dataengine.h>
 
 namespace Plasma
@@ -29,18 +29,18 @@ namespace Plasma
 }
 
 #include <QtCore/QString>
+#include <QtGui/QLabel>
 
 class KColorScheme;
 
 class QHBoxLayout;
-class QLabel;
 class QStandardItemModel;
 class QString;
 class QTreeView;
 class QVBoxLayout;
-class QWidget;
+class QGraphicsProxyWidget;
 
-class PresenceApplet : public Plasma::Applet
+class PresenceApplet : public Plasma::PopupApplet
 {
     Q_OBJECT
 
@@ -48,7 +48,7 @@ public:
     PresenceApplet(QObject * parent, const QVariantList & args);
     ~PresenceApplet();
 
-    QWidget * widget();
+    QWidget *widget();
 
     void init();
 
@@ -74,7 +74,7 @@ private:
     QStandardItemModel * m_accountsModel;
     QTreeView * m_accountsView;
     QVBoxLayout * m_layout;
-    QWidget * m_widget;
+    QWidget *m_widget;
 
     QString m_masterStatusMessage;
 
