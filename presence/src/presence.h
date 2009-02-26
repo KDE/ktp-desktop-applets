@@ -25,7 +25,7 @@
 
 namespace Plasma
 {
-	class IconWidget;
+    class IconWidget;
 }
 
 #include <QtCore/QString>

@@ -21,8 +21,9 @@
 
 #include "presenceitemdelegate.h"
 
-#include <plasma/theme.h>
-#include <plasma/widgets/iconwidget.h>
+#include <Plasma/Dialog>
+#include <Plasma/IconWidget>
+#include <Plasma/Theme>
 
 #include <KColorScheme>
 #include <KDebug>
@@ -38,6 +39,7 @@
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QTreeView>
 #include <QtGui/QGraphicsProxyWidget>
+#include <QGraphicsLinearLayout>
 #include <QtGui/QVBoxLayout>
 
 
@@ -53,7 +55,9 @@ PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
     m_accountsModel(0),
     m_accountsView(0),
     m_layout(0)
-{ }
+{
+    setBackgroundHints(StandardBackground);
+}
 
 PresenceApplet::~PresenceApplet()
 {
@@ -74,8 +78,8 @@ void PresenceApplet::init()
 
     // Set up the icon.
     Q_ASSERT(!m_icon);  // Pointer should still be assigned to 0.
-    m_icon = new Plasma::IconWidget(this);
-    m_icon->setIcon(KIcon("user-offline"));
+    m_icon = new Plasma::IconWidget(KIcon("user-offline",NULL), QString());
+    setPopupIcon(m_icon->icon());
 
     // The icon has been changed.
     iconChanged();
@@ -396,6 +400,7 @@ void PresenceApplet::updateMasterPresence()
     }
 
     // Call the method to update the masterPresenceIcon.
+    setPopupIcon(m_icon->icon());
     iconChanged();
 }
 
