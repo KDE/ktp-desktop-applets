@@ -31,17 +31,18 @@
 
 #include <TelepathyQt4/Types>
 #include <TelepathyQt4/Constants>
+#include <TelepathyQt4/Client/PendingReadyAccountManager>
+#include <TelepathyQt4/Client/Account>
 
 #include <QtCore/QList>
+#include <QtCore/QSharedPointer>
 
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
-#include <QtGui/QStandardItemModel>
 #include <QtGui/QTreeView>
 #include <QtGui/QGraphicsProxyWidget>
 #include <QGraphicsLinearLayout>
 #include <QtGui/QVBoxLayout>
-
 
 PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
   : Plasma::PopupApplet(parent, args),
@@ -54,15 +55,17 @@ PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
     m_masterStatusMessageLabel(0),
     m_accountsModel(0),
     m_accountsView(0),
-    m_layout(0)
+    m_layout(0),
+    m_userSet(false),
+    m_accountManager(0)
 {
     setBackgroundHints(StandardBackground);
 }
 
 PresenceApplet::~PresenceApplet()
 {
-	if(m_widget)
-		delete m_widget;
+    if(m_widget)
+        delete m_widget;
     delete m_colorScheme;
 }
 
@@ -89,12 +92,20 @@ void PresenceApplet::init()
     m_accountsModel = new QStandardItemModel(this);
     m_accountsModel->setColumnCount(4);
 
+    connect(m_accountsModel, SIGNAL(itemChanged(QStandardItem*)), this,
+            SLOT(onItemChanged(QStandardItem*)));
+
     m_accountsModel->setHeaderData(1, Qt::Horizontal,
                                    QVariant("status-type"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(2, Qt::Horizontal,
                                    QVariant("status-name"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(3, Qt::Horizontal,
                                    QVariant("status-message"), Qt::DisplayRole);
+    //setup Telepathy Account Manager
+    m_accountManager = new Telepathy::Client::AccountManager(QDBusConnection::sessionBus());
+    connect(m_accountManager->becomeReady(),
+            SIGNAL(finished(Telepathy::Client::PendingOperation *)), this,
+            SLOT(onReady(Telepathy::Client::PendingOperation *)));
 
     Q_ASSERT(!m_engine);  // Pointer should still be assigned to 0.
     m_engine = dataEngine("presence");
@@ -110,6 +121,11 @@ void PresenceApplet::init()
     connect(m_engine, SIGNAL(sourceRemoved(QString)),
             this, SLOT(sourceRemoved(QString)));
 }
+
+void PresenceApplet::onReady(Telepathy::Client::PendingOperation *result)
+{
+
+}
 QWidget *PresenceApplet::widget()
 {
 	if(!m_widget)
@@ -118,8 +134,6 @@ QWidget *PresenceApplet::widget()
         Q_ASSERT(!m_accountsView);  // Pointer should still be assigned to 0.
         m_accountsView = new QTreeView;
         m_accountsView->setItemDelegate(new PresenceItemDelegate);
-        connect(m_accountsView->itemDelegate(), SIGNAL(commitData(QWidget*)),
-                    this, SLOT(commitData(QWidget*)));
         m_accountsView->setModel(m_accountsModel);
         m_accountsView->header()->setVisible(true);
         m_accountsView->setColumnHidden(0, true);   //Hide the source id column
@@ -180,14 +194,16 @@ void PresenceApplet::sourceRemoved(const QString & source)
 
 void PresenceApplet::commitData(QWidget * editor)
 {
-    kDebug();
+    kDebug()<<m_userSet;
+    //m_userSet = true;
 }
 
 void PresenceApplet::dataUpdated(const QString & source,
                             const Plasma::DataEngine::Data & data)
 {
     kDebug() << "Started with source: " << source; 
-    /*
+
+   /*
      * the data has been updated for one or more source.
      * We must see if there is already a row in the
      * model representing that source.
@@ -198,6 +214,7 @@ void PresenceApplet::dataUpdated(const QString & source,
     QStandardItem * presence_type = new QStandardItem;
     QStandardItem * presence_state = new QStandardItem;
     QStandardItem * message = new QStandardItem;
+    QStandardItem * accountItem = new  QStandardItem;
     
     // \brief: setup color roles
     presence_type->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
@@ -211,7 +228,9 @@ void PresenceApplet::dataUpdated(const QString & source,
     						Qt::DisplayRole);
     presence_state->setData(currentPresence.status, Qt::DisplayRole);
     message->setData(currentPresence.statusMessage, Qt::DisplayRole);
+    accountItem->setData(source, Qt::DisplayRole);
 
+   
     /*
      * so, we need to look in the first column
      * to see if we can find a row with that value
@@ -243,6 +262,7 @@ void PresenceApplet::dataUpdated(const QString & source,
          * is already there for it.
          */
         int row = items.first()->row();
+        m_accountsModel->setItem(row, 0, accountItem);
         m_accountsModel->setItem(row, 1, presence_type);
         m_accountsModel->setItem(row, 2, presence_state);
         m_accountsModel->setItem(row, 3, message);
@@ -260,6 +280,30 @@ void PresenceApplet::dataUpdated(const QString & source,
 
     // Update the master presence.
     updateMasterPresence();
+}
+
+void PresenceApplet::onItemChanged(QStandardItem * item)
+{
+   QModelIndex index = m_accountsModel->indexFromItem(item);
+   QString source = m_accountsModel->data(m_accountsModel->index(index.row(), 0)).toString();
+   uint type = m_accountsModel->data(m_accountsModel->index(index.row(), 1)).toUInt();
+   QString status = m_accountsModel->data(m_accountsModel->index(index.row(), 2)).toString();
+   QString statusMessage = m_accountsModel->data(m_accountsModel->index(index.row(), 3)).toString();
+   //work around account object patch gets trimmed 
+   QString accountObjectPath = "/org/freedesktop/Telepath" + source;
+   if (m_accountManager->isReady()) {
+       Telepathy::Client::Account * account =
+       m_accountManager->accountForPath(accountObjectPath).data();
+       if (account) {
+          Telepathy::SimplePresence simplePresence;
+          simplePresence.type = type;
+          simplePresence.status = status;
+          simplePresence.statusMessage =  statusMessage;
+          account->setRequestedPresence(simplePresence);
+          m_userSet = false;
+        }
+    }
+
 }
 
 /**

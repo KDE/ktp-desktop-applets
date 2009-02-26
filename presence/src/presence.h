@@ -30,6 +30,11 @@ namespace Plasma
 
 #include <QtCore/QString>
 #include <QtGui/QLabel>
+#include <QtGui/QStandardItemModel>
+
+
+#include <TelepathyQt4/Client/PendingReadyAccountManager>
+#include <TelepathyQt4/Client/AccountManager>
 
 class KColorScheme;
 
@@ -58,6 +63,8 @@ private Q_SLOTS:
     void sourceAdded(const QString & source);
     void sourceRemoved(const QString & source);
     void commitData(QWidget*editor);
+    void onItemChanged(QStandardItem*);
+    void onReady(Telepathy::Client::PendingOperation*);
 
 private:
     void iconChanged();
@@ -76,6 +83,8 @@ private:
     QTreeView * m_accountsView;
     QVBoxLayout * m_layout;
     QWidget *m_widget;
+    Telepathy::Client::AccountManager* m_accountManager;
+    bool m_userSet;
 
     QString m_masterStatusMessage;
 
