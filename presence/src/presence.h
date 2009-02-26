@@ -57,6 +57,7 @@ private Q_SLOTS:
                      const Plasma::DataEngine::Data & data);
     void sourceAdded(const QString & source);
     void sourceRemoved(const QString & source);
+    void commitData(QWidget*editor);
 
 private:
     void iconChanged();

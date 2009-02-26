@@ -110,7 +110,6 @@ void PresenceApplet::init()
     connect(m_engine, SIGNAL(sourceRemoved(QString)),
             this, SLOT(sourceRemoved(QString)));
 }
-
 QWidget *PresenceApplet::widget()
 {
 	if(!m_widget)
@@ -119,6 +118,8 @@ QWidget *PresenceApplet::widget()
         Q_ASSERT(!m_accountsView);  // Pointer should still be assigned to 0.
         m_accountsView = new QTreeView;
         m_accountsView->setItemDelegate(new PresenceItemDelegate);
+        connect(m_accountsView->itemDelegate(), SIGNAL(commitData(QWidget*)),
+                    this, SLOT(commitData(QWidget*)));
         m_accountsView->setModel(m_accountsModel);
         m_accountsView->header()->setVisible(true);
         m_accountsView->setColumnHidden(0, true);   //Hide the source id column
@@ -159,7 +160,7 @@ QWidget *PresenceApplet::widget()
     }
 
     Q_ASSERT(m_widget);  // We must have a valid m_widget by now.
-    
+
     return m_widget;
 }
 
@@ -175,6 +176,11 @@ void PresenceApplet::sourceRemoved(const QString & source)
     Q_ASSERT(m_engine);  // Engine must be valid.
     kDebug() << "started with source: " << source;
     m_engine->disconnectSource(source, this);
+}
+
+void PresenceApplet::commitData(QWidget * editor)
+{
+    kDebug();
 }
 
 void PresenceApplet::dataUpdated(const QString & source,
@@ -310,17 +316,17 @@ void PresenceApplet::updateMasterPresence()
     int accountsHidden = 0;
     int accountsBusy = 0;
 
-    bool okOffline = true;
-    bool okAway = true;
-    bool okExtendedAway = true;
-    bool okHidden = true;
-    bool okBusy = true;
+    bool okOffline = false;
+    bool okAway = false;
+    bool okExtendedAway = false;
+    bool okHidden = false;
+    bool okBusy = false;
 
     // Iterate over all the accounts in the model, and total up how many are
     // in each type of presence state.
     for(int i=0; i<rowCount; i++)
     {
-        Telepathy::ConnectionPresenceType status_type = 
+        Telepathy::ConnectionPresenceType status_type =
             static_cast<Telepathy::ConnectionPresenceType>(m_accountsModel->data(m_accountsModel->index(i, 1)).toUInt());
 
         switch(status_type)
@@ -328,41 +334,26 @@ void PresenceApplet::updateMasterPresence()
         case Telepathy::ConnectionPresenceTypeOffline:
         case Telepathy::ConnectionPresenceTypeUnknown:
             accountsOffline++;
+            okOffline = true;
             break;
         case Telepathy::ConnectionPresenceTypeAvailable:
             accountsAvailable++;
-            okOffline = false;
-            okHidden = false;
-            okExtendedAway = false;
-            okAway = false;
-            okBusy = false;
             break;
         case Telepathy::ConnectionPresenceTypeAway:
             accountsAway++;
-            okOffline = false;
-            okHidden = false;
-            okExtendedAway = false;
-            okBusy = false;
+            okAway = true;
             break;
         case Telepathy::ConnectionPresenceTypeExtendedAway:
             accountsExtendedAway++;
-            okOffline = false;
-            okHidden = false;
-            okBusy = false;
+            okExtendedAway = true;
             break;
         case Telepathy::ConnectionPresenceTypeHidden:
             accountsHidden++;
-            okOffline = false;
-            okExtendedAway = false;
-            okAway = false;
-            okBusy = false;
+            okHidden = true;
             break;
         case Telepathy::ConnectionPresenceTypeBusy:
             accountsBusy++;
-            okOffline = false;
-            okHidden = false;
-            okExtendedAway = false;
-            okAway = false;
+            okBusy = true;
             break;
         case Telepathy::ConnectionPresenceTypeUnset:
         case Telepathy::ConnectionPresenceTypeError:
