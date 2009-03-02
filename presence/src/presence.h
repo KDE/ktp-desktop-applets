@@ -85,6 +85,7 @@ private:
     QWidget *m_widget;
     Telepathy::Client::AccountManager* m_accountManager;
     bool m_userSet;
+    QString m_currentPresence;
 
     QString m_masterStatusMessage;
 

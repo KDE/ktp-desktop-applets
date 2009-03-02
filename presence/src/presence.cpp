@@ -223,14 +223,19 @@ void PresenceApplet::dataUpdated(const QString & source,
 
     // \brief: setup account presence
     Telepathy::SimplePresence currentPresence
-    	= data.value("current_presence").value<Telepathy::SimplePresence>();
+        = data.value("current_presence").value<Telepathy::SimplePresence>();
+    if (m_currentPresence == currentPresence.status) {
+        return;
+    }
+
+    m_currentPresence = currentPresence.status;
+
     presence_type->setData(static_cast<uint>(currentPresence.type),
     						Qt::DisplayRole);
     presence_state->setData(currentPresence.status, Qt::DisplayRole);
     message->setData(currentPresence.statusMessage, Qt::DisplayRole);
     accountItem->setData(source, Qt::DisplayRole);
 
-   
     /*
      * so, we need to look in the first column
      * to see if we can find a row with that value
