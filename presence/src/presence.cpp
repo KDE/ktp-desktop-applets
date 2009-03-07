@@ -32,6 +32,7 @@
 #include <TelepathyQt4/Types>
 #include <TelepathyQt4/Constants>
 #include <TelepathyQt4/Client/PendingReadyAccountManager>
+#include <TelepathyQt4/Client/PendingReady>
 #include <TelepathyQt4/Client/Account>
 
 #include <QtCore/QList>
