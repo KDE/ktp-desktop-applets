@@ -32,8 +32,6 @@ namespace Plasma
 #include <QtGui/QLabel>
 #include <QtGui/QStandardItemModel>
 
-
-#include <TelepathyQt4/Client/PendingReadyAccountManager>
 #include <TelepathyQt4/Client/AccountManager>
 
 class KColorScheme;

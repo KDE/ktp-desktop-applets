@@ -31,7 +31,6 @@
 
 #include <TelepathyQt4/Types>
 #include <TelepathyQt4/Constants>
-#include <TelepathyQt4/Client/PendingReadyAccountManager>
 #include <TelepathyQt4/Client/PendingReady>
 #include <TelepathyQt4/Client/Account>
 
@@ -104,7 +103,11 @@ void PresenceApplet::init()
                                    QVariant("status-message"), Qt::DisplayRole);
     //setup Telepathy Account Manager
     m_accountManager = new Telepathy::Client::AccountManager(QDBusConnection::sessionBus());
-    connect(m_accountManager->becomeReady(),
+    
+    QSet<Telepathy::Client::Feature> features;
+    features << Telepathy::Client::AccountManager::FeatureCore;
+    
+    connect(m_accountManager->becomeReady(features),
             SIGNAL(finished(Telepathy::Client::PendingOperation *)), this,
             SLOT(onReady(Telepathy::Client::PendingOperation *)));
 
