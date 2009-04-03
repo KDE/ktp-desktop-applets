@@ -1,5 +1,6 @@
 /*
  *   Copyright (C) 2008 George Goldberg <grundleborg@googlemail.com>
+ *   Copyright (C) 2009 Collabora Ltd <http://www.collabora.co.uk>
  *
  *   This library is free software; you can redistribute it and/or
  *   modify it under the terms of the GNU Library General Public
@@ -29,11 +30,6 @@
 #include <KDebug>
 #include <KIcon>
 
-#include <TelepathyQt4/Types>
-#include <TelepathyQt4/Constants>
-#include <TelepathyQt4/Client/PendingReady>
-#include <TelepathyQt4/Client/Account>
-
 #include <QtCore/QList>
 #include <QtCore/QSharedPointer>
 
@@ -56,8 +52,7 @@ PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
     m_accountsModel(0),
     m_accountsView(0),
     m_layout(0),
-    m_userSet(false),
-    m_accountManager(0)
+    m_userSet(false)
 {
     setBackgroundHints(StandardBackground);
 }
@@ -101,15 +96,6 @@ void PresenceApplet::init()
                                    QVariant("status-name"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(3, Qt::Horizontal,
                                    QVariant("status-message"), Qt::DisplayRole);
-    //setup Telepathy Account Manager
-    m_accountManager = new Telepathy::Client::AccountManager(QDBusConnection::sessionBus());
-    
-    QSet<Telepathy::Client::Feature> features;
-    features << Telepathy::Client::AccountManager::FeatureCore;
-    
-    connect(m_accountManager->becomeReady(features),
-            SIGNAL(finished(Telepathy::Client::PendingOperation *)), this,
-            SLOT(onReady(Telepathy::Client::PendingOperation *)));
 
     Q_ASSERT(!m_engine);  // Pointer should still be assigned to 0.
     m_engine = dataEngine("presence");
@@ -126,13 +112,9 @@ void PresenceApplet::init()
             this, SLOT(sourceRemoved(QString)));
 }
 
-void PresenceApplet::onReady(Telepathy::Client::PendingOperation *result)
-{
-
-}
 QWidget *PresenceApplet::widget()
 {
-	if(!m_widget)
+    if(!m_widget)
     {
         // Set up the accounts view.
         Q_ASSERT(!m_accountsView);  // Pointer should still be assigned to 0.
@@ -195,13 +177,13 @@ void PresenceApplet::sourceRemoved(const QString & source)
     kDebug() << "started with source: " << source;
     m_engine->disconnectSource(source, this);
 }
-
+/*
 void PresenceApplet::commitData(QWidget * editor)
 {
     kDebug()<<m_userSet;
     //m_userSet = true;
 }
-
+*/
 void PresenceApplet::dataUpdated(const QString & source,
                             const Plasma::DataEngine::Data & data)
 {
@@ -225,19 +207,9 @@ void PresenceApplet::dataUpdated(const QString & source,
     presence_state->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
     message->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
 
-    // \brief: setup account presence
-    Telepathy::SimplePresence currentPresence
-        = data.value("current_presence").value<Telepathy::SimplePresence>();
-    if (m_currentPresence == currentPresence.status) {
-        return;
-    }
-
-    m_currentPresence = currentPresence.status;
-
-    presence_type->setData(static_cast<uint>(currentPresence.type),
-    						Qt::DisplayRole);
-    presence_state->setData(currentPresence.status, Qt::DisplayRole);
-    message->setData(currentPresence.statusMessage, Qt::DisplayRole);
+    presence_type->setData(data.value("current_presence_type"), Qt::DisplayRole);
+    presence_state->setData(data.value("current_presence_status"), Qt::DisplayRole);
+    message->setData(data.value("current_presence_status_message"), Qt::DisplayRole);
     accountItem->setData(source, Qt::DisplayRole);
 
     /*
@@ -290,7 +262,7 @@ void PresenceApplet::dataUpdated(const QString & source,
     // Update the master presence.
     updateMasterPresence();
 }
-
+/*
 void PresenceApplet::onItemChanged(QStandardItem * item)
 {
    QModelIndex index = m_accountsModel->indexFromItem(item);
@@ -314,7 +286,7 @@ void PresenceApplet::onItemChanged(QStandardItem * item)
     }
 
 }
-
+*/
 /**
  * @brief Update the master presence state.
  *
@@ -377,6 +349,7 @@ void PresenceApplet::updateMasterPresence()
 
     // Iterate over all the accounts in the model, and total up how many are
     // in each type of presence state.
+    /* // FIXME: Port to new method
     for(int i=0; i<rowCount; i++)
     {
         Telepathy::ConnectionPresenceType status_type =
@@ -413,7 +386,7 @@ void PresenceApplet::updateMasterPresence()
         	break;
         }
     }
-
+*/
     // Chose a master presence state from this.
     // FIXME: What should be the logic for choosing a master presence state?
     //        Shoud this be user customisable?
