@@ -389,7 +389,7 @@ void PresenceApplet::updateMasterPresence()
 */
     // Chose a master presence state from this.
     // FIXME: What should be the logic for choosing a master presence state?
-    //        Shoud this be user customisable?
+    //        Should this be user customisable?
     //        Currently follows the kopete approach.
     if(okOffline == true)
     {
