@@ -207,9 +207,9 @@ void PresenceApplet::dataUpdated(const QString & source,
     presence_state->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
     message->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
 
-    presence_type->setData(data.value("current_presence_type"), Qt::DisplayRole);
-    presence_state->setData(data.value("current_presence_status"), Qt::DisplayRole);
-    message->setData(data.value("current_presence_status_message"), Qt::DisplayRole);
+    presence_type->setData(data.value("presence_type"), Qt::DisplayRole);
+    presence_state->setData(data.value("presence_status"), Qt::DisplayRole);
+    message->setData(data.value("presence_status_message"), Qt::DisplayRole);
     accountItem->setData(source, Qt::DisplayRole);
 
     /*
