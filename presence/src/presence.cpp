@@ -341,78 +341,96 @@ void PresenceApplet::updateMasterPresence()
     int accountsHidden = 0;
     int accountsBusy = 0;
 
-    bool okOffline = false;
-    bool okAway = false;
-    bool okExtendedAway = false;
-    bool okHidden = false;
-    bool okBusy = false;
+    bool okOffline = true;
+    bool okAway = true;
+    bool okExtendedAway = true;
+    bool okHidden = true;
+    bool okBusy = true;
 
     // Iterate over all the accounts in the model, and total up how many are
     // in each type of presence state.
-    /* // FIXME: Port to new method
     for(int i=0; i<rowCount; i++)
     {
-        Telepathy::ConnectionPresenceType status_type =
-            static_cast<Telepathy::ConnectionPresenceType>(m_accountsModel->data(m_accountsModel->index(i, 1)).toUInt());
+        QString status_type = m_accountsModel->data(m_accountsModel->index(i, 1)).toString();
 
-        switch(status_type)
+        if((status_type == "offline") || (status_type == "unknown") || (status_type == "error") || (status_type == "unset"))
         {
-        case Telepathy::ConnectionPresenceTypeOffline:
-        case Telepathy::ConnectionPresenceTypeUnknown:
             accountsOffline++;
-            okOffline = true;
-            break;
-        case Telepathy::ConnectionPresenceTypeAvailable:
+        }
+        else if(status_type == "available")
+        {
             accountsAvailable++;
-            break;
-        case Telepathy::ConnectionPresenceTypeAway:
+            okOffline = false;
+            okHidden = false;
+            okExtendedAway = false;
+            okAway = false;
+            okBusy = false;
+        }
+        else if(status_type == "away")
+        {
             accountsAway++;
-            okAway = true;
-            break;
-        case Telepathy::ConnectionPresenceTypeExtendedAway:
+            okOffline = false;
+            okHidden = false;
+            okExtendedAway = false;
+            okBusy = false;
+        }
+        else if(status_type == "xa")
+        {
             accountsExtendedAway++;
-            okExtendedAway = true;
-            break;
-        case Telepathy::ConnectionPresenceTypeHidden:
+            okOffline = false;
+            okHidden = false;
+            okBusy = false;
+        }
+        else if(status_type == "invisible")
+        {
             accountsHidden++;
-            okHidden = true;
-            break;
-        case Telepathy::ConnectionPresenceTypeBusy:
+            okOffline = false;
+            okExtendedAway = false;
+            okAway = false;
+            okBusy = false;
+        }
+        else if(status_type == "busy")
+        {
             accountsBusy++;
-            okBusy = true;
-            break;
-        case Telepathy::ConnectionPresenceTypeUnset:
-        case Telepathy::ConnectionPresenceTypeError:
-        	break;
+            okOffline = false;
+            okHidden = false;
+            okExtendedAway = false;
+            okAway = false;
         }
     }
-*/
+
     // Chose a master presence state from this.
     // FIXME: What should be the logic for choosing a master presence state?
     //        Should this be user customisable?
     //        Currently follows the kopete approach.
     if(okOffline == true)
     {
+        kDebug() << "okOffline true.";
         m_icon->setIcon(KIcon("user-offline"));
     }
     else if(okHidden == true)
     {
+        kDebug() << "okHidden true.";
         m_icon->setIcon(KIcon("user-invisible"));
     }
     else if(okBusy == true)
     {
+        kDebug() << "okBusy true.";
         m_icon->setIcon(KIcon("user-busy"));
     }
     else if(okExtendedAway == true)
     {
+        kDebug() << "okXA true.";
         m_icon->setIcon(KIcon("user-away-extended"));
     }
     else if(okAway == true)
     {
+        kDebug() << "okAway true.";
         m_icon->setIcon(KIcon("user-away"));
     }
     else
     {
+        kDebug() << "okNONE true.";
         m_icon->setIcon(KIcon("user-online"));
     }
 
@@ -442,6 +460,7 @@ void PresenceApplet::masterStatusMessageChanged(const QString & message)
     // Store the master presence message as a member var.
     m_masterStatusMessage = message;
 }
+
 
 #include "presence.moc"
 
