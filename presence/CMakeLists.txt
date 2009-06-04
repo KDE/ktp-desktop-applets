@@ -12,12 +12,12 @@ include_directories(
 )
 
 set(presence_SRCS
-    presence.cpp
-    presenceitemdelegate.cpp)
+	presence.cpp
+	presenceitemdelegate.cpp)
 
 kde4_add_plugin(plasma_applet_presence ${presence_SRCS})
-target_link_libraries(plasma_applet_presence 
-	${KDE4_PLASMA_LIBS} 
+target_link_libraries(plasma_applet_presence
+	${KDE4_PLASMA_LIBS}
 	${KDE4_KDEUI_LIBS}
 )
 

@@ -1,21 +1,22 @@
 /*
- *   Copyright (C) 2008 George Goldberg <grundleborg@googlemail.com>
- *   Copyright (C) 2009 Collabora Ltd <http://www.collabora.co.uk>
+ * Copyright (C) 2008 George Goldberg <grundleborg@googlemail.com>
+ * Copyright (C) 2009 Collabora Ltd <http://www.collabora.co.uk>
+ * Copyright (C) 2009 Andre Moreira Magalhaes <andrunko@gmail.com>
  *
- *   This library is free software; you can redistribute it and/or
- *   modify it under the terms of the GNU Library General Public
- *   License as published by the Free Software Foundation; either
- *   version 2 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Library General Public License for more details
  *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Library General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #include "presence.h"
@@ -33,102 +34,95 @@
 #include <QtCore/QList>
 #include <QtCore/QSharedPointer>
 
+#include <QtGui/QGraphicsLinearLayout>
+#include <QtGui/QGraphicsProxyWidget>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QTreeView>
-#include <QtGui/QGraphicsProxyWidget>
-#include <QGraphicsLinearLayout>
 #include <QtGui/QVBoxLayout>
 
-PresenceApplet::PresenceApplet(QObject * parent, const QVariantList & args)
-  : Plasma::PopupApplet(parent, args),
-    m_icon(0),
-    m_widget(0),
-    m_engine(0),
-    m_colorScheme(0),
-    m_masterStatusLayout(0),
-    m_masterIconLabel(0),
-    m_masterStatusMessageLabel(0),
-    m_accountsModel(0),
-    m_accountsView(0),
-    m_layout(0),
-    m_userSet(false)
+PresenceApplet::PresenceApplet(QObject *parent, const QVariantList &args)
+    : Plasma::PopupApplet(parent, args),
+      m_engine(0),
+      m_icon(0),
+      m_colorScheme(0),
+      m_masterStatusLayout(0),
+      m_masterIconLabel(0),
+      m_masterStatusMessageLabel(0),
+      m_accountsModel(0),
+      m_accountsView(0),
+      m_layout(0),
+      m_widget(0),
+      m_userSet(false)
 {
     setBackgroundHints(StandardBackground);
 }
 
 PresenceApplet::~PresenceApplet()
 {
-    if(m_widget)
+    if (m_widget) {
         delete m_widget;
+    }
     delete m_colorScheme;
 }
 
 void PresenceApplet::init()
 {
-    kDebug() << "Initializing applet.";
+    kDebug() << "PresenceApplet::init: initializing applet";
 
     // Set up the color scheme.
-    Q_ASSERT(!m_colorScheme);  // Pointer should still be assigned to 0.
-    m_colorScheme = new KColorScheme(QPalette::Active, 
-                                     KColorScheme::View,
-                                     Plasma::Theme::defaultTheme()->colorScheme());
+    m_colorScheme = new KColorScheme(QPalette::Active,
+            KColorScheme::View,
+            Plasma::Theme::defaultTheme()->colorScheme());
 
     // Set up the icon.
     Q_ASSERT(!m_icon);  // Pointer should still be assigned to 0.
-    m_icon = new Plasma::IconWidget(KIcon("user-offline",NULL), QString());
+    m_icon = new Plasma::IconWidget(KIcon("user-offline", 0), QString());
     setPopupIcon(m_icon->icon());
 
     // The icon has been changed.
-    iconChanged();
+    updateMasterIcon();
 
     // Set up the accounts model.
-    Q_ASSERT(!m_accountsModel);  //Pointer should still be assigned to 0.
     m_accountsModel = new QStandardItemModel(this);
     m_accountsModel->setColumnCount(4);
 
-    connect(m_accountsModel, SIGNAL(itemChanged(QStandardItem*)), this,
-            SLOT(onItemChanged(QStandardItem*)));
+    // connect(m_accountsModel,
+    //         SIGNAL(itemChanged(QStandardItem*)),
+    //         SLOT(onItemChanged(QStandardItem*)));
 
     m_accountsModel->setHeaderData(1, Qt::Horizontal,
-                                   QVariant("status-type"), Qt::DisplayRole);
+            QVariant("status-type"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(2, Qt::Horizontal,
-                                   QVariant("status-name"), Qt::DisplayRole);
+            QVariant("status-name"), Qt::DisplayRole);
     m_accountsModel->setHeaderData(3, Qt::Horizontal,
-                                   QVariant("status-message"), Qt::DisplayRole);
+            QVariant("status-message"), Qt::DisplayRole);
 
-    Q_ASSERT(!m_engine);  // Pointer should still be assigned to 0.
     m_engine = dataEngine("presence");
-
     QStringList sources = m_engine->sources();
-    foreach(const QString & source, sources)
-    {
-        sourceAdded(source);
+    foreach(const QString &source, sources) {
+        onSourceAdded(source);
     }
 
-    connect(m_engine, SIGNAL(sourceAdded(QString)),
-            this, SLOT(sourceAdded(QString)));
-    connect(m_engine, SIGNAL(sourceRemoved(QString)),
-            this, SLOT(sourceRemoved(QString)));
+    connect(m_engine,
+            SIGNAL(sourceAdded(const QString &)),
+            SLOT(onSourceAdded(const QString &)));
+    connect(m_engine,
+            SIGNAL(sourceRemoved(const QString &)),
+            SLOT(onSourceRemoved(const QString &)));
 }
 
 QWidget *PresenceApplet::widget()
 {
-    if(!m_widget)
-    {
+    if (!m_widget) {
         // Set up the accounts view.
-        Q_ASSERT(!m_accountsView);  // Pointer should still be assigned to 0.
         m_accountsView = new QTreeView;
         m_accountsView->setItemDelegate(new PresenceItemDelegate);
         m_accountsView->setModel(m_accountsModel);
         m_accountsView->header()->setVisible(true);
-        m_accountsView->setColumnHidden(0, true);   //Hide the source id column
+        m_accountsView->setColumnHidden(0, true); // Hide the source id column
 
         // Set up the master status section.
-        Q_ASSERT(!m_masterStatusLayout);  // Pointer should still be assigned to 0.
-        Q_ASSERT(!m_masterIconLabel);  // Pointer should still be assigned to 0.
-        Q_ASSERT(!m_masterStatusMessageLabel);  // Pointer should still be assigned to 0.
-
         m_masterStatusLayout = new QHBoxLayout(m_widget);
 
         m_masterIconLabel = new QLabel;
@@ -137,12 +131,10 @@ QWidget *PresenceApplet::widget()
         m_masterStatusLayout->addWidget(m_masterIconLabel);
         m_masterStatusLayout->addWidget(m_masterStatusMessageLabel);
 
-        iconChanged();
-        masterStatusMessageChanged(m_masterStatusMessage);
+        updateMasterIcon();
+        setMasterStatusMessage(m_masterStatusMessage);
 
         // Set up the rest of the view/layout etc. stuff.
-        Q_ASSERT(!m_widget);  // Pointer should still be assigned to 0.
-        Q_ASSERT(!m_layout);  // Pointer should still be assigned to 0.
         m_widget = new QWidget();
         m_layout = new QVBoxLayout(m_widget);
         m_layout->addLayout(m_masterStatusLayout);
@@ -153,80 +145,74 @@ QWidget *PresenceApplet::widget()
         Q_ASSERT(m_colorScheme);
         QPalette editPalette = m_widget->palette();
         editPalette.setBrush(QPalette::Window,
-                             m_colorScheme->background());
+                m_colorScheme->background());
         editPalette.setBrush(QPalette::WindowText,
-                             m_colorScheme->foreground());
+                m_colorScheme->foreground());
         m_widget->setPalette(editPalette);
     }
-
-    Q_ASSERT(m_widget);  // We must have a valid m_widget by now.
 
     return m_widget;
 }
 
-void PresenceApplet::sourceAdded(const QString & source)
+void PresenceApplet::onSourceAdded(const QString &source)
 {
-    Q_ASSERT(m_engine);  // Engine must be valid.
-    kDebug() << "started with source: " << source;
+    kDebug() << "PresenceApplet::onSourceAdded: source:" << source;
     m_engine->connectSource(source, this);
 }
 
-void PresenceApplet::sourceRemoved(const QString & source)
+void PresenceApplet::onSourceRemoved(const QString &source)
 {
-    Q_ASSERT(m_engine);  // Engine must be valid.
-    kDebug() << "started with source: " << source;
+    kDebug() << "PresenceApplet::onSourceAdded: source:" << source;
     m_engine->disconnectSource(source, this);
 }
-/*
-void PresenceApplet::commitData(QWidget * editor)
-{
-    kDebug()<<m_userSet;
-    //m_userSet = true;
-}
-*/
-void PresenceApplet::dataUpdated(const QString & source,
-                            const Plasma::DataEngine::Data & data)
-{
-    kDebug() << "Started with source: " << source; 
 
-   /*
-     * the data has been updated for one or more source.
+void PresenceApplet::dataUpdated(const QString &source,
+        const Plasma::DataEngine::Data &data)
+{
+    kDebug() << "PresenceApplet::onDataUpdated: source:" << source;
+
+    /*
+     * the data has been updated for one or more sources.
      * We must see if there is already a row in the
      * model representing that source.
      * If there is, then we update the data for that
      * row. If not, then we create a new row with
      * the data for that source.
      */
-    QStandardItem * presence_type = new QStandardItem;
-    QStandardItem * presence_state = new QStandardItem;
-    QStandardItem * message = new QStandardItem;
-    QStandardItem * accountItem = new  QStandardItem;
-    
-    // \brief: setup color roles
-    presence_type->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
-    presence_state->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
-    message->setData(Plasma::Theme::defaultTheme()->color(Plasma::Theme::BackgroundColor));
+    QStandardItem *presence_type = new QStandardItem;
+    QStandardItem *presence_state = new QStandardItem;
+    QStandardItem *message = new QStandardItem;
+    QStandardItem *accountItem = new  QStandardItem;
 
-    presence_type->setData(data.value("presence_type"), Qt::DisplayRole);
-    presence_state->setData(data.value("presence_status"), Qt::DisplayRole);
-    message->setData(data.value("presence_status_message"), Qt::DisplayRole);
+    // setup color roles
+    presence_type->setData(Plasma::Theme::defaultTheme()->color(
+                Plasma::Theme::BackgroundColor));
+    presence_state->setData(Plasma::Theme::defaultTheme()->color(
+                Plasma::Theme::BackgroundColor));
+    message->setData(Plasma::Theme::defaultTheme()->color(
+                Plasma::Theme::BackgroundColor));
+
+    presence_type->setData(data.value("presence_type"),
+            Qt::DisplayRole);
+    presence_state->setData(data.value("presence_status"),
+            Qt::DisplayRole);
+    message->setData(data.value("presence_status_message"),
+            Qt::DisplayRole);
     accountItem->setData(source, Qt::DisplayRole);
 
     /*
      * so, we need to look in the first column
      * to see if we can find a row with that value
      */
-    Q_ASSERT(m_accountsModel);  // This must exist now.
     QList<QStandardItem*> items;
     items = m_accountsModel->findItems(source, Qt::MatchExactly, 0);
     int itemsCount = items.count();
-    if(0 == itemsCount)
-    {
+    if (itemsCount == 0) {
         /*
          * the source is new, so create
          * a new row for it.
          */
-        QStandardItem * id = new QStandardItem;
+        QStandardItem *id = new QStandardItem;
         id->setData(source, Qt::DisplayRole);
         QList<QStandardItem*> row;
         row.append(id);
@@ -235,10 +221,10 @@ void PresenceApplet::dataUpdated(const QString & source,
         row.append(message);
         m_accountsModel->appendRow(row);
     }
-    else if(1 == itemsCount)
+    else if (itemsCount == 1)
     {
         /*
-         * the data source is NOT new,
+         * the source is NOT new,
          * so we update the row that
          * is already there for it.
          */
@@ -248,22 +234,13 @@ void PresenceApplet::dataUpdated(const QString & source,
         m_accountsModel->setItem(row, 2, presence_state);
         m_accountsModel->setItem(row, 3, message);
     }
-    else
-    {
-        /*
-         * we shouldn't get here because
-         * if we do then there are two
-         * or more rows for the same data
-         * source !!!
-         */
-        kDebug() << "ERROR: two or more rows for the same data source in the model!";
-    }
 
     // Update the master presence.
     updateMasterPresence();
 }
+
 /*
-void PresenceApplet::onItemChanged(QStandardItem * item)
+void PresenceApplet::onItemChanged(QStandardItem *item)
 {
    QModelIndex index = m_accountsModel->indexFromItem(item);
    QString source = m_accountsModel->data(m_accountsModel->index(index.row(), 0)).toString();
@@ -287,8 +264,9 @@ void PresenceApplet::onItemChanged(QStandardItem * item)
 
 }
 */
-/**
- * @brief Update the master presence state.
+
+/*
+ * Update the master presence state.
  *
  * We must check what presence state each account is in and use that to decide
  * which icon we display. We must also check the presence message for each
@@ -296,41 +274,32 @@ void PresenceApplet::onItemChanged(QStandardItem * item)
  */
 void PresenceApplet::updateMasterPresence()
 {
-    Q_ASSERT(m_accountsModel);
-    Q_ASSERT(m_icon);
     // Get data we can use to iterate over the contents of the accounts model.
     int rowCount = m_accountsModel->rowCount();
 
     // First we workout the overall presence message.
     QStringList statusMessages;
-    for(int i=0; i<rowCount; i++)
-    {
-        statusMessages << m_accountsModel->data(m_accountsModel->index(i, 3)).toString();
+    for (int i = 0; i < rowCount; ++i) {
+        statusMessages <<
+            m_accountsModel->data(m_accountsModel->index(i, 3)).toString();
     }
 
     bool statusMessagesAllTheSame = true;
     QString previousStatusMessage = statusMessages.at(0);
-    foreach(const QString & statusMessage, statusMessages)
-    {
-        if(statusMessage == previousStatusMessage)
-        {
-            previousStatusMessage = statusMessage;
+    foreach (const QString &statusMessage, statusMessages) {
+        if (statusMessage == previousStatusMessage) {
             continue;
-        }
-        else
-        {
+        } else {
             statusMessagesAllTheSame = false;
             break;
         }
     }
 
-    if(statusMessagesAllTheSame)
-    {
-        masterStatusMessageChanged(previousStatusMessage);
+    if (statusMessagesAllTheSame) {
+        setMasterStatusMessage(previousStatusMessage);
     }
-    else
-    {
-        masterStatusMessageChanged(QString());
+    else {
+        setMasterStatusMessage(QString());
     }
 
     // Next, we work out the overall presence status.
@@ -349,48 +318,40 @@ void PresenceApplet::updateMasterPresence()
 
     // Iterate over all the accounts in the model, and total up how many are
     // in each type of presence state.
-    for(int i=0; i<rowCount; i++)
+    for (int i = 0; i < rowCount; i++)
     {
-        QString status_type = m_accountsModel->data(m_accountsModel->index(i, 1)).toString();
+        QString status_type =
+            m_accountsModel->data(m_accountsModel->index(i, 1)).toString();
 
-        if((status_type == "offline") || (status_type == "unknown") || (status_type == "error") || (status_type == "unset"))
-        {
+        if ((status_type == "offline") || (status_type == "unknown") ||
+            (status_type == "error") || (status_type == "unset")) {
             accountsOffline++;
-        }
-        else if(status_type == "available")
-        {
+        } else if (status_type == "available") {
             accountsAvailable++;
             okOffline = false;
             okHidden = false;
             okExtendedAway = false;
             okAway = false;
             okBusy = false;
-        }
-        else if(status_type == "away")
-        {
+        } else if (status_type == "away") {
             accountsAway++;
             okOffline = false;
             okHidden = false;
             okExtendedAway = false;
             okBusy = false;
         }
-        else if(status_type == "xa")
-        {
+        else if (status_type == "xa") {
             accountsExtendedAway++;
             okOffline = false;
             okHidden = false;
             okBusy = false;
-        }
-        else if(status_type == "invisible")
-        {
+        } else if (status_type == "invisible") {
             accountsHidden++;
             okOffline = false;
             okExtendedAway = false;
             okAway = false;
             okBusy = false;
-        }
-        else if(status_type == "busy")
-        {
+        } else if(status_type == "busy") {
             accountsBusy++;
             okOffline = false;
             okHidden = false;
@@ -403,64 +364,44 @@ void PresenceApplet::updateMasterPresence()
     // FIXME: What should be the logic for choosing a master presence state?
     //        Should this be user customisable?
     //        Currently follows the kopete approach.
-    if(okOffline == true)
-    {
-        kDebug() << "okOffline true.";
+    if (okOffline == true) {
         m_icon->setIcon(KIcon("user-offline"));
-    }
-    else if(okHidden == true)
-    {
-        kDebug() << "okHidden true.";
+    } else if(okHidden == true) {
         m_icon->setIcon(KIcon("user-invisible"));
-    }
-    else if(okBusy == true)
-    {
-        kDebug() << "okBusy true.";
+    } else if(okBusy == true) {
         m_icon->setIcon(KIcon("user-busy"));
-    }
-    else if(okExtendedAway == true)
-    {
-        kDebug() << "okXA true.";
+    } else if(okExtendedAway == true) {
         m_icon->setIcon(KIcon("user-away-extended"));
-    }
-    else if(okAway == true)
-    {
-        kDebug() << "okAway true.";
+    } else if(okAway == true) {
         m_icon->setIcon(KIcon("user-away"));
-    }
-    else
-    {
-        kDebug() << "okNONE true.";
+    } else {
         m_icon->setIcon(KIcon("user-online"));
     }
 
-    // Call the method to update the masterPresenceIcon.
+    // call the method to update the masterPresenceIcon
     setPopupIcon(m_icon->icon());
-    iconChanged();
+    updateMasterIcon();
 }
 
-void PresenceApplet::iconChanged()
+void PresenceApplet::updateMasterIcon()
 {
     // The icon has been changed. We must update the pixmap of the icon for
     // display in the main widget.
-    if(m_masterIconLabel)
-    {
+    if (m_masterIconLabel) {
         m_masterIconLabel->setPixmap(m_icon->icon().pixmap(QSize(32, 32)));
     }
 }
 
-void PresenceApplet::masterStatusMessageChanged(const QString & message)
+void PresenceApplet::setMasterStatusMessage(const QString & message)
 {
-    // If m_masterStatusMessageLabel points to a valid QLabel, update it.
-    if(m_masterStatusMessageLabel)
-    {
+    // If m_masterStatusMessageLabel points to a valid QLabel, update it
+    if (m_masterStatusMessageLabel) {
         m_masterStatusMessageLabel->setText(message);
     }
 
-    // Store the master presence message as a member var.
+    // Store the master presence message as a member var
     m_masterStatusMessage = message;
 }
-
 
 #include "presence.moc"
 
