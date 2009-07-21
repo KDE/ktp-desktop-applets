@@ -2,6 +2,7 @@
  * Copyright (C) 2008 George Goldberg <grundleborg@googlemail.com>
  * Copyright (C) 2009 Collabora Ltd <http://www.collabora.co.uk>
  * Copyright (C) 2009 Andre Moreira Magalhaes <andrunko@gmail.com>
+ * Copyright (C) 2009 Abner Silva <abner.silva@kdemail.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -22,26 +23,17 @@
 #ifndef PLASMA_APPLET_PRESENCE_H
 #define PLASMA_APPLET_PRESENCE_H
 
+// Qt
+#include <QtCore/QString>
+#include <QtGui/QLabel>
+
+// Plasma
 #include <plasma/popupapplet.h>
 #include <plasma/dataengine.h>
 
-#include <QtCore/QString>
-#include <QtGui/QLabel>
-#include <QtGui/QStandardItemModel>
-
-namespace Plasma
-{
-    class IconWidget;
-}
-
 class KColorScheme;
 
-class QHBoxLayout;
-class QStandardItemModel;
-class QString;
-class QTreeView;
-class QVBoxLayout;
-class QGraphicsProxyWidget;
+class AccountWidget;
 
 class PresenceApplet : public Plasma::PopupApplet
 {
@@ -50,10 +42,9 @@ class PresenceApplet : public Plasma::PopupApplet
 public:
     PresenceApplet(QObject *parent, const QVariantList &args);
     ~PresenceApplet();
-
-    QWidget *widget();
-
     void init();
+
+    QGraphicsWidget *graphicsWidget();
 
 private Q_SLOTS:
     void onSourceAdded(const QString &source);
@@ -68,20 +59,10 @@ private:
     void updateMasterPresence();
 
     Plasma::DataEngine *m_engine;
-    Plasma::IconWidget *m_icon;
-
+    QGraphicsWidget *m_widget;
+    QGraphicsLinearLayout *m_layout;
     KColorScheme *m_colorScheme;
-
-    QHBoxLayout *m_masterStatusLayout;
-    QLabel *m_masterIconLabel;
-    QLabel *m_masterStatusMessageLabel;
-    QStandardItemModel *m_accountsModel;
-    QTreeView *m_accountsView;
-    QVBoxLayout *m_layout;
-    QWidget *m_widget;
-    bool m_userSet;
-    QString m_currentPresence;
-    QString m_masterStatusMessage;
+    QHash<QString, AccountWidget*> m_accounts;
 };
 
 K_EXPORT_PLASMA_APPLET(presence, PresenceApplet)
