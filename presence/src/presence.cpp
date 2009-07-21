@@ -140,6 +140,10 @@ void PresenceApplet::dataUpdated(const QString &source,
         QPixmap avatar;
         avatar.loadFromData(data["AccountAvatar"].toByteArray());
         account->setImage(avatar);
+
+        // Set the presence and presence msg
+        account->setPresence(data["PresenceType"].toString(),
+                data["PresenceMessage"].toString());
     }
 }
 
