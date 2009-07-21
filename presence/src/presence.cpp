@@ -26,6 +26,7 @@
 
 // Plasma
 #include <Plasma/Theme>
+#include <Plasma/Service>
 
 // Kde
 #include <KColorScheme>
@@ -102,6 +103,8 @@ void PresenceApplet::onSourceAdded(const QString &source)
     if (!m_accounts.contains(source)) {
         AccountWidget *account = new AccountWidget();
         account->setId(source);
+        connect(account, SIGNAL(presenceChanged(const QString&, const QString&)),
+                this, SLOT(onPresenceChanged(const QString&, const QString&)));
         m_layout->addItem(account);
         m_accounts[source] = account;
         m_engine->connectSource(source, this);
@@ -286,5 +289,32 @@ void PresenceApplet::setMasterStatusMessage(const QString & message)
     m_masterStatusMessage = message;*/
 }
 
+void PresenceApplet::onPresenceChanged(const QString &presence,
+        const QString &msg)
+{
+    Q_UNUSED(msg);
+
+    AccountWidget *account = static_cast<AccountWidget *>(sender());
+
+    Q_ASSERT(account);
+
+    Plasma::Service *service = m_engine->serviceForSource(account->id());
+
+    if (service != NULL) {
+        KConfigGroup op = service->operationDescription("setPresence");
+        op.writeEntry("status", presence);
+        connect(service, SIGNAL(finished(Plasma::ServiceJob *)),
+                this, SLOT(onJobCompleted()));
+        service->startOperationCall(op);
+    }
+}
+
+void PresenceApplet::onJobCompleted()
+{
+    Plasma::Service *service = static_cast<Plasma::Service *>(sender());
+
+    if (service)
+        service->deleteLater();
+}
 #include "presence.moc"
 

@@ -51,7 +51,9 @@ private Q_SLOTS:
     void onSourceRemoved(const QString &source);
     void dataUpdated(const QString &source,
             const Plasma::DataEngine::Data &data);
-    // void onItemChanged(QStandardItem *item);
+    void onPresenceChanged(const QString &presence,
+            const QString &msg);
+    void onJobCompleted();
 
 private:
     void updateMasterIcon();
