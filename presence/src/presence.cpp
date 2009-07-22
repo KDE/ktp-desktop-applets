@@ -49,7 +49,7 @@ PresenceApplet::PresenceApplet(QObject *parent, const QVariantList &args)
     setBackgroundHints(StandardBackground);
     setAspectRatioMode(IgnoreAspectRatio);
     //setHasConfigurationInterface(true);
-    setPassivePopup(false);
+    setPassivePopup(true);
 
     setPopupIcon("user-offline");
 
@@ -90,6 +90,8 @@ QGraphicsWidget *PresenceApplet::graphicsWidget()
     if (!m_widget) {
         m_widget = new QGraphicsWidget(this);
         m_layout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);
+        m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        m_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         m_widget->setLayout (m_layout);
     }
 
@@ -105,9 +107,9 @@ void PresenceApplet::onSourceAdded(const QString &source)
         account->setId(source);
         connect(account, SIGNAL(presenceChanged(const QString&, const QString&)),
                 this, SLOT(onPresenceChanged(const QString&, const QString&)));
-        m_layout->addItem(account);
         m_accounts[source] = account;
         m_engine->connectSource(source, this);
+        m_layout->addItem(account);
     }
 }
 
