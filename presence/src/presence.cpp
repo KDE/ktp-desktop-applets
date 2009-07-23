@@ -49,7 +49,7 @@ PresenceApplet::PresenceApplet(QObject *parent, const QVariantList &args)
     setBackgroundHints(StandardBackground);
     setAspectRatioMode(IgnoreAspectRatio);
     //setHasConfigurationInterface(true);
-    setPassivePopup(true);
+    setPassivePopup(false);
 
     setPopupIcon("user-offline");
 
