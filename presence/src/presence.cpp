@@ -111,7 +111,7 @@ void PresenceApplet::onSourceAdded(const QString &source)
         m_engine->connectSource(source, this);
         m_layout->addItem(account);
 
-        updateSize();
+        updateConstraints();
     }
 }
 
@@ -126,7 +126,7 @@ void PresenceApplet::onSourceRemoved(const QString &source)
         delete account;
         m_engine->disconnectSource(source, this);
 
-        updateSize();
+        updateConstraints();
     }
 }
 
@@ -321,13 +321,6 @@ void PresenceApplet::onJobCompleted()
 
     if (service)
         service->deleteLater();
-}
-
-void PresenceApplet::updateSize()
-{
-    QSizeF margins = geometry().size() - contentsRect().size();
-    QSizeF s = m_layout->preferredSize() + margins;
-    resize(s);
 }
 #include "presence.moc"
 
