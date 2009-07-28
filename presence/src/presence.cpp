@@ -152,7 +152,7 @@ void PresenceApplet::dataUpdated(const QString &source,
 
         // Set the presence and presence msg
         account->setPresence(data["PresenceType"].toString(),
-                data["PresenceMessage"].toString());
+                data["PresenceStatusMessage"].toString());
     }
 }
 
@@ -298,8 +298,6 @@ void PresenceApplet::setMasterStatusMessage(const QString & message)
 void PresenceApplet::onPresenceChanged(const QString &presence,
         const QString &msg)
 {
-    Q_UNUSED(msg);
-
     AccountWidget *account = static_cast<AccountWidget *>(sender());
 
     Q_ASSERT(account);
@@ -309,6 +307,7 @@ void PresenceApplet::onPresenceChanged(const QString &presence,
     if (service != NULL) {
         KConfigGroup op = service->operationDescription("setPresence");
         op.writeEntry("status", presence);
+        op.writeEntry("status_message", msg);
         connect(service, SIGNAL(finished(Plasma::ServiceJob *)),
                 this, SLOT(onJobCompleted()));
         service->startOperationCall(op);
