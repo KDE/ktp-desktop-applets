@@ -13,7 +13,6 @@ include_directories(
 
 set(presence_SRCS
 	presence.cpp
-	presenceitemdelegate.cpp
     accountimage.cpp
     accountwidget.cpp
     presencewidget.cpp)
