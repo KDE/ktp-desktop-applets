@@ -27,6 +27,8 @@
 // Plasma
 #include <Plasma/Theme>
 #include <Plasma/Service>
+#include <Plasma/Extender>
+#include <Plasma/ExtenderItem>
 
 // Kde
 #include <KColorScheme>
@@ -52,8 +54,6 @@ PresenceApplet::PresenceApplet(QObject *parent, const QVariantList &args)
     setPassivePopup(false);
 
     setPopupIcon("user-offline");
-
-    (void) graphicsWidget();
 }
 
 PresenceApplet::~PresenceApplet()
@@ -70,6 +70,13 @@ void PresenceApplet::init()
             KColorScheme::View,
             Plasma::Theme::defaultTheme()->colorScheme());
 
+    // Create a new extender item for accounts
+    if (!extender()->hasItem("Accounts")) {
+        ExtenderItem *item = new ExtenderItem(extender());
+        item->setName("Accounts");
+        initExtenderItem(item);
+    }
+
     // Set up the data engine
     m_engine = dataEngine("presence");
 
@@ -85,17 +92,19 @@ void PresenceApplet::init()
             SLOT(onSourceRemoved(const QString &)));
 }
 
-QGraphicsWidget *PresenceApplet::graphicsWidget()
+void PresenceApplet::initExtenderItem(Plasma::ExtenderItem *item)
 {
-    if (!m_widget) {
-        m_widget = new QGraphicsWidget(this);
+    // Set up user accounts
+    if (item->name() == "Accounts") {
+        m_widget = new QGraphicsWidget(item);
         m_layout = new QGraphicsLinearLayout(Qt::Vertical, m_widget);
         m_layout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         m_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         m_widget->setLayout (m_layout);
-    }
 
-    return m_widget;
+        item->setWidget(m_widget);
+        item->setTitle(i18n("User accounts"));
+    }
 }
 
 void PresenceApplet::onSourceAdded(const QString &source)
@@ -112,6 +121,7 @@ void PresenceApplet::onSourceAdded(const QString &source)
         m_layout->addItem(account);
 
         updateConstraints();
+        updateSize();
     }
 }
 
@@ -127,6 +137,7 @@ void PresenceApplet::onSourceRemoved(const QString &source)
         m_engine->disconnectSource(source, this);
 
         updateConstraints();
+        updateSize();
     }
 }
 
@@ -320,6 +331,15 @@ void PresenceApplet::onJobCompleted()
 
     if (service)
         service->deleteLater();
+}
+
+void PresenceApplet::updateSize()
+{
+    ExtenderItem *item = extender()->item("Accounts");
+
+    item->setMinimumSize(m_widget->minimumSize());
+    item->resize(m_widget->contentsRect().size().toSize());
+    item->adjustSize();
 }
 #include "presence.moc"
 

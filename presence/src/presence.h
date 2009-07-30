@@ -31,6 +31,10 @@
 #include <plasma/popupapplet.h>
 #include <plasma/dataengine.h>
 
+namespace Plasma {
+    class ExtenderItem;
+}
+
 class KColorScheme;
 
 class AccountWidget;
@@ -44,8 +48,6 @@ public:
     ~PresenceApplet();
     void init();
 
-    QGraphicsWidget *graphicsWidget();
-
 private Q_SLOTS:
     void onSourceAdded(const QString &source);
     void onSourceRemoved(const QString &source);
@@ -55,10 +57,14 @@ private Q_SLOTS:
             const QString &msg);
     void onJobCompleted();
 
+protected:
+    void initExtenderItem(Plasma::ExtenderItem *item);
+
 private:
     void updateMasterIcon();
     void setMasterStatusMessage(const QString &message);
     void updateMasterPresence();
+    void updateSize();
 
     Plasma::DataEngine *m_engine;
     QGraphicsWidget *m_widget;
