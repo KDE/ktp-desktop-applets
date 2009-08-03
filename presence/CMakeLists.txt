@@ -15,7 +15,8 @@ set(presence_SRCS
 	presence.cpp
     accountimage.cpp
     accountwidget.cpp
-    presencewidget.cpp)
+    presencewidget.cpp
+    globalpresencewidget.cpp)
 
 kde4_add_plugin(plasma_applet_presence ${presence_SRCS})
 target_link_libraries(plasma_applet_presence

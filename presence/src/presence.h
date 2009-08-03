@@ -38,6 +38,7 @@ namespace Plasma {
 class KColorScheme;
 
 class AccountWidget;
+class GlobalPresenceWidget;
 
 class PresenceApplet : public Plasma::PopupApplet
 {
@@ -71,6 +72,9 @@ private:
     QGraphicsLinearLayout *m_layout;
     KColorScheme *m_colorScheme;
     QHash<QString, AccountWidget*> m_accounts;
+    GlobalPresenceWidget *m_global;
+    QGraphicsWidget *m_globalWidget;
+    QGraphicsLinearLayout *m_globalLayout;
 };
 
 K_EXPORT_PLASMA_APPLET(presence, PresenceApplet)

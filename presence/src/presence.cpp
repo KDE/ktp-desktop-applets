@@ -23,6 +23,7 @@
 // Own
 #include "presence.h"
 #include "accountwidget.h"
+#include "globalpresencewidget.h"
 
 // Plasma
 #include <Plasma/Theme>
@@ -45,7 +46,10 @@ PresenceApplet::PresenceApplet(QObject *parent, const QVariantList &args)
       m_engine(0),
       m_widget(0),
       m_layout(0),
-      m_colorScheme(0)
+      m_colorScheme(0),
+      m_global(0),
+      m_globalWidget(0),
+      m_globalLayout(0)
 {
     KGlobal::locale()->insertCatalog("plasma_applet_presence");
     setBackgroundHints(StandardBackground);
@@ -69,6 +73,13 @@ void PresenceApplet::init()
     m_colorScheme = new KColorScheme(QPalette::Active,
             KColorScheme::View,
             Plasma::Theme::defaultTheme()->colorScheme());
+
+    // Create a new extender item for global presence
+    if (!extender()->hasItem("Global")) {
+        ExtenderItem *item = new ExtenderItem(extender());
+        item->setName("Global");
+        initExtenderItem(item);
+    }
 
     // Create a new extender item for accounts
     if (!extender()->hasItem("Accounts")) {
@@ -94,6 +105,20 @@ void PresenceApplet::init()
 
 void PresenceApplet::initExtenderItem(Plasma::ExtenderItem *item)
 {
+    // Set up global presence
+    if (item->name() == "Global") {
+        m_globalWidget = new QGraphicsWidget(item);
+        m_globalLayout = new QGraphicsLinearLayout(Qt::Vertical, m_globalWidget);
+        m_globalLayout->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        m_globalWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        m_globalWidget->setLayout (m_globalLayout);
+
+        m_global = new GlobalPresenceWidget(this);
+        m_globalLayout->addItem(m_global);
+        item->setWidget(m_globalWidget);
+        item->setTitle(i18n("Global Presence"));
+    }
+
     // Set up user accounts
     if (item->name() == "Accounts") {
         m_widget = new QGraphicsWidget(item);
@@ -103,7 +128,7 @@ void PresenceApplet::initExtenderItem(Plasma::ExtenderItem *item)
         m_widget->setLayout (m_layout);
 
         item->setWidget(m_widget);
-        item->setTitle(i18n("User accounts"));
+        item->setTitle(i18n("User Accounts"));
     }
 }
 
@@ -112,7 +137,7 @@ void PresenceApplet::onSourceAdded(const QString &source)
     kDebug() << "PresenceApplet::onSourceAdded: source:" << source;
 
     if (!m_accounts.contains(source)) {
-        AccountWidget *account = new AccountWidget();
+        AccountWidget *account = new AccountWidget(this);
         account->setId(source);
         connect(account, SIGNAL(presenceChanged(const QString&, const QString&)),
                 this, SLOT(onPresenceChanged(const QString&, const QString&)));
