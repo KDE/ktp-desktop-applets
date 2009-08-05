@@ -196,6 +196,10 @@ void PresenceApplet::dataUpdated(const QString &source,
         // Set the presence and presence msg
         account->setPresence(data["PresenceType"].toString(),
                 data["PresenceStatusMessage"].toString());
+
+        // Everytime data is updated it's also needed to update
+        // the global presence.
+        updateMasterPresence();
     }
 }
 
@@ -208,39 +212,14 @@ void PresenceApplet::dataUpdated(const QString &source,
  */
 void PresenceApplet::updateMasterPresence()
 {
-/*    // Get data we can use to iterate over the contents of the accounts model.
-    int rowCount = m_accountsModel->rowCount();
-
-    // First we workout the overall presence message.
-    QStringList statusMessages;
-    for (int i = 0; i < rowCount; ++i) {
-        statusMessages <<
-            m_accountsModel->data(m_accountsModel->index(i, 3)).toString();
-    }
-
-    bool statusMessagesAllTheSame = true;
-    QString previousStatusMessage = statusMessages.at(0);
-    foreach (const QString &statusMessage, statusMessages) {
-        if (statusMessage == previousStatusMessage) {
-            continue;
-        } else {
-            statusMessagesAllTheSame = false;
-            break;
-        }
-    }
-
-    if (statusMessagesAllTheSame) {
-        setMasterStatusMessage(previousStatusMessage);
-    }
-    else {
-        setMasterStatusMessage(QString());
-    }
+    QString accountMessage;
+    bool sameMessage = false;
 
     // Next, we work out the overall presence status.
     int accountsOffline = 0;
     int accountsAvailable = 0;
     int accountsAway = 0;
-    int accountsExtendedAway = 0;
+    //int accountsExtendedAway = 0;
     int accountsHidden = 0;
     int accountsBusy = 0;
 
@@ -252,10 +231,9 @@ void PresenceApplet::updateMasterPresence()
 
     // Iterate over all the accounts in the model, and total up how many are
     // in each type of presence state.
-    for (int i = 0; i < rowCount; i++)
+    foreach (AccountWidget *account, m_accounts.values())
     {
-        QString status_type =
-            m_accountsModel->data(m_accountsModel->index(i, 1)).toString();
+        QString status_type = account->presenceStatus();
 
         if ((status_type == "offline") || (status_type == "unknown") ||
             (status_type == "error") || (status_type == "unset")) {
@@ -274,12 +252,12 @@ void PresenceApplet::updateMasterPresence()
             okExtendedAway = false;
             okBusy = false;
         }
-        else if (status_type == "xa") {
+/*        else if (status_type == "xa") {
             accountsExtendedAway++;
             okOffline = false;
             okHidden = false;
             okBusy = false;
-        } else if (status_type == "invisible") {
+        }*/ else if (status_type == "invisible") {
             accountsHidden++;
             okOffline = false;
             okExtendedAway = false;
@@ -292,50 +270,39 @@ void PresenceApplet::updateMasterPresence()
             okExtendedAway = false;
             okAway = false;
         }
+
+        sameMessage = (accountMessage == account->presenceMessage());
+        accountMessage = account->presenceMessage();
     }
 
     // Chose a master presence state from this.
     // FIXME: What should be the logic for choosing a master presence state?
     //        Should this be user customisable?
     //        Currently follows the kopete approach.
+    QString popupIcon;
     if (okOffline == true) {
-        m_icon->setIcon(KIcon("user-offline"));
+        m_global->setPresenceStatus("offline");
+        popupIcon = "user-offline";
     } else if(okHidden == true) {
-        m_icon->setIcon(KIcon("user-invisible"));
+        m_global->setPresenceStatus("invisible");
+        popupIcon = "user-invisible";
     } else if(okBusy == true) {
-        m_icon->setIcon(KIcon("user-busy"));
-    } else if(okExtendedAway == true) {
-        m_icon->setIcon(KIcon("user-away-extended"));
+        m_global->setPresenceStatus("busy");
+        popupIcon = "user-busy";
+//    } else if(okExtendedAway == true) {
+//        m_globalWidget->setPresenceStatus("offline");
     } else if(okAway == true) {
-        m_icon->setIcon(KIcon("user-away"));
+        m_global->setPresenceStatus("away");
+        popupIcon = "user-away";
     } else {
-        m_icon->setIcon(KIcon("user-online"));
+        m_global->setPresenceStatus("available");
+        popupIcon = "user-online";
     }
 
-    // call the method to update the masterPresenceIcon
-    setPopupIcon(m_icon->icon());
-    updateMasterIcon();*/
-}
+    setPopupIcon(popupIcon);
 
-void PresenceApplet::updateMasterIcon()
-{
-    // The icon has been changed. We must update the pixmap of the icon for
-    // display in the main widget.
-/*    if (m_masterIconLabel) {
-        m_masterIconLabel->setPixmap(m_icon->icon().pixmap(QSize(32, 32)));
-    }*/
-}
-
-void PresenceApplet::setMasterStatusMessage(const QString & message)
-{
-    Q_UNUSED(message);
-/*    // If m_masterStatusMessageLabel points to a valid QLabel, update it
-    if (m_masterStatusMessageLabel) {
-        m_masterStatusMessageLabel->setText(message);
-    }
-
-    // Store the master presence message as a member var
-    m_masterStatusMessage = message;*/
+    if (sameMessage)
+        m_global->setPresenceMessage(accountMessage);
 }
 
 void PresenceApplet::onPresenceChanged(const QString &presence,

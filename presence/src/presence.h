@@ -64,8 +64,6 @@ protected:
     void initExtenderItem(Plasma::ExtenderItem *item);
 
 private:
-    void updateMasterIcon();
-    void setMasterStatusMessage(const QString &message);
     void updateMasterPresence();
     void updateSize();
     void setSourcePresence(const QString &id, const QString &status,
