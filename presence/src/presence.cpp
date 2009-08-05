@@ -114,6 +114,13 @@ void PresenceApplet::initExtenderItem(Plasma::ExtenderItem *item)
         m_globalWidget->setLayout (m_globalLayout);
 
         m_global = new GlobalPresenceWidget(this);
+
+        // Listening for global changes
+        connect(m_global, SIGNAL(presenceStatusChanged(const QString&)),
+                this, SLOT(onGlobalPresenceStatusChanged(const QString&)));
+        connect(m_global, SIGNAL(presenceMessageChanged(const QString&)),
+                this, SLOT(onGlobalPresenceMessageChanged(const QString&)));
+
         m_globalLayout->addItem(m_global);
         item->setWidget(m_globalWidget);
         item->setTitle(i18n("Global Presence"));
@@ -347,6 +354,18 @@ void PresenceApplet::onJobCompleted()
 
     if (service)
         service->deleteLater();
+}
+
+void PresenceApplet::onGlobalPresenceStatusChanged(const QString &status)
+{
+    foreach (AccountWidget *account, m_accounts.values())
+        setSourcePresence(account->id(), status, account->presenceMessage());
+}
+
+void PresenceApplet::onGlobalPresenceMessageChanged(const QString &msg)
+{
+    foreach (AccountWidget *account, m_accounts.values())
+        setSourcePresence(account->id(), account->presenceStatus(), msg);
 }
 
 void PresenceApplet::updateSize()

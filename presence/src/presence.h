@@ -57,6 +57,8 @@ private Q_SLOTS:
     void onPresenceChanged(const QString &presence,
             const QString &msg);
     void onJobCompleted();
+    void onGlobalPresenceStatusChanged(const QString &status);
+    void onGlobalPresenceMessageChanged(const QString &msg);
 
 protected:
     void initExtenderItem(Plasma::ExtenderItem *item);
