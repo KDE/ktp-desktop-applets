@@ -72,7 +72,6 @@ private:
     Plasma::DataEngine *m_engine;
     QGraphicsWidget *m_widget;
     QGraphicsLinearLayout *m_layout;
-    KColorScheme *m_colorScheme;
     QHash<QString, AccountWidget*> m_accounts;
     GlobalPresenceWidget *m_global;
     QGraphicsWidget *m_globalWidget;

@@ -46,7 +46,6 @@ PresenceApplet::PresenceApplet(QObject *parent, const QVariantList &args)
       m_engine(0),
       m_widget(0),
       m_layout(0),
-      m_colorScheme(0),
       m_global(0),
       m_globalWidget(0),
       m_globalLayout(0)
@@ -62,17 +61,11 @@ PresenceApplet::PresenceApplet(QObject *parent, const QVariantList &args)
 
 PresenceApplet::~PresenceApplet()
 {
-    delete m_colorScheme;
 }
 
 void PresenceApplet::init()
 {
     kDebug() << "PresenceApplet::init: initializing applet";
-
-    // Set up the color scheme.
-    m_colorScheme = new KColorScheme(QPalette::Active,
-            KColorScheme::View,
-            Plasma::Theme::defaultTheme()->colorScheme());
 
     // Create a new extender item for global presence
     if (!extender()->hasItem("Global")) {
