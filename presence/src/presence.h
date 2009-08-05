@@ -66,6 +66,8 @@ private:
     void setMasterStatusMessage(const QString &message);
     void updateMasterPresence();
     void updateSize();
+    void setSourcePresence(const QString &id, const QString &status,
+            const QString &msg);
 
     Plasma::DataEngine *m_engine;
     QGraphicsWidget *m_widget;

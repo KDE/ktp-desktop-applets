@@ -338,16 +338,7 @@ void PresenceApplet::onPresenceChanged(const QString &presence,
 
     Q_ASSERT(account);
 
-    Plasma::Service *service = m_engine->serviceForSource(account->id());
-
-    if (service != NULL) {
-        KConfigGroup op = service->operationDescription("setPresence");
-        op.writeEntry("status", presence);
-        op.writeEntry("status_message", msg);
-        connect(service, SIGNAL(finished(Plasma::ServiceJob *)),
-                this, SLOT(onJobCompleted()));
-        service->startOperationCall(op);
-    }
+    setSourcePresence(account->id(), presence, msg);
 }
 
 void PresenceApplet::onJobCompleted()
@@ -366,5 +357,21 @@ void PresenceApplet::updateSize()
     item->resize(m_widget->contentsRect().size().toSize());
     item->adjustSize();
 }
+
+void PresenceApplet::setSourcePresence(const QString &id, const QString &status,
+        const QString &msg)
+{
+    Plasma::Service *service = m_engine->serviceForSource(id);
+
+    if (service != NULL) {
+        KConfigGroup op = service->operationDescription("setPresence");
+        op.writeEntry("status", status);
+        op.writeEntry("status_message", msg);
+        connect(service, SIGNAL(finished(Plasma::ServiceJob *)),
+                this, SLOT(onJobCompleted()));
+        service->startOperationCall(op);
+    }
+}
+
 #include "presence.moc"
 
