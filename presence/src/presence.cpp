@@ -30,6 +30,8 @@
 #include <Plasma/Service>
 #include <Plasma/Extender>
 #include <Plasma/ExtenderItem>
+#include <Plasma/ToolTipContent>
+#include <Plasma/ToolTipManager>
 
 // Kde
 #include <KColorScheme>
@@ -80,6 +82,8 @@ void PresenceApplet::init()
         item->setName("Accounts");
         initExtenderItem(item);
     }
+
+    updateMasterPresence();
 
     // Set up the data engine
     m_engine = dataEngine("presence");
@@ -208,6 +212,8 @@ void PresenceApplet::updateMasterPresence()
     QString accountMessage;
     bool sameMessage = false;
 
+    QString toolTipContent;
+
     // Next, we work out the overall presence status.
     int accountsOffline = 0;
     int accountsAvailable = 0;
@@ -266,6 +272,9 @@ void PresenceApplet::updateMasterPresence()
 
         sameMessage = (accountMessage == account->presenceMessage());
         accountMessage = account->presenceMessage();
+
+        toolTipContent += i18n("%1: <b><i>%2</i></b><br/>",
+                account->name(), status_type);
     }
 
     // Chose a master presence state from this.
@@ -292,10 +301,17 @@ void PresenceApplet::updateMasterPresence()
         popupIcon = "user-online";
     }
 
+    // Update popup icon
     setPopupIcon(popupIcon);
 
+    // Set presence msg
     if (sameMessage)
         m_global->setPresenceMessage(accountMessage);
+
+    // Update tooltip message
+    Plasma::ToolTipManager::self()->setContent(this,
+            Plasma::ToolTipContent(i18n("Presence Status"),
+            toolTipContent, this->popupIcon()));
 }
 
 void PresenceApplet::onPresenceChanged(const QString &presence,
