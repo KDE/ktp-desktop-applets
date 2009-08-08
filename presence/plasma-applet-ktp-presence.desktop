@@ -15,7 +15,6 @@ Name[tr]=Anlık Mesajlaşma Görünümü
 Name[uk]=Присутність у обміні повідомленнями
 Name[x-test]=xxInstant Messaging Presencexx
 Comment=Shows your instant messaging status information
-Comment[x-test]=xxShows your instant messaging status informationxx
 Icon=view-history
 Type=Service
 ServiceTypes=Plasma/Applet
