@@ -165,6 +165,8 @@ void PresenceApplet::onSourceRemoved(const QString &source)
         delete account;
         m_engine->disconnectSource(source, this);
 
+        updateMasterPresence();
+
         updateConstraints();
         updateSize();
     }
