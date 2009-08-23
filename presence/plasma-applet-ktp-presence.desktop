@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=Instant Messaging Presence
 Name[el]=Παρουσία στιγμιαίων μηνυμάτων
+Name[es]=Presencia en mensajería instantánea
 Name[et]=Kohalolek kiirsuhtluses
 Name[gl]=Presenza na mensaxería instantánea
 Name[km]=កា​របង្ហាញ​សារ​បន្ទាន់
@@ -15,6 +16,7 @@ Name[tr]=Anlık Mesajlaşma Görünümü
 Name[uk]=Присутність у обміні повідомленнями
 Name[x-test]=xxInstant Messaging Presencexx
 Comment=Shows your instant messaging status information
+Comment[es]=Muestra información de su estado en sistemas de mensajería instantánea
 Comment[pt]=Mostra a sua informação de estado das mensagens instantâneas
 Comment[pt_BR]=Mostra a sua informação de estado das mensagens instantâneas
 Comment[sv]=Visar statusinformation om direktmeddelanden
