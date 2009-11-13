@@ -19,6 +19,7 @@ Name[tr]=Anlık Mesajlaşma Görünümü
 Name[uk]=Присутність у обміні повідомленнями
 Name[x-test]=xxInstant Messaging Presencexx
 Comment=Shows your instant messaging status information
+Comment[en_GB]=Shows your instant messaging status information
 Comment[es]=Muestra información de su estado en sistemas de mensajería instantánea
 Comment[fr]=Vous montre des informations sur votre état dans la messagerie instantanée
 Comment[hr]=Prikazuje informacije o stanju brzog dopisivanja
