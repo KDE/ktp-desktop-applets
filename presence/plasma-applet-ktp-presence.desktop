@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=Instant Messaging Presence
 Name[cs]=Přítomnost na IM
+Name[nds]=Kortnarichten-Anwesigkeit
 Name[nl]=Aanwezigheid van Instant Messaging
 Name[pt]=Presença nas Mensagens Instantâneas
 Name[pt_BR]=Presença nas mensagens instantâneas
@@ -9,6 +10,7 @@ Name[sv]=Direktmeddelande finns
 Name[uk]=Присутність у обміні повідомленнями
 Name[x-test]=xxInstant Messaging Presencexx
 Comment=Shows your instant messaging status information
+Comment[nds]=Wiest Dien Kortnarichten-Status
 Comment[pt]=Mostra a sua informação de estado das mensagens instantâneas
 Comment[pt_BR]=Mostra a sua informação de status das mensagens instantâneas
 Comment[sv]=Visar statusinformation om direktmeddelanden
