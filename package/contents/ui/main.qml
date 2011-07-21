@@ -18,8 +18,8 @@
  ***************************************************************************/
 
 import Qt 4.7
-// not yet ready. Waiting for grundelborg's fix and to accept my patch
-//import org.kde.telepathy.declarativeplugins 0.1 as TelepathyDeclarative
+// import nepomuk models
+import org.kde.telepathy.declarativeplugins 0.1 as TelepathyDeclarative
 
 Item {
     id: main;
@@ -27,7 +27,29 @@ Item {
     height: 500;
     anchors.fill: parent;
 
+    Component.onCompleted: {
+        console.log(TelepathyDeclarative.personsmodel);
+        console.log(TelepathyDeclarative.contactset);
+//        for (var i = 0; i < TelepathyDeclarative.personsmodel.count; ++i) {
+//            console.log("ASD");
+//        }
+    }
 
+    // contact listview
+    ListView {
+        id: contactsList
+        model: TelepathyDeclarative.contactset;//TelepathyDeclarative.personsmodel;
+        anchors.fill: parent;
+
+        delegate:
+            Text {
+                text: "MODEL";
+            }
+
+        Component.onCompleted: {
+            console.log("FINISHED: " + contactsList.count);
+        }
+    }
 
     // set Label on the left
     ExternalLabel {
