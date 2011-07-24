@@ -27,28 +27,21 @@ Item {
     height: 500;
     anchors.fill: parent;
 
-    Component.onCompleted: {
-        console.log(TelepathyDeclarative.personsmodel);
-        console.log(TelepathyDeclarative.contactset);
-//        for (var i = 0; i < TelepathyDeclarative.personsmodel.count; ++i) {
-//            console.log("ASD");
-//        }
+    // load an instance of the model
+    TelepathyDeclarative.wrapper {
+        id: contactModel;
     }
 
     // contact listview
     ListView {
-        id: contactsList
-        model: TelepathyDeclarative.contactset;//TelepathyDeclarative.personsmodel;
+        id: contactsList;
+        model: contactModel;
         anchors.fill: parent;
 
         delegate:
             Text {
-                text: "MODEL";
+                text: displayName;
             }
-
-        Component.onCompleted: {
-            console.log("FINISHED: " + contactsList.count);
-        }
     }
 
     // set Label on the left
