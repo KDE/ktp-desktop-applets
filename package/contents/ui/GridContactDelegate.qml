@@ -18,51 +18,25 @@
  ***************************************************************************/
 
 import Qt 4.7
+import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+
+/// TODO
+// - add status border (colour like on the presence plasmoid)
+// - bottom status bar with displayName on hover
+// - rounded borders for image
 
 Item {
-    id: main;
-    width: 200;
-    height: 400;
-    anchors.fill: parent;
+    id: gridDelegate;
 
-    // TODO make plasmoid busy when loading contacts on startup to avoid the user
-    // complaining about sluggish plasmoid. The "slowness" is caused by nepomuk storing 1000000000000 contacts
+    property string delegateDisplayName;
+    property string delegateAvatar;
 
-    // contact listview
-    ContactList {
-        id: contactList;
-        anchors.fill: parent;
-        state: "listView";      // start with list view
+    width: 40;
+    height: 40;
+
+    PlasmaWidgets.IconWidget {
+        id: contactIcon;
+        icon: QIcon("im-user");         // temp icon until it's sorted out
+        anchors.centerIn: gridDelegate;
     }
-
-
-    // THIS WILL NOT BE NEEDED.
-//    // set Label on the left
-//    ExternalLabel {
-//        id: label;
-//        width: 150;
-//        height: 30;
-
-//        Component.onCompleted: {
-//            setLabelOrientation();
-//        }
-
-//        onOrientationChanged: {
-//            setLabelOrientation();
-//        }
-//    }
-
-//    // set correct orientation for components according to the
-//    // contactlist orientation
-//    function setLabelOrientation()
-//    {
-//        switch (label.orientation) {
-//            case "left": {
-//                label.anchors.bottom = main.bottom;
-//                label.anchors.left = main.left;
-//                label.transformOrigin = Item.BottomLeft;
-//                label.rotation = 270;
-//            }
-//        }
-//    }
 }
