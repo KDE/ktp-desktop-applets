@@ -17,53 +17,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
+/*
+  This component is used ONLY by the contactlist in GRID view mode. It
+  displays the contact display name when a contact is hovered over.
+*/
+
 import Qt 4.7
+//import org.kde.plasma.core 0.1 as PlasmaCore
+import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 
 Item {
-    id: main;
-    width: 200;
-    height: 400;
-    anchors.fill: parent;
+    property string nickToShow;
 
-    // TODO make plasmoid busy when loading contacts on startup to avoid the user
-    // complaining about sluggish plasmoid. The "slowness" is caused by nepomuk storing 1000000000000 contacts
-    // need to make model faster (talk to david)
-
-    // contact listview
-    ContactList {
-        id: contactList;
+    PlasmaWidgets.Label {
+        id: idLabel;
+        text: nickToShow;
         anchors.fill: parent;
-        state: "listView";      // start with list view
     }
-
-
-    // THIS WILL NOT BE NEEDED.
-//    // set Label on the left
-//    ExternalLabel {
-//        id: label;
-//        width: 150;
-//        height: 30;
-
-//        Component.onCompleted: {
-//            setLabelOrientation();
-//        }
-
-//        onOrientationChanged: {
-//            setLabelOrientation();
-//        }
-//    }
-
-//    // set correct orientation for components according to the
-//    // contactlist orientation
-//    function setLabelOrientation()
-//    {
-//        switch (label.orientation) {
-//            case "left": {
-//                label.anchors.bottom = main.bottom;
-//                label.anchors.left = main.left;
-//                label.transformOrigin = Item.BottomLeft;
-//                label.rotation = 270;
-//            }
-//        }
-//    }
 }

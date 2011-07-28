@@ -31,6 +31,9 @@ Item {
     property string delegateDisplayName;
     property string delegateAvatar;
 
+    // emitted when mouse hovers over contact
+    signal setGridContactDisplayName(variant gridContactDisplayName);
+
     width: 40;
     height: 40;
 
@@ -38,5 +41,20 @@ Item {
         id: contactIcon;
         icon: QIcon("im-user");         // temp icon until it's sorted out
         anchors.centerIn: gridDelegate;
+    }
+
+    MouseArea {
+        anchors.fill: parent;
+        hoverEnabled: true;
+
+        // set contact name in view
+        onEntered: {
+            gridDelegate.setGridContactDisplayName(delegateDisplayName);
+        }
+
+        // unset contact name in view
+        onExited: {
+            gridDelegate.setGridContactDisplayName("");
+        }
     }
 }

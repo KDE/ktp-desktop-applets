@@ -18,6 +18,7 @@
  ***************************************************************************/
 
 import Qt 4.7
+import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 
 // import nepomuk models
 import org.kde.telepathy.declarativeplugins 0.1 as TelepathyDeclarative
@@ -31,11 +32,14 @@ import org.kde.telepathy.declarativeplugins 0.1 as TelepathyDeclarative
 // - highlight contacts on click
 
 Item {
+    id: contactListContainer;
     anchors.fill: parent;
 
+    // LISTVIEW
     ListView {
         id: contactsList;
         anchors.fill: parent;
+        clip: true;
         model: TelepathyDeclarative.ContactListModel{}
 
         delegate:
@@ -44,9 +48,19 @@ Item {
             }
     }
 
+    // GRIDVIEW
     GridView {
         id: contactsGrid;
-        anchors.fill: parent;
+        boundsBehavior: Flickable.StopAtBounds;
+        clip: true;
+        height: parent.height - 30;
+        anchors {
+            top: parent.top;
+            left: parent.left;
+            right: parent.right;
+            margins: 5;
+        }
+
         model: TelepathyDeclarative.ContactListModel{}
 
         cellWidth: 48;
@@ -54,9 +68,37 @@ Item {
 
         delegate:
             GridContactDelegate {
+                id: gridDelegate;
                 delegateDisplayName: displayName;
                 delegateAvatar: avatar;
+
+                onSetGridContactDisplayName: {
+                    console.log("SETTING NAME TO: " + gridContactDisplayName)
+                    contactDisplay.nickToShow = gridContactDisplayName;
+                }
             }
+    }
+
+    PlasmaWidgets.Separator {
+        id: separator;
+        anchors {
+            top: contactsGrid.bottom;
+            left: parent.left;
+            right:parent.right;
+            bottom: contactDisplay.top;
+        }
+    }
+
+    ContactDisplayName {
+        id: contactDisplay;
+
+        anchors {
+            top: contactsGrid.bottom;
+            left: contactListContainer.left;
+            right: contactListContainer.right;
+            bottom: contactListContainer.bottom;
+            margins: 5;
+        }
     }
 
     states: [
@@ -70,6 +112,14 @@ Item {
                 target: contactsGrid;
                 opacity: 0;
             }
+            PropertyChanges {
+                target: contactDisplay;
+                opacity: 0;
+            }
+            PropertyChanges {
+                target: separator;
+                opacity: 0
+            }
         },
         State {
             name: "gridView";
@@ -79,6 +129,14 @@ Item {
             }
             PropertyChanges {
                 target: contactsGrid;
+                opacity: 1;
+            }
+            PropertyChanges {
+                target: contactDisplay;
+                opacity: 1;
+            }
+            PropertyChanges {
+                target: separator;
                 opacity: 1;
             }
         }
