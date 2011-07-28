@@ -24,7 +24,7 @@ import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 import org.kde.telepathy.declarativeplugins 0.1 as TelepathyDeclarative
 
 /// TODO
-// - button to switch views
+// - connect buttons in toolbar to switch view
 // - (after above) animation from list to grid
 // - add bar @ the bottom for gridview (hidden in list view)
 // - get contact list to load nepomuk:/bla/foo/bar images as contact avatars
@@ -35,10 +35,41 @@ Item {
     id: contactListContainer;
     anchors.fill: parent;
 
+    // TOOLBAR
+    ToolBar {
+        id: toolbar;
+        height: 20;
+
+        anchors {
+            top: parent;
+            left: parent.left;
+            right: parent.right;
+        }
+    }
+
+    // TOP SEPARATOR
+    PlasmaWidgets.Separator {
+        id: topSeparator;
+        anchors {
+            top: toolbar.bottom;
+            topMargin: 5;
+            left: parent.left;
+            right:parent.right;
+        }
+    }
+
     // LISTVIEW
     ListView {
         id: contactsList;
-        anchors.fill: parent;
+
+        anchors {
+            top: topSeparator.bottom;
+            topMargin: 5;
+            left: parent.left;
+            right: parent.right;
+            bottom: parent.bottom;
+        }
+
         clip: true;
         model: TelepathyDeclarative.ContactListModel{}
 
@@ -53,12 +84,13 @@ Item {
         id: contactsGrid;
         boundsBehavior: Flickable.StopAtBounds;
         clip: true;
-        height: parent.height - 30;
+
         anchors {
-            top: parent.top;
+            top: topSeparator.bottom;
             left: parent.left;
             right: parent.right;
-            margins: 5;
+            bottom: parent.bottom;
+            bottomMargin: 20;
         }
 
         model: TelepathyDeclarative.ContactListModel{}
