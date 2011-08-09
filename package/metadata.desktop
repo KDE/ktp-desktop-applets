@@ -1,0 +1,22 @@
+[Desktop Entry]
+Name=Telepathy Contact
+Icon=telepathy-kde
+Type=Service
+
+X-Plasma-API=declarativeappletscript
+X-Plasma-MainScript=ui/main.qml
+X-Plasma-DefaultSize=128,128
+
+X-KDE-PluginInfo-Author=Francesco Nwokeka
+X-KDE-PluginInfo-Email=francesco.nwokeka@gmail.com
+X-KDE-PluginInfo-Website=http://telepathy.freedesktop.org/
+X-KDE-PluginInfo-Category=Online Services
+X-KDE-PluginInfo-Name=org.kde.telepathy-contact
+X-KDE-PluginInfo-Version=0.1
+
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-ServiceTypes=Plasma/Applet,Plasma/PopupApplet
+
+X-Plasma-RequiredExtensions=LaunchApp,FileDialog
