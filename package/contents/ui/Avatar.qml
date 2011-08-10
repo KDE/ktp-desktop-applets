@@ -23,15 +23,12 @@ import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 Item {
     // eliminate once finished. This is only a test image
     property string avatarPath: "/home/z3r0/Blog/hackergotchi_new.jpg";
+    property string avatarPresenceStatus;
+
     anchors.fill: parent;
 
-    // make this a border image. Giulia will give me the frames soon
-    Rectangle {
-        id: borderStatus;
-
-        color: "green";
-        radius: 8;
-        anchors.fill: parent;
+    Component.onCompleted: {
+        setAvatarPresenceStatus(avatarPresenceStatus);
     }
 
     // TODO: use image instead of iconwidget?
@@ -40,12 +37,52 @@ Item {
         icon: QIcon(avatarPath);
         anchors.fill: parent;
         anchors.margins: 10;
-    }
-//    Image {
-//        id: avatar;
-//        source: avatarPath;
 
-//        anchors.fill: parent;
-//        anchors.margins: 10;
-//    }
+        onClicked: {
+            showMenu();
+        }
+    }
+
+    BorderImage {
+        id: avatarFrame;
+        width: 128;
+        height: 128;
+    }
+
+    // show drop-down action menu
+    function showMenu()
+    {
+        console.log("SHOW MENU");
+    }
+
+    function setAvatarPresenceStatus(presenceStatus)
+    {
+        switch (presenceStatus) {
+            case "online":
+                avatarFrame.source = "../frames/online.png";
+                if (!avatar.enabled) {
+                    avatar.enabled = true;
+                }
+            case "busy":
+                avatarFrame.source = "../frames/busy.png";
+                if (!avatar.enabled) {
+                    avatar.enabled = true;
+                }
+            case "away":
+                avatarFrame.source = "../frames/away.png";
+                if (!avatar.enabled) {
+                    avatar.enabled = true;
+                }
+            case "offline":
+                avatarFrame.source = "../frames/offline.png";
+                if (avatar.enabled) {
+                    avatar.enabled = false;
+                }
+            default:
+                avatarFrame.source = "../frames/offline.png";
+                if (avatar.enabled) {
+                    avatar.enabled = false;
+                }
+        }
+    }
 }

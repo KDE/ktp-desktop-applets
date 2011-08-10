@@ -21,10 +21,15 @@ import Qt 4.7
 
 Item {
     id: wrapper;
+
+    // contact/person presence status
+    property string status: "offline";
+
     anchors.fill: parent;
 
     Avatar{
         id: avatar;
+        avatarPresenceStatus: wrapper.status;
 
         anchors {
             top: parent.top;
