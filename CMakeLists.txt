@@ -1,17 +1,21 @@
-project(telepathy-contact-applet)
+project(plasma_applet_telepathy_contact)
 
 cmake_minimum_required(VERSION 2.8)
 
 find_package(KDE4 REQUIRED)
+find_package(KDE4Workspace REQUIRED)
 
 include(KDE4Defaults)
 
-add_definitions(${KDE4_DEFINITIONS})
+add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
 
-include_directories(
-    ${KDE4_INCLUDES}
+set(telepathy_contact_applet_SRCS
+    src/telepathyContact.cpp
 )
 
-install(DIRECTORY package/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.telepathy-contact PATTERN .git EXCLUDE PATTERN CMakeLists.txt EXCLUDE)
+kde4_add_plugin(plasma_applet_telepathy_contact ${telepathy_contact_applet_SRCS})
+target_link_libraries(plasma_applet_telepathy_contact ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS})
 
-install(FILES package/metadata.desktop DESTINATION ${SERVICES_INSTALL_DIR} RENAME plasma-applet-telepathy-contact.desktop)
+install(TARGETS plasma_applet_telepathy_contact DESTINATION ${PLUGIN_INSTALL_DIR})
+install(FILES telepathy-contact-applet.desktop DESTINATION ${SERVICES_INSTALL_DIR})

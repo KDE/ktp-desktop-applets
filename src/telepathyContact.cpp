@@ -17,23 +17,42 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-import Qt 4.7
-import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+#include "telepathyContact.h"
 
-Item {
-    id: mainWidget;
+#include <QtGui/QPainter>
+#include <QDebug>
 
-    // default contact size (also ni metadata file)
-    width: 128;
-    height: 128;
+TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
+    : Plasma::Applet(parent, args)
+    , m_declarative(new Plasma::DeclarativeWidget(this))
+{
+    setBackgroundHints(NoBackground);
+    m_declarative->setGeometry(geometry());
 
-    Contact {
-        id: contact;
-        anchors.centerIn: parent;
-    }
+    // user shouldn't be able to resize the plasmoid
+    setAspectRatioMode(Plasma::FixedSize);
+}
 
-    Component.onCompleted: {
-        // eliminates default plasmoid background leaving only the contact on the desktop
-        plasmoid.setBackgroundHints(NoBackground);
+TelepathyContact::~TelepathyContact()
+{
+
+}
+
+void TelepathyContact::init()
+{
+    Plasma::Applet::init();
+
+    if (m_declarative) {
+        qDebug("setting declarative widget");
+        m_declarative->setQmlPath("../src/declarative/main.qml");
     }
 }
+
+void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
+{
+    Plasma::Applet::paintInterface(p, option, contentsRect);
+}
+
+
+// This is the command that links your applet to the .desktop file
+K_EXPORT_PLASMA_APPLET(telepathy-contact, TelepathyContact)
