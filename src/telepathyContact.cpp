@@ -17,13 +17,14 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
+#include "config.h"
 #include "telepathyContact.h"
 
 #include <QtGui/QPainter>
-#include <QDebug>
 
 TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     : Plasma::Applet(parent, args)
+    , m_config(new Config())
     , m_declarative(new Plasma::DeclarativeWidget(this))
 {
     setBackgroundHints(NoBackground);
@@ -43,7 +44,6 @@ void TelepathyContact::init()
     Plasma::Applet::init();
 
     if (m_declarative) {
-        qDebug("setting declarative widget");
         m_declarative->setQmlPath("../src/declarative/main.qml");
     }
 }
@@ -53,6 +53,10 @@ void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsIte
     Plasma::Applet::paintInterface(p, option, contentsRect);
 }
 
+void TelepathyContact::showConfigurationInterface()
+{
+    m_config->show();
+}
 
 // This is the command that links your applet to the .desktop file
 K_EXPORT_PLASMA_APPLET(telepathy-contact, TelepathyContact)

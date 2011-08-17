@@ -17,32 +17,28 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#ifndef TELEPATHY_CONTACT_H
-#define TELEPATHY_CONTACT_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
-#include <KIcon>
+#include "ui_config.h"
 
-#include <Plasma/Applet>
-#include <Plasma/DeclarativeWidget>
+#include <KDialog>
 
-class Config;
+namespace Ui {
+    class Config;
+}
 
-class TelepathyContact: public Plasma::Applet
+class Config : public KDialog
 {
     Q_OBJECT
+
 public:
-    TelepathyContact(QObject *parent, const QVariantList &args);
-    ~TelepathyContact();
-
-    void init();
-    void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
-
-    /** overide of config signal */
-    void showConfigurationInterface();
+    Config(QWidget *parent = 0);
+    ~Config();
 
 private:
-    Config *m_config;
-    Plasma::DeclarativeWidget *m_declarative;
+    Ui::Config ui;
 };
 
-#endif  // TELEPATHY_CONTACT_H
+
+#endif  // CONFIG_H

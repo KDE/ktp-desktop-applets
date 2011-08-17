@@ -12,6 +12,11 @@ include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES})
 
 set(telepathy_contact_applet_SRCS
     src/telepathyContact.cpp
+    src/config.cpp
+)
+
+kde4_add_ui_files(telepathy_contact_applet_SRCS
+                    src/config.ui
 )
 
 kde4_add_plugin(plasma_applet_telepathy_contact ${telepathy_contact_applet_SRCS})
