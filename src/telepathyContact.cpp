@@ -36,7 +36,8 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
 
 TelepathyContact::~TelepathyContact()
 {
-
+    delete m_config;
+    delete m_declarative;
 }
 
 void TelepathyContact::init()

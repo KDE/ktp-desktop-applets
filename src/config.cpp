@@ -19,12 +19,19 @@
 
 #include "config.h"
 
+#include <KTelepathy/PeopleManager>
+#include <KTelepathy/PersonSetModel>
+#include <KTelepathy/PersonSet>
+
 Config::Config(QWidget* parent)
     : KDialog(parent)
 {
     QWidget *widget = new QWidget(this);
     ui.setupUi(widget);
     setMainWidget(widget);
+
+    // populate telepathy contact list
+//     ui.contactListView->setModel(new KTelepathy::PersonSetModel(KTelepathy::PeopleManager::instance()->everyone()));
 }
 
 Config::~Config()
