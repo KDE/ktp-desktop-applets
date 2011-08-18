@@ -49,7 +49,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QListView" name="contactListView"/>
+    <widget class="QListView" name="contactsList"/>
    </item>
   </layout>
  </widget>

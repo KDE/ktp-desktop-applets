@@ -19,6 +19,7 @@
 
 #include "config.h"
 
+#include <KPushButton>
 #include <KTelepathy/PeopleManager>
 #include <KTelepathy/PersonSetModel>
 #include <KTelepathy/PersonSet>
@@ -27,14 +28,27 @@ Config::Config(QWidget* parent)
     : KDialog(parent)
 {
     QWidget *widget = new QWidget(this);
+
     ui.setupUi(widget);
     setMainWidget(widget);
-
-    // populate telepathy contact list
-//     ui.contactListView->setModel(new KTelepathy::PersonSetModel(KTelepathy::PeopleManager::instance()->everyone()));
+    setupContactsList();
 }
 
 Config::~Config()
 {
 }
 
+void Config::activateOkButton()
+{
+    button(Ok)->setEnabled(true);
+}
+
+void Config::setupContactsList()
+{
+    // set list to show nepomuk model
+    ui.contactsList->setModel(new KTelepathy::PersonSetModel(KTelepathy::PeopleManager::instance()->everyone()));
+
+    // disable ok button until a list item is selected
+    button(Ok)->setEnabled(false);
+    connect(ui.contactsList, SIGNAL(clicked(QModelIndex)), this, SLOT(activateOkButton()));
+}

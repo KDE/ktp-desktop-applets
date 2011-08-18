@@ -36,7 +36,13 @@ public:
     Config(QWidget *parent = 0);
     ~Config();
 
+private slots:
+    void activateOkButton();
+
 private:
+    /** prepare the contacts to be show in the list */
+    void setupContactsList();
+
     Ui::Config ui;
 };
 
