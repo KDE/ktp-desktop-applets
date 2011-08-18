@@ -20,14 +20,19 @@
 #include "config.h"
 #include "telepathyContact.h"
 
+#include <KStandardDirs>
+
+#include <Plasma/PackageStructure>
+
 #include <QtGui/QPainter>
+
 
 TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     : Plasma::Applet(parent, args)
     , m_config(new Config())
     , m_declarative(new Plasma::DeclarativeWidget(this))
 {
-    setBackgroundHints(NoBackground);
+    setBackgroundHints(DefaultBackground);
     m_declarative->setGeometry(geometry());
 
     // user shouldn't be able to resize the plasmoid
@@ -45,7 +50,9 @@ void TelepathyContact::init()
     Plasma::Applet::init();
 
     if (m_declarative) {
-        m_declarative->setQmlPath("../src/declarative/main.qml");
+        QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-contact/contents/ui/main.qml");
+        qDebug() << "LOADING: " << qmlFile;
+        m_declarative->setQmlPath(qmlFile);
     }
 }
 

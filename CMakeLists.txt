@@ -45,5 +45,6 @@ kde4_add_ui_files(telepathy_contact_applet_SRCS
 kde4_add_plugin(plasma_applet_telepathy_contact ${telepathy_contact_applet_SRCS})
 target_link_libraries(plasma_applet_telepathy_contact ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS} ${TELEPATHY_QT4_LIBRARIES})
 
+install(DIRECTORY src/declarative/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.telepathy-contact)
 install(TARGETS plasma_applet_telepathy_contact DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES telepathy-contact-applet.desktop DESTINATION ${SERVICES_INSTALL_DIR})
