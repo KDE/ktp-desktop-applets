@@ -28,6 +28,14 @@ include_directories(${CMAKE_SOURCE_DIR}
 set(telepathy_contact_applet_SRCS
     src/telepathyContact.cpp
     src/config.cpp
+    src/models/accounts-filter-model.cpp
+    src/models/accounts-model-item.cpp
+    src/models/accounts-model.cpp
+    src/models/contact-model-item.cpp
+    src/models/groups-model-item.cpp
+    src/models/groups-model.cpp
+    src/models/proxy-tree-node.cpp
+    src/models/tree-node.cpp
 )
 
 kde4_add_ui_files(telepathy_contact_applet_SRCS
@@ -35,7 +43,7 @@ kde4_add_ui_files(telepathy_contact_applet_SRCS
 )
 
 kde4_add_plugin(plasma_applet_telepathy_contact ${telepathy_contact_applet_SRCS})
-target_link_libraries(plasma_applet_telepathy_contact ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS} ktelepathy)
+target_link_libraries(plasma_applet_telepathy_contact ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS} ${TELEPATHY_QT4_LIBRARIES})
 
 install(TARGETS plasma_applet_telepathy_contact DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES telepathy-contact-applet.desktop DESTINATION ${SERVICES_INSTALL_DIR})

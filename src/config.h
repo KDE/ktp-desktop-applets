@@ -23,10 +23,15 @@
 #include "ui_config.h"
 
 #include <KDialog>
+#include <TelepathyQt4/AccountManager>
 
 namespace Ui {
     class Config;
 }
+
+class AccountsModel;
+class AccountsFilterModel;
+class GroupsModel;
 
 class Config : public KDialog
 {
@@ -38,10 +43,18 @@ public:
 
 private slots:
     void activateOkButton();
+    void enableGroupsView(bool enable);                     /** enable/disable groups view */
+    void enableOfflineContacts(bool enable);                /** enable/disable offline contacts */
+    void onAccountManagerReady(Tp::PendingOperation* op);
 
 private:
     /** prepare the contacts to be show in the list */
     void setupContactsList();
+
+    AccountsModel *m_model;
+    AccountsFilterModel *m_modelFilter;
+    GroupsModel *m_groupsModel;
+    Tp::AccountManagerPtr m_accountManager;
 
     Ui::Config ui;
 };
