@@ -26,8 +26,10 @@ include_directories(${CMAKE_SOURCE_DIR}
 )
 
 set(telepathy_contact_applet_SRCS
-    src/telepathyContact.cpp
+    src/abstractContactDelegate.cpp
     src/config.cpp
+    src/contactDelegate.cpp
+    src/telepathyContact.cpp
     src/models/accounts-filter-model.cpp
     src/models/accounts-model-item.cpp
     src/models/accounts-model.cpp

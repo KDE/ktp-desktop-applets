@@ -18,6 +18,7 @@
  ***************************************************************************/
 
 #include "config.h"
+#include "contactDelegate.h"
 #include "models/accounts-model.h"
 #include "models/groups-model.h"
 #include "models/accounts-filter-model.h"
@@ -136,9 +137,13 @@ void Config::setupContactsList()
     // disable ok button until a list item is selected
     button(Ok)->setEnabled(false);
 
+    ui.contactsList->setItemDelegate(new ContactDelegate());
+    ui.contactsList->header()->hide();
     ui.contactsList->setExpandsOnDoubleClick(false);
     ui.contactsList->setSortingEnabled(true);
     ui.contactsList->sortByColumn(0, Qt::AscendingOrder);
+//     ui.contactsList->setSelectionMode(QAbstractItemView::SingleSelection);
+//     ui.contactsList->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     connect(ui.contactsList, SIGNAL(clicked(QModelIndex)), this, SLOT(activateOkButton()));
     connect(ui.showOfflineContacts, SIGNAL(toggled(bool)), this, SLOT(enableOfflineContacts(bool)));
