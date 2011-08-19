@@ -20,6 +20,7 @@
 #include "config.h"
 #include "contactDelegate.h"
 #include "models/accounts-model.h"
+#include "models/contact-model-item.h"
 #include "models/groups-model.h"
 #include "models/accounts-filter-model.h"
 
@@ -42,8 +43,6 @@ Config::Config(QWidget* parent)
     setMainWidget(widget);
 
     Tp::registerTypes();
-//     Tp::enableDebug(KCmdLineArgs::parsedArgs()->isSet("debug"));
-//     Tp::enableWarnings(true);
 
     // setup the telepathy account manager from where I'll retrieve info on accounts and contacts
     Tp::AccountFactoryPtr  accountFactory = Tp::AccountFactory::create(QDBusConnection::sessionBus(),
@@ -73,7 +72,8 @@ Config::Config(QWidget* parent)
                                                   channelFactory,
                                                   contactFactory);
 
-    connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), SLOT(onAccountManagerReady(Tp::PendingOperation*)));
+    connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
+    connect(this, SIGNAL(buttonClicked(KDialog::ButtonCode)), this, SLOT(slotButtonClicked(int)));
 }
 
 Config::~Config()
@@ -137,15 +137,30 @@ void Config::setupContactsList()
     // disable ok button until a list item is selected
     button(Ok)->setEnabled(false);
 
-    ui.contactsList->setItemDelegate(new ContactDelegate());
     ui.contactsList->header()->hide();
-    ui.contactsList->setExpandsOnDoubleClick(false);
+    ui.contactsList->setRootIsDecorated(false);
+    ui.contactsList->setItemDelegate(new ContactDelegate());
     ui.contactsList->setSortingEnabled(true);
     ui.contactsList->sortByColumn(0, Qt::AscendingOrder);
-//     ui.contactsList->setSelectionMode(QAbstractItemView::SingleSelection);
-//     ui.contactsList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui.contactsList->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui.contactsList->setSelectionBehavior(QAbstractItemView::SelectItems);
 
     connect(ui.contactsList, SIGNAL(clicked(QModelIndex)), this, SLOT(activateOkButton()));
     connect(ui.showOfflineContacts, SIGNAL(toggled(bool)), this, SLOT(enableOfflineContacts(bool)));
     connect(ui.showGroups, SIGNAL(toggled(bool)), this, SLOT(enableGroupsView(bool)));
+}
+
+void Config::slotButtonClicked(int button)
+{
+    QModelIndex selectedItem = ui.contactsList->currentIndex();
+
+    if (button == KDialog::Ok && selectedItem.isValid()) {
+        if (selectedItem.data(AccountsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>()) {
+            ContactModelItem *item = selectedItem.data(AccountsModel::ItemRole).value<ContactModelItem*>();
+            setNewContact(item->contact());
+            accept();
+        }
+    }
+
+    KDialog::slotButtonClicked(button);
 }

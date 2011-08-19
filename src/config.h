@@ -41,6 +41,12 @@ public:
     Config(QWidget *parent = 0);
     ~Config();
 
+signals:
+    void setNewContact(const Tp::ContactPtr &newContact);
+
+protected slots:
+    void slotButtonClicked(int button);
+
 private slots:
     void activateOkButton();
     void enableGroupsView(bool enable);                     /** enable/disable groups view */

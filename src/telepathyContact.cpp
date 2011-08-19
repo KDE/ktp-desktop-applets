@@ -31,12 +31,15 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     : Plasma::Applet(parent, args)
     , m_config(new Config())
     , m_declarative(new Plasma::DeclarativeWidget(this))
+    , m_contact(0)
 {
     setBackgroundHints(NoBackground);
     m_declarative->setGeometry(geometry());
 
     // user shouldn't be able to resize the plasmoid
     setAspectRatioMode(Plasma::FixedSize);
+
+    connect(m_config, SIGNAL(setNewContact(Tp::ContactPtr)), this, SLOT(setContact(Tp::ContactPtr)));
 }
 
 TelepathyContact::~TelepathyContact()
@@ -59,6 +62,16 @@ void TelepathyContact::init()
 void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
 {
     Plasma::Applet::paintInterface(p, option, contentsRect);
+}
+
+void TelepathyContact::setContact(const Tp::ContactPtr& newContact)
+{
+    Q_ASSERT(newContact);
+
+    if (!m_contact || m_contact->id() != newContact->id()) {
+        m_contact = newContact;
+        /// TODO update contact info for QML to read from
+    }
 }
 
 void TelepathyContact::showConfigurationInterface()

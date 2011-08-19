@@ -25,6 +25,8 @@
 #include <Plasma/Applet>
 #include <Plasma/DeclarativeWidget>
 
+#include <TelepathyQt4/Contact>
+
 class Config;
 
 class TelepathyContact: public Plasma::Applet
@@ -40,9 +42,16 @@ public:
     /** overide of config signal */
     void showConfigurationInterface();
 
+public slots:
+    /** called from config dialog to set new contact
+     * @param newContact Tp::ContactPtr to the new contact to use
+     */
+    void setContact(const Tp::ContactPtr &newContact);
+
 private:
     Config *m_config;
     Plasma::DeclarativeWidget *m_declarative;
+    Tp::ContactPtr m_contact;
 };
 
 #endif  // TELEPATHY_CONTACT_H
