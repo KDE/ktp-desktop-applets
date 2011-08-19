@@ -33,8 +33,9 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     , m_declarative(new Plasma::DeclarativeWidget(this))
     , m_contact(0)
 {
+    // setup plasmoid
+    resize(128, 128);
     setBackgroundHints(NoBackground);
-    m_declarative->setGeometry(geometry());
 
     // user shouldn't be able to resize the plasmoid
     setAspectRatioMode(Plasma::FixedSize);
