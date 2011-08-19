@@ -65,31 +65,42 @@ Item {
     function setAvatarPresenceStatus(presenceStatus)
     {
         switch (presenceStatus) {
-            case "online":
+            case "available":
                 avatarFrame.source = "../frames/online.png";
                 if (!avatar.enabled) {
                     avatar.enabled = true;
                 }
-            case "busy":
+                break;
+            case "dnd":
                 avatarFrame.source = "../frames/busy.png";
                 if (!avatar.enabled) {
                     avatar.enabled = true;
                 }
+                break;
             case "away":
                 avatarFrame.source = "../frames/away.png";
                 if (!avatar.enabled) {
                     avatar.enabled = true;
                 }
+                break;
             case "offline":
                 avatarFrame.source = "../frames/offline.png";
                 if (avatar.enabled) {
                     avatar.enabled = false;
                 }
+                break;
             default:
                 avatarFrame.source = "../frames/offline.png";
                 if (avatar.enabled) {
                     avatar.enabled = false;
                 }
+                break;
         }
+    }
+
+    // updates avatar info with info from contact currently set
+    function update()
+    {
+        avatar.icon = QIcon(TelepathyContact.avatar);
     }
 }

@@ -30,4 +30,9 @@ Item {
         id: contact;
         anchors.centerIn: parent;
     }
+
+    function onNewContactSet()
+    {
+        contact.update();
+    }
 }

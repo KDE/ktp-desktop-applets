@@ -17,43 +17,64 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#ifndef TELEPATHY_CONTACT_H
-#define TELEPATHY_CONTACT_H
+#include "contactWrapper.h"
 
-#include <KIcon>
+#include <TelepathyQt4/AvatarData>
+#include <TelepathyQt4/Presence>
 
-#include <Plasma/Applet>
-#include <Plasma/DeclarativeWidget>
-
-#include <TelepathyQt4/Contact>
-
-class Config;
-class ContactWrapper;
-
-class TelepathyContact: public Plasma::Applet
+ContactWrapper::ContactWrapper(QObject* parent)
+    : QObject(parent)
+    , m_contact(0)
 {
-    Q_OBJECT
-public:
-    TelepathyContact(QObject *parent, const QVariantList &args);
-    ~TelepathyContact();
+}
 
-    void init();
-    void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
+ContactWrapper::~ContactWrapper()
+{
+}
 
-    /** overide of config signal */
-    void showConfigurationInterface();
+QString ContactWrapper::avatar() const
+{
+    if (m_contact) {
+        if (!m_contact->avatarData().fileName.isEmpty()) {
+            return m_contact->avatarData().fileName;
+        } else {
+            return QString("im-user");
+        }
+    } else {
+        // return default icon
+        return QString("im-user");
+    }
+}
 
-public slots:
-    /** called from config dialog to set new contact
-     * @param newContact Tp::ContactPtr to the new contact to use
-     */
-    void setContact(const Tp::ContactPtr &newContact);
+Tp::ContactPtr ContactWrapper::contact() const
+{
+    return m_contact;
+}
 
-private:
-    Config *m_config;
-    Plasma::DeclarativeWidget *m_declarative;
-    ContactWrapper *m_contact;
-    QObject *m_qmlObject;
-};
+QString ContactWrapper::displayName() const
+{
+    if (m_contact) {
+        return m_contact->alias();
+    } else {
+        return QString();
+    }
+}
 
-#endif  // TELEPATHY_CONTACT_H
+QString ContactWrapper::presenceStatus() const
+{
+    if (m_contact) {
+        return m_contact->presence().status();
+    } else {
+        return QString("");
+    }
+}
+
+void ContactWrapper::setContact(const Tp::ContactPtr& newContact)
+{
+    qDebug() << "setting new contact to: " << newContact->id();
+    m_contact = newContact;
+
+    // tell QML we have a new contact
+    emit(newContactSet());
+}
+

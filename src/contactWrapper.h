@@ -17,43 +17,46 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#ifndef TELEPATHY_CONTACT_H
-#define TELEPATHY_CONTACT_H
+#ifndef CONTACT_WRAPER_H
+#define CONTACT_WRAPER_H
 
-#include <KIcon>
-
-#include <Plasma/Applet>
-#include <Plasma/DeclarativeWidget>
+#include <QtCore/QObject>
 
 #include <TelepathyQt4/Contact>
 
-class Config;
-class ContactWrapper;
-
-class TelepathyContact: public Plasma::Applet
+class ContactWrapper : public QObject
 {
     Q_OBJECT
 public:
-    TelepathyContact(QObject *parent, const QVariantList &args);
-    ~TelepathyContact();
+    ContactWrapper(QObject *parent = 0);
+    virtual ~ContactWrapper();
 
-    void init();
-    void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
+    Q_PROPERTY(QString avatar READ avatar);
+    Q_PROPERTY(QString displayName READ displayName);
+    Q_PROPERTY(QString presenceStatus READ presenceStatus);
 
-    /** overide of config signal */
-    void showConfigurationInterface();
+    /** returns the avatar location for the contact */
+    QString avatar() const;
 
-public slots:
-    /** called from config dialog to set new contact
-     * @param newContact Tp::ContactPtr to the new contact to use
+    /** returns current contact being rappresented */
+    Tp::ContactPtr contact() const;
+
+    /** returns the display name of the contact */
+    QString displayName() const;
+
+    /** returns the contact presence status (online, offlince ... ) */
+    QString presenceStatus() const;
+
+    /** set new contact to rappresent
+     * @param newContact the contact to rappresent
      */
     void setContact(const Tp::ContactPtr &newContact);
 
+signals:
+    void newContactSet();
+
 private:
-    Config *m_config;
-    Plasma::DeclarativeWidget *m_declarative;
-    ContactWrapper *m_contact;
-    QObject *m_qmlObject;
+    Tp::ContactPtr m_contact;
 };
 
-#endif  // TELEPATHY_CONTACT_H
+#endif  // CONTACT_WRAPER_H

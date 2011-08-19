@@ -37,4 +37,13 @@ Item {
             right: parent.right;
         }
     }
+
+    function update()
+    {
+        wrapper.status = TelepathyContact.presenceStatus;
+
+        // update avatar
+        avatar.update();
+        avatar.setAvatarPresenceStatus(wrapper.status);
+    }
 }
