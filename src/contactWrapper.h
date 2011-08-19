@@ -53,9 +53,14 @@ public:
     void setContact(const Tp::ContactPtr &newContact);
 
 signals:
+    void avatarChanged();
     void newContactSet();
+    void presenceChanged();
 
 private:
+    void setupConnects();
+    void undoConnects();
+
     Tp::ContactPtr m_contact;
 };
 

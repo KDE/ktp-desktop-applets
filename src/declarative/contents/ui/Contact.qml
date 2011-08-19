@@ -40,10 +40,12 @@ Item {
 
     function update()
     {
-        wrapper.status = TelepathyContact.presenceStatus;
+        if ( wrapper.status != TelepathyContact.presenceStatus) {
+            wrapper.status = TelepathyContact.presenceStatus;
+            avatar.setAvatarPresenceStatus(wrapper.status);
+        }
 
         // update avatar
         avatar.update();
-        avatar.setAvatarPresenceStatus(wrapper.status);
     }
 }

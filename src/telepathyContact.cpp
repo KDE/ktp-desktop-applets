@@ -69,7 +69,9 @@ void TelepathyContact::init()
         m_qmlObject = dynamic_cast<QObject*>(m_declarative->rootObject());
 
         // connect the qml object to recieve signals from C++ end
-        connect(m_contact, SIGNAL(newContactSet()), m_qmlObject, SLOT(onNewContactSet()));
+        connect(m_contact, SIGNAL(newContactSet()), m_qmlObject, SLOT(updateContact()));
+        connect(m_contact, SIGNAL(avatarChanged()), m_qmlObject, SLOT(updateContact()));
+        connect(m_contact, SIGNAL(presenceChanged()), m_qmlObject, SLOT(updateContact()));
     }
 }
 

@@ -69,12 +69,29 @@ QString ContactWrapper::presenceStatus() const
     }
 }
 
+void ContactWrapper::setupConnects()
+{
+    connect(m_contact.data(), SIGNAL(avatarDataChanged(Tp::AvatarData)), this, SIGNAL(avatarChanged()));
+    connect(m_contact.data(), SIGNAL(presenceChanged(Tp::Presence)), this, SIGNAL(presenceChanged()));
+}
+
 void ContactWrapper::setContact(const Tp::ContactPtr& newContact)
 {
     qDebug() << "setting new contact to: " << newContact->id();
+
+    // disconnect signals
+    undoConnects();
     m_contact = newContact;
+
+    // establish new signals
+    setupConnects();
 
     // tell QML we have a new contact
     emit(newContactSet());
+}
+
+void ContactWrapper::undoConnects()
+{
+    disconnect(m_contact.data(), 0, 0, 0);
 }
 

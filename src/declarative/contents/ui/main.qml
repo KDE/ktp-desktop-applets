@@ -31,7 +31,7 @@ Item {
         anchors.centerIn: parent;
     }
 
-    function onNewContactSet()
+    function updateContact()
     {
         contact.update();
     }
