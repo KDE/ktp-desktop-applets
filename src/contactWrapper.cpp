@@ -20,6 +20,7 @@
 #include "contactWrapper.h"
 
 #include <KToolInvocation>
+#include <KUrl>
 
 #include <TelepathyQt4/AvatarData>
 #include <TelepathyQt4/PendingChannelRequest>
@@ -103,12 +104,17 @@ void ContactWrapper::sendMail()
         return;
     }
 
-    KToolInvocation::invokeMailer(m_contact->id());
+    KToolInvocation::invokeMailer(KUrl(m_contact->id()));
 }
 
 void ContactWrapper::startAudioCall()
 {
     qDebug("ContactWrapper::startAudioCall");
+}
+
+void ContactWrapper::startFileTransfer()
+{
+    qDebug("ContactWrapper::startFileTransfer");
 }
 
 void ContactWrapper::startTextChat()
@@ -121,6 +127,11 @@ void ContactWrapper::startTextChat()
                                                                         QDateTime::currentDateTime(),
                                                                         PREFERRED_TEXTCHAT_HANDLER);
     connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
+}
+
+void ContactWrapper::startVideoCall()
+{
+    qDebug("ContactWrapper::startVideoCall");
 }
 
 void ContactWrapper::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)

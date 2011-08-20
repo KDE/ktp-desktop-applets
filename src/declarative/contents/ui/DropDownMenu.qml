@@ -25,7 +25,7 @@ Item {
     state: "hidden";
 
     Row {
-        spacing: 4;
+        spacing: 2;
         anchors.centerIn: parent;
 
         PlasmaWidgets.IconWidget {
@@ -58,6 +58,28 @@ Item {
 
             onClicked: {
                 TelepathyContact.startTextChat();
+            }
+        }
+
+        PlasmaWidgets.IconWidget {
+            id: videoButton;
+            icon: QIcon("camera-web");
+            width: 22;
+            height: 22;
+
+            onClicked: {
+                TelepathyContact.startVideoCall();
+            }
+        }
+
+        PlasmaWidgets.IconWidget {
+            id: fileTransferButton;
+            icon: QIcon("mail-attachment");
+            width: 22;
+            height: 22;
+
+            onClicked: {
+                TelepathyContact.startFileTransfer();
             }
         }
     }

@@ -57,7 +57,9 @@ public:
 public slots:
     void sendMail();
     void startAudioCall();
+    void startFileTransfer();
     void startTextChat();
+    void startVideoCall();
 
 signals:
     void avatarChanged();
