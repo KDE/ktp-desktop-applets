@@ -19,6 +19,8 @@
 
 #include "contactWrapper.h"
 
+#include <KToolInvocation>
+
 #include <TelepathyQt4/AvatarData>
 #include <TelepathyQt4/PendingChannelRequest>
 #include <TelepathyQt4/Presence>
@@ -97,7 +99,11 @@ void ContactWrapper::setupConnects()
 
 void ContactWrapper::sendMail()
 {
-    qDebug("ContactWrapper::sendMail");
+    if (!m_account || !m_contact) {
+        return;
+    }
+
+    KToolInvocation::invokeMailer(m_contact->id());
 }
 
 void ContactWrapper::startAudioCall()
@@ -107,8 +113,7 @@ void ContactWrapper::startAudioCall()
 
 void ContactWrapper::startTextChat()
 {
-    qDebug("ContactWrapper::startTextChat");
-    if (!m_account) {
+    if (!m_account || !m_contact) {
         return;
     }
 
