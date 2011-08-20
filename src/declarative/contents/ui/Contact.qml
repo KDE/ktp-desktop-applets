@@ -27,7 +27,7 @@ Item {
 
     anchors.fill: parent;
 
-    Avatar{
+    Avatar {
         id: avatar;
         avatarPresenceStatus: wrapper.status;
 
@@ -36,11 +36,26 @@ Item {
             left: parent.left;
             right: parent.right;
         }
+
+        onClicked: {
+            dropDownMenu.toggleMenu();
+        }
+    }
+
+    DropDownMenu {
+        id: dropDownMenu;
+        width: wrapper.width;
+
+        anchors {
+            top: avatar.bottom;
+            left: avatar.left;
+            right: avatar.right;
+        }
     }
 
     function update()
     {
-        if ( wrapper.status != TelepathyContact.presenceStatus) {
+        if (wrapper.status != TelepathyContact.presenceStatus) {
             wrapper.status = TelepathyContact.presenceStatus;
             avatar.setAvatarPresenceStatus(wrapper.status);
         }

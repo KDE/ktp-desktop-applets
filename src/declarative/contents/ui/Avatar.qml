@@ -21,9 +21,13 @@ import Qt 4.7
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 
 Item {
+    id: container;
+
     // eliminate once finished. This is only a test image
     property string avatarPath: "";
     property string avatarPresenceStatus;
+
+    signal clicked();
 
     anchors.fill: parent;
 
@@ -38,7 +42,8 @@ Item {
         anchors.margins: 10;
 
         onClicked: {
-            showMenu();
+            // toggleMenu
+            container.clicked();
         }
 
         Component.onCompleted: {

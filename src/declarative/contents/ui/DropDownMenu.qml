@@ -18,26 +18,71 @@
  ***************************************************************************/
 
 import Qt 4.7
+import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 
 Item {
-    id: mainWidget;
+    id: container;
+    state: "hidden";
 
-    // default contact size (also ni metadata file) just to be sure
-    width: 128;
-    height: 128;
-
-    Contact {
-        id: contact;
+    Row {
+        spacing: 4;
         anchors.centerIn: parent;
+
+        PlasmaWidgets.IconWidget {
+            id: callButton;
+            icon: QIcon("call-start");
+            width: 22;
+            height: 22
+        }
+
+        PlasmaWidgets.IconWidget {
+            id: mailButton;
+            icon: QIcon("mail-flag");
+            width: 22;
+            height: 22
+        }
+
+        PlasmaWidgets.IconWidget {
+            id: chatButton;
+            icon: QIcon("document-edit");
+            width: 22;
+            height: 22;
+        }
     }
 
-    function updateContact()
-    {
-        contact.update();
-    }
+    states: [
+        State {
+            name: "visible";
+            PropertyChanges {
+                target: container;
+                height: 30;
+                opacity: 1;
+            }
+        },
+        State {
+            name: "hidden";
+            PropertyChanges {
+                target: container;
+                height: 0;
+                opacity: 0;
+            }
+        }
+    ]
 
-    function toggleDropDownMenu()
+    transitions:
+        Transition {
+            NumberAnimation {
+                properties: "height,opacity";
+                easing.type: Easing.Linear;
+            }
+        }
+
+    function toggleMenu()
     {
-        contact.toggleMenu();
+        if (state == "hidden") {
+            state = "visible";
+        } else {
+            state = "hidden";
+        }
     }
 }
