@@ -44,7 +44,7 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     // user shouldn't be able to resize the plasmoid
     setAspectRatioMode(Plasma::FixedSize);
 
-    connect(m_config, SIGNAL(setNewContact(Tp::ContactPtr)), this, SLOT(setContact(Tp::ContactPtr)));
+    connect(m_config, SIGNAL(setNewContact(Tp::ContactPtr, Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr, Tp::AccountPtr)));
 }
 
 TelepathyContact::~TelepathyContact()
@@ -80,12 +80,12 @@ void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsIte
     Plasma::Applet::paintInterface(p, option, contentsRect);
 }
 
-void TelepathyContact::setContact(const Tp::ContactPtr& newContact)
+void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)
 {
     Q_ASSERT(newContact);
 
     if (!m_contact->contact() || m_contact->contact()->id() != newContact->id()) {
-        m_contact->setContact(newContact);
+        m_contact->setContact(newContact, relatedAccount);
     }
 }
 

@@ -33,6 +33,10 @@ Item {
             icon: QIcon("call-start");
             width: 22;
             height: 22
+
+            onClicked: {
+                TelepathyContact.startAudioCall();
+            }
         }
 
         PlasmaWidgets.IconWidget {
@@ -40,6 +44,10 @@ Item {
             icon: QIcon("mail-flag");
             width: 22;
             height: 22
+
+            onClicked: {
+                TelepathyContact.sendMail();
+            }
         }
 
         PlasmaWidgets.IconWidget {
@@ -47,6 +55,10 @@ Item {
             icon: QIcon("document-edit");
             width: 22;
             height: 22;
+
+            onClicked: {
+                TelepathyContact.startTextChat();
+            }
         }
     }
 

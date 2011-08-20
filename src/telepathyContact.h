@@ -46,8 +46,9 @@ public:
 public slots:
     /** called from config dialog to set new contact
      * @param newContact Tp::ContactPtr to the new contact to use
+     * @param relatedAccount Tp:AccountPtr to the account related to the contact
      */
-    void setContact(const Tp::ContactPtr &newContact);
+    void setContact(const Tp::ContactPtr &newContact, const Tp::AccountPtr &relatedAccount);
 
 private:
     Config *m_config;

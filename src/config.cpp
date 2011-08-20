@@ -157,7 +157,11 @@ void Config::slotButtonClicked(int button)
     if (button == KDialog::Ok && selectedItem.isValid()) {
         if (selectedItem.data(AccountsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>()) {
             ContactModelItem *item = selectedItem.data(AccountsModel::ItemRole).value<ContactModelItem*>();
-            setNewContact(item->contact());
+
+            // retrieve account related to the contact
+            Tp::AccountPtr account = m_model->accountForContactItem(item);
+
+            setNewContact(item->contact(), account);
             accept();
         }
     }

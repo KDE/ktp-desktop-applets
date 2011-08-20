@@ -42,7 +42,7 @@ public:
     ~Config();
 
 signals:
-    void setNewContact(const Tp::ContactPtr &newContact);
+    void setNewContact(const Tp::ContactPtr &newContact, const Tp::AccountPtr &relatedAccount);
 
 protected slots:
     void slotButtonClicked(int button);
@@ -54,8 +54,7 @@ private slots:
     void onAccountManagerReady(Tp::PendingOperation* op);
 
 private:
-    /** prepare the contacts to be show in the list */
-    void setupContactsList();
+    void setupContactsList();                               /** prepare the contacts to be show in the list */
 
     AccountsModel *m_model;
     AccountsFilterModel *m_modelFilter;

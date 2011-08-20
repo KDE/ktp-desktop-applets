@@ -25,6 +25,7 @@
 ContactWrapper::ContactWrapper(QObject* parent)
     : QObject(parent)
     , m_contact(0)
+    , m_account(0)
 {
 }
 
@@ -75,13 +76,30 @@ void ContactWrapper::setupConnects()
     connect(m_contact.data(), SIGNAL(presenceChanged(Tp::Presence)), this, SIGNAL(presenceChanged()));
 }
 
-void ContactWrapper::setContact(const Tp::ContactPtr& newContact)
+void ContactWrapper::sendMail()
+{
+    qDebug("ContactWrapper::sendMail");
+}
+
+void ContactWrapper::startAudioCall()
+{
+    qDebug("ContactWrapper::startAudioCall");
+}
+
+void ContactWrapper::startTextChat()
+{
+    qDebug("ContactWrapper::startTextChat");
+}
+
+void ContactWrapper::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)
 {
     qDebug() << "setting new contact to: " << newContact->id();
+    qDebug() << "with account " << relatedAccount->displayName();
 
     // disconnect signals
     undoConnects();
     m_contact = newContact;
+    m_account = relatedAccount;
 
     // establish new signals
     setupConnects();

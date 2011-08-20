@@ -22,6 +22,7 @@
 
 #include <QtCore/QObject>
 
+#include <TelepathyQt4/Account>
 #include <TelepathyQt4/Contact>
 
 class ContactWrapper : public QObject
@@ -49,8 +50,14 @@ public:
 
     /** set new contact to rappresent
      * @param newContact the contact to rappresent
+     * @param relatedAccoutn the account related to the contact to set
      */
-    void setContact(const Tp::ContactPtr &newContact);
+    void setContact(const Tp::ContactPtr &newContact, const Tp::AccountPtr &relatedAccount);
+
+public slots:
+    void sendMail();
+    void startAudioCall();
+    void startTextChat();
 
 signals:
     void avatarChanged();
@@ -61,6 +68,7 @@ private:
     void setupConnects();
     void undoConnects();
 
+    Tp::AccountPtr m_account;
     Tp::ContactPtr m_contact;
 };
 
