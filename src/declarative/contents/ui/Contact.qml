@@ -62,5 +62,6 @@ Item {
 
         // update avatar
         avatar.update();
+        dropDownMenu.update();
     }
 }

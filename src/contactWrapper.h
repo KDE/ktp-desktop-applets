@@ -33,11 +33,23 @@ public:
     virtual ~ContactWrapper();
 
     Q_PROPERTY(QString avatar READ avatar);
+    Q_PROPERTY(bool canSendFile READ canSendFile);
+    Q_PROPERTY(bool canStartAudioCall READ canStartAudioCall);
+    Q_PROPERTY(bool canStartVideo READ canStartVideo);
     Q_PROPERTY(QString displayName READ displayName);
     Q_PROPERTY(QString presenceStatus READ presenceStatus);
 
     /** returns the avatar location for the contact */
     QString avatar() const;
+
+    /** returns wether the contact can send files */
+    bool canSendFile() const;
+
+    /** returns wether the contact can start/recieve audio calls */
+    bool canStartAudioCall() const;
+
+    /** returns wether the contact can start/recieve video */
+    bool canStartVideo() const;
 
     /** returns current contact being rappresented */
     Tp::ContactPtr contact() const;

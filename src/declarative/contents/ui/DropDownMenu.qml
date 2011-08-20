@@ -119,4 +119,12 @@ Item {
             state = "hidden";
         }
     }
+
+    function update()
+    {
+        // update icon "enables"
+        callButton.enabled = TelepathyContact.canStartAudioCall;
+        videoButton.enabled = TelepathyContact.canStartVideo;
+        fileTransferButton.enabled = TelepathyContact.canSendFile;
+    }
 }

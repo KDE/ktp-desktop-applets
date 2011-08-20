@@ -23,6 +23,7 @@
 #include <KUrl>
 
 #include <TelepathyQt4/AvatarData>
+#include <TelepathyQt4/ContactCapabilities>
 #include <TelepathyQt4/PendingChannelRequest>
 #include <TelepathyQt4/Presence>
 
@@ -50,6 +51,33 @@ QString ContactWrapper::avatar() const
     } else {
         // return default icon
         return QString("im-user");
+    }
+}
+
+bool ContactWrapper::canSendFile() const
+{
+    if (m_contact && m_account) {
+        return (m_contact->capabilities().fileTransfers() && m_account->capabilities().fileTransfers());
+    } else {
+        return false;
+    }
+}
+
+bool ContactWrapper::canStartAudioCall() const
+{
+    if (m_contact && m_account) {
+        return (m_contact->capabilities().streamedMediaAudioCalls() && m_account->capabilities().streamedMediaAudioCalls());
+    } else {
+        return false;
+    }
+}
+
+bool ContactWrapper::canStartVideo() const
+{
+    if (m_contact && m_account) {
+        return (m_contact->capabilities().streamedMediaVideoCalls() && m_account->capabilities().streamedMediaVideoCalls());
+    } else {
+        return false;
     }
 }
 
