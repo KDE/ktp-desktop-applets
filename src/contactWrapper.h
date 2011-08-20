@@ -64,6 +64,9 @@ signals:
     void newContactSet();
     void presenceChanged();
 
+private slots:
+    void genericOperationFinished(Tp::PendingOperation *op);
+
 private:
     void setupConnects();
     void undoConnects();

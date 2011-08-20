@@ -20,7 +20,10 @@
 #include "contactWrapper.h"
 
 #include <TelepathyQt4/AvatarData>
+#include <TelepathyQt4/PendingChannelRequest>
 #include <TelepathyQt4/Presence>
+
+#define PREFERRED_TEXTCHAT_HANDLER "org.freedesktop.Telepathy.Client.KDE.TextUi"
 
 ContactWrapper::ContactWrapper(QObject* parent)
     : QObject(parent)
@@ -61,6 +64,22 @@ QString ContactWrapper::displayName() const
     }
 }
 
+void ContactWrapper::genericOperationFinished(Tp::PendingOperation* op)
+{
+    /// TODO send notification on error. Why doesn't the static method work??
+    if (op->isError()) {
+        QString errorMsg(op->errorName() + ": " + op->errorMessage());
+
+//         KNotification::event("telepathyError", errorMsg);
+//
+//         KNotification *notification = new KNotification("telepathyError", );
+//         KAboutData aboutData("ktelepathy",0,KLocalizedString(),0);
+//         notification->setComponentData(KComponentData(aboutData));
+//         notification->setText(errorMsg);
+//         notification->sendEvent();
+    }
+}
+
 QString ContactWrapper::presenceStatus() const
 {
     if (m_contact) {
@@ -89,6 +108,14 @@ void ContactWrapper::startAudioCall()
 void ContactWrapper::startTextChat()
 {
     qDebug("ContactWrapper::startTextChat");
+    if (!m_account) {
+        return;
+    }
+
+    Tp::PendingChannelRequest* channelRequest = m_account->ensureTextChat(m_contact,
+                                                                        QDateTime::currentDateTime(),
+                                                                        PREFERRED_TEXTCHAT_HANDLER);
+    connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
 }
 
 void ContactWrapper::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)
@@ -110,6 +137,8 @@ void ContactWrapper::setContact(const Tp::ContactPtr& newContact, const Tp::Acco
 
 void ContactWrapper::undoConnects()
 {
-    disconnect(m_contact.data(), 0, 0, 0);
+    if (m_contact) {
+        disconnect(m_contact.data(), 0, 0, 0);
+    }
 }
 
