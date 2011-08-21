@@ -12,6 +12,6 @@ include_directories(
     ${KDE4_INCLUDES}
 )
 
-install(DIRECTORY package/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.telepathy-presence PATTERN .git EXCLUDE PATTERN CMakeLists.txt EXCLUDE)
+install(DIRECTORY package/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.telepathy-contact-list PATTERN .git EXCLUDE PATTERN CMakeLists.txt EXCLUDE)
 
 install(FILES metadata.desktop DESTINATION ${SERVICES_INSTALL_DIR} RENAME metadata.desktop)
