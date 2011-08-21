@@ -18,52 +18,44 @@
  ***************************************************************************/
 
 import Qt 4.7
+import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 
 Item {
-    id: main;
-    width: 200;
-    height: 400;
-    anchors.fill: parent;
+    id: delegate;
 
-    // TODO make plasmoid busy when loading contacts on startup to avoid the user
-    // complaining about sluggish plasmoid. The "slowness" is caused by nepomuk storing 1000000000000 contacts
-    // need to make model faster (talk to david)
+    height: 30;
+    width: parent.width;
 
-    // contact listview
-    ContactList {
-        id: contactList;
-        anchors.fill: parent;
-        state: "listView";      // start with list view
+    property string delegateDisplayName;
+    property string delegateAvatar;
+
+    Text {
+        text: delegateDisplayName + delegateAvatar;
+        color: "white"
+        anchors {
+            right: parent.right;
+        }
     }
 
+    Rectangle {
+        color: "transparent";
+        border.color: "red";
+        anchors.fill: parent;
+    }
 
-    // THIS WILL NOT BE NEEDED.
-//    // set Label on the left
-//    ExternalLabel {
-//        id: label;
-//        width: 150;
-//        height: 30;
+    PlasmaWidgets.IconWidget {
+        width: 30;
+        height: parent.height;
+        icon: QIcon("im-user");
 
-//        Component.onCompleted: {
-//            setLabelOrientation();
-//        }
+        anchors {
+            left: parent.left;
+            top: parent.top;        // not needed
+            bottom: parent.bottom;  // not needed
+        }
 
-//        onOrientationChanged: {
-//            setLabelOrientation();
-//        }
-//    }
-
-//    // set correct orientation for components according to the
-//    // contactlist orientation
-//    function setLabelOrientation()
-//    {
-//        switch (label.orientation) {
-//            case "left": {
-//                label.anchors.bottom = main.bottom;
-//                label.anchors.left = main.left;
-//                label.transformOrigin = Item.BottomLeft;
-//                label.rotation = 270;
-//            }
-//        }
-//    }
+        Component.onCompleted: {
+            console.log("LOADED: " + delegate.delegateAvatar);
+        }
+    }
 }

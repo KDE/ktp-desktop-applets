@@ -17,44 +17,30 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-import Qt 4.7
-import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+#ifndef TELEPATHY_CONTACT_LIST_H
+#define TELEPATHY_CONTACT_LIST_H
 
-Item {
-    id: delegate;
+#include <Plasma/Applet>
+#include <Plasma/DeclarativeWidget>
 
-    height: 30;
-    width: parent.width;
+class TelepathyContactList : public Plasma::Applet
+{
+    Q_OBJECT
+public:
+    TelepathyContactList(QObject *parent, const QVariantList &args);
+    virtual ~TelepathyContactList();
 
-    property string delegateDisplayName;
-    property string delegateAvatar;
+    Q_PROPERTY(int width READ appletWidth);
+    Q_PROPERTY(int height READ appletHeight);
 
-    Text {
-        text: delegateDisplayName + delegateAvatar;
-        anchors {
-            right: parent.right;
-        }
-    }
+    int appletHeight() const;     /** returns plasma applet's height */
+    int appletWidth() const;      /** returns plasma applet's width */
+    void init();
 
-    Rectangle {
-        color: "transparent";
-        border.color: "red";
-        anchors.fill: parent;
-    }
 
-    PlasmaWidgets.IconWidget {
-        width: 30;
-        height: parent.height;
-        icon: QIcon("im-user");
+private:
+    Plasma::DeclarativeWidget *m_declarative;
+    QObject *m_qmlObject;
+};
 
-        anchors {
-            left: parent.left;
-            top: parent.top;        // not needed
-            bottom: parent.bottom;  // not needed
-        }
-
-        Component.onCompleted: {
-            console.log("LOADED: " + delegate.delegateAvatar);
-        }
-    }
-}
+#endif  // TELEPATHY_CONTACT_LIST_H
