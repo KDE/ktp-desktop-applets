@@ -76,6 +76,11 @@ Item {
         delegate:
             ListContactDelegate {
                 delegateDisplayName: displayName;
+                delegateAvatar: avatar;
+//                delegatePresenceIcon: presenceIcon;
+                delegatePresenceMessage: presenceMessage;
+                delegatePresenceName: presenceName;
+//                delegatePresenceType: presenceType;
             }
     }
 
