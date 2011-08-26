@@ -30,9 +30,13 @@ Item {
 
     property string delegateDisplayName;
     property string delegateAvatar;
+//    property QIcon delegatePresenceIcon;
+    property string delegatePresenceMessage;
+//    property string delegatePresenceType;
+    property string delegatePresenceName;
 
     // emitted when mouse hovers over contact
-    signal setGridContactDisplayName(variant gridContactDisplayName);
+    signal setGridContactDisplayName(variant gridContactDisplayName, variant gridPresenceMessage);
 
     width: 40;
     height: 40;
@@ -40,7 +44,24 @@ Item {
     PlasmaWidgets.IconWidget {
         id: contactIcon;
         icon: QIcon("im-user");         // temp icon until it's sorted out
-        anchors.centerIn: gridDelegate;
+        anchors.fill: parent;
+    }
+
+    BorderImage {
+        id: avatarFrame;
+        width: parent.width;
+        height: parent.height;
+
+        border {
+            left: 2
+            right: 2
+            top: 2
+            bottom: 2
+        }
+
+        anchors {
+            centerIn: gridDelegate;
+        }
     }
 
     MouseArea {
@@ -49,12 +70,53 @@ Item {
 
         // set contact name in view
         onEntered: {
-            gridDelegate.setGridContactDisplayName(delegateDisplayName);
+            gridDelegate.setGridContactDisplayName(delegateDisplayName, delegatePresenceMessage);
         }
 
         // unset contact name in view
         onExited: {
-            gridDelegate.setGridContactDisplayName("");
+            gridDelegate.setGridContactDisplayName("", "");
+        }
+    }
+
+    onDelegatePresenceNameChanged: {
+        console.log("CHANGING BORDER to_ : " + delegatePresenceName);
+        setAvatarPresenceStatus(delegatePresenceName);
+    }
+
+    function setAvatarPresenceStatus(presenceStatus)
+    {
+        switch (presenceStatus) {
+            case "available":
+                avatarFrame.source = "../frames/online.png";
+                if (!avatar.enabled) {
+                    avatar.enabled = true;
+                }
+                break;
+            case "dnd":
+                avatarFrame.source = "../frames/busy.png";
+                if (!avatar.enabled) {
+                    avatar.enabled = true;
+                }
+                break;
+            case "away":
+                avatarFrame.source = "../frames/away.png";
+                if (!avatar.enabled) {
+                    avatar.enabled = true;
+                }
+                break;
+            case "offline":
+                avatarFrame.source = "../frames/offline.png";
+                if (avatar.enabled) {
+                    avatar.enabled = false;
+                }
+                break;
+            default:
+                avatarFrame.source = "../frames/offline.png";
+                if (avatar.enabled) {
+                    avatar.enabled = false;
+                }
+                break;
         }
     }
 }

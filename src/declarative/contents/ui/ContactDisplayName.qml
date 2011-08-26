@@ -19,19 +19,45 @@
 
 /*
   This component is used ONLY by the contactlist in GRID view mode. It
-  displays the contact display name when a contact is hovered over.
+  displays basic contact info when a contact is hovered over.
 */
 
 import Qt 4.7
-//import org.kde.plasma.core 0.1 as PlasmaCore
+import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 
 Item {
-    property string nickToShow;
+    property string contactNickToShow;
+    property string contactPresenceMessage;
+
+    // get color from current plasma theme
+    property QtObject theme: PlasmaCore.Theme {}
 
     PlasmaWidgets.Label {
         id: idLabel;
-        text: nickToShow;
-        anchors.fill: parent;
+        text: contactNickToShow;
+        font.bold: true;
+        width: parent.width/2;
+
+        anchors {
+            left: parent.left;
+            verticalCenter: parent.verticalCenter;
+        }
+    }
+
+    Text {
+        id: presenceMessage;
+        text: contactPresenceMessage;
+        color: theme.textColor;
+
+        font.italic: true;
+        elide: Text.ElideRight;
+
+        anchors {
+            left: idLabel.right;
+            leftMargin: 2;
+            right: parent.right;
+            verticalCenter: parent.verticalCenter;
+        }
     }
 }

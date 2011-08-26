@@ -108,10 +108,14 @@ Item {
                 id: gridDelegate;
                 delegateDisplayName: displayName;
                 delegateAvatar: avatar;
+//                delegatePresenceIcon: presenceIcon;
+                delegatePresenceName: presenceName;
+                delegatePresenceMessage: presenceMessage;
 
                 onSetGridContactDisplayName: {
-                    console.log("SETTING NAME TO: " + gridContactDisplayName)
-                    contactDisplay.nickToShow = gridContactDisplayName;
+                    console.log("SETTING NAME TO: " + gridContactDisplayName + " with presence msg: " + gridPresenceMessage);
+                    contactDisplay.contactNickToShow = gridContactDisplayName;
+                    contactDisplay.contactPresenceMessage = gridPresenceMessage;
                 }
             }
     }

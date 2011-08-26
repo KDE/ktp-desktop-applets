@@ -27,6 +27,7 @@ Item {
     y:10;
 
     // plasmoid starting size
+    /// TODO load this from KConfig and read from C++
     width: 230;
     height: 380;
 
@@ -38,7 +39,7 @@ Item {
     ContactList {
         id: contactList;
         anchors.fill: parent;
-        state: "listView";      // start with list view
+        state: "gridView";//"listView";      // start with list view
     }
 
     Rectangle {
