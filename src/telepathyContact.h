@@ -50,7 +50,12 @@ public slots:
      */
     void setContact(const Tp::ContactPtr &newContact, const Tp::AccountPtr &relatedAccount);
 
+private slots:
+    void loadConfig();
+
 private:
+    void saveConfig();
+
     Config *m_config;
     Plasma::DeclarativeWidget *m_declarative;
     ContactWrapper *m_contact;

@@ -31,13 +31,22 @@
 
 ContactWrapper::ContactWrapper(QObject* parent)
     : QObject(parent)
-    , m_contact(0)
     , m_account(0)
+    , m_contact(0)
 {
 }
 
 ContactWrapper::~ContactWrapper()
 {
+}
+
+QString ContactWrapper::accountId() const
+{
+    if (m_account) {
+        return m_account.data()->uniqueIdentifier();
+    } else {
+        return QString();
+    }
 }
 
 QString ContactWrapper::avatar() const

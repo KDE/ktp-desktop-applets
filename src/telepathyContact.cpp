@@ -21,13 +21,16 @@
 #include "contactWrapper.h"
 #include "telepathyContact.h"
 
+#include <KConfig>
 #include <KStandardDirs>
+
 #include <QObject>
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
-// #include <Plasma/PackageStructure>
 
 #include <QtGui/QPainter>
+
+#include <TelepathyQt4/ContactManager>
 
 
 TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
@@ -45,6 +48,7 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     setAspectRatioMode(Plasma::FixedSize);
 
     connect(m_config, SIGNAL(setNewContact(Tp::ContactPtr, Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr, Tp::AccountPtr)));
+    connect(m_config, SIGNAL(loadConfig()), this, SLOT(loadConfig()));
 }
 
 TelepathyContact::~TelepathyContact()
@@ -75,9 +79,57 @@ void TelepathyContact::init()
     }
 }
 
+void TelepathyContact::loadConfig()
+{
+    KSharedConfigPtr config = KSharedConfig::openConfig("telepathycontactappletrc");
+    KConfigGroup group(config, "Contact");
+
+    QString contactId = group.readEntry("id", QString());
+    QString relatedAcc = group.readEntry("relatedAccount", QString());
+
+
+    if (!contactId.isEmpty() && !relatedAcc.isEmpty()) {
+        Tp::AccountPtr account = m_config->accountFromUniqueId(relatedAcc);
+        Tp::ContactPtr contact;
+
+        // check on account. Shouldn't ever be invalid
+        if (!account->isValidAccount()) {
+            return;
+        }
+
+        if (account->connection()->isValid()) {
+            QList<Tp::ContactPtr> contactList = account->connection()->contactManager()->allKnownContacts().toList();
+            bool match = false;
+
+            for (int i = 0; i < contactList.count() && !match; ++i) {
+                if (contactList.at(i)->id() == contactId) {
+                    contact = contactList.at(i);
+                    match = true;
+                    setContact(contact, account);
+                }
+            }
+        }/* else {
+            // just load avatar image
+            m_contact->
+        }*/
+    }
+}
+
 void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
 {
     Plasma::Applet::paintInterface(p, option, contentsRect);
+}
+
+void TelepathyContact::saveConfig()
+{
+    KConfig config("telepathycontactappletrc");
+
+    KConfigGroup group(&config, "Contact");
+    group.writeEntry("id", m_contact->contact()->id());
+    group.writeEntry("avatar", m_contact->contact()->avatarData().fileName);
+    group.writeEntry("relatedAccount", m_contact->accountId());
+
+    config.sync();
 }
 
 void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)
@@ -87,6 +139,8 @@ void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::Ac
     if (!m_contact->contact() || m_contact->contact()->id() != newContact->id()) {
         m_contact->setContact(newContact, relatedAccount);
     }
+
+    saveConfig();
 }
 
 void TelepathyContact::showConfigurationInterface()

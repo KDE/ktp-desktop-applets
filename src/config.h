@@ -41,7 +41,16 @@ public:
     Config(QWidget *parent = 0);
     ~Config();
 
+    /** retrieve accountPtr by given unique identifier */
+    Tp::AccountPtr accountFromUniqueId(const QString &id) const;
+
+//     /** retrieve contactPtr from given id */
+//     Tp::ContactPtr contactFromUniqueId(const Tp::AccountPtr &account, const QString &id) const;
+
 signals:
+    /** emitted when accountManager is ready so that the plasmoid can retrieve Account and Contact pointers */
+    void loadConfig();
+
     void setNewContact(const Tp::ContactPtr &newContact, const Tp::AccountPtr &relatedAccount);
 
 protected slots:

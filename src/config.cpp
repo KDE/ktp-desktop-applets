@@ -80,6 +80,21 @@ Config::~Config()
 {
 }
 
+Tp::AccountPtr Config::accountFromUniqueId(const QString& id) const
+{
+    Tp::AccountPtr account;
+
+    if (m_accountManager) {
+        foreach (account, m_accountManager->allAccounts()) {
+            if (account->uniqueIdentifier() == id) {
+                return account;
+            }
+        }
+    }
+
+    return account;
+}
+
 void Config::activateOkButton()
 {
     button(Ok)->setEnabled(true);
@@ -127,6 +142,8 @@ void Config::onAccountManagerReady(Tp::PendingOperation* op)
 //     m_modelFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
     setupContactsList();
+
+    emit(loadConfig());
 }
 
 void Config::setupContactsList()

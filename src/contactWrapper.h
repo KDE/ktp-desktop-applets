@@ -39,6 +39,9 @@ public:
     Q_PROPERTY(QString displayName READ displayName);
     Q_PROPERTY(QString presenceStatus READ presenceStatus);
 
+    /** returns the account id related to the contact chosen */
+    QString accountId() const;
+
     /** returns the avatar location for the contact */
     QString avatar() const;
 
