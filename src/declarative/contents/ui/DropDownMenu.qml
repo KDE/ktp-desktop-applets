@@ -36,6 +36,7 @@ Item {
 
             onClicked: {
                 TelepathyContact.startAudioCall();
+                toggleMenu();
             }
         }
 
@@ -47,6 +48,7 @@ Item {
 
             onClicked: {
                 TelepathyContact.sendMail();
+                toggleMenu();
             }
         }
 
@@ -58,6 +60,7 @@ Item {
 
             onClicked: {
                 TelepathyContact.startTextChat();
+                toggleMenu();
             }
         }
 
@@ -69,6 +72,7 @@ Item {
 
             onClicked: {
                 TelepathyContact.startVideoCall();
+                toggleMenu();
             }
         }
 
@@ -80,6 +84,7 @@ Item {
 
             onClicked: {
                 TelepathyContact.startFileTransfer();
+                toggleMenu();
             }
         }
     }
