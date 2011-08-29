@@ -63,11 +63,21 @@ public:
     /** returns the contact presence status (online, offlince ... ) */
     QString presenceStatus() const;
 
+    /** set account to which the contact is related
+     * @param relatedAccount account pointer
+     */
+    void setAccount(const Tp::AccountPtr &relatedAccount);
+
     /** set new contact to rappresent
      * @param newContact the contact to rappresent
-     * @param relatedAccoutn the account related to the contact to set
      */
-    void setContact(const Tp::ContactPtr &newContact, const Tp::AccountPtr &relatedAccount);
+    void setContact(const Tp::ContactPtr &newContact);
+
+    /** set temporary avatar image path. This is set for when KDE-Telepathy goes offline so the
+     * plasmoid can still show an image even without the pointer to the contact
+     * @param path path to avatar image
+     */
+    void setTempAvatar(const QString &path);
 
 public slots:
     void sendMail();
@@ -85,11 +95,14 @@ private slots:
     void genericOperationFinished(Tp::PendingOperation *op);
 
 private:
-    void setupConnects();
-    void undoConnects();
+    void setupAccountConnects();
+    void setupContactConnects();
+    void undoAccountConnects();
+    void undoContactConnects();
 
     Tp::AccountPtr m_account;
     Tp::ContactPtr m_contact;
+    QString m_tempAvatar;           /** this is the path to the cached avatar for when kde-telepathy is offline */
 };
 
 #endif  // CONTACT_WRAPER_H

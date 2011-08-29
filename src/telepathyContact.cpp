@@ -63,6 +63,8 @@ void TelepathyContact::init()
 {
     Plasma::Applet::init();
 
+    qDebug() << "APPLET ID: " << id();
+
     if (m_declarative) {
         QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-contact/contents/ui/main.qml");
         qDebug() << "LOADING: " << qmlFile;
@@ -82,10 +84,11 @@ void TelepathyContact::init()
 void TelepathyContact::loadConfig()
 {
     KSharedConfigPtr config = KSharedConfig::openConfig("telepathycontactappletrc");
-    KConfigGroup group(config, "Contact");
+    KConfigGroup group(config, QString::number(id()));
 
     QString contactId = group.readEntry("id", QString());
     QString relatedAcc = group.readEntry("relatedAccount", QString());
+    QString tempAvatar = group.readEntry("tempAvatar", QString());
 
 
     if (!contactId.isEmpty() && !relatedAcc.isEmpty()) {
@@ -97,7 +100,7 @@ void TelepathyContact::loadConfig()
             return;
         }
 
-        if (account->connection()->isValid()) {
+        if (account->connection()) {
             QList<Tp::ContactPtr> contactList = account->connection()->contactManager()->allKnownContacts().toList();
             bool match = false;
 
@@ -108,10 +111,14 @@ void TelepathyContact::loadConfig()
                     setContact(contact, account);
                 }
             }
-        }/* else {
-            // just load avatar image
-            m_contact->
-        }*/
+        } else {
+            // just load cached avatar image
+            m_contact->setTempAvatar(tempAvatar);
+
+            // just set account. When this will go online it will automatically load the contact pointer
+            // shown in the plasmoid
+            m_contact->setAccount(account);
+        }
     }
 }
 
@@ -124,9 +131,9 @@ void TelepathyContact::saveConfig()
 {
     KConfig config("telepathycontactappletrc");
 
-    KConfigGroup group(&config, "Contact");
+    KConfigGroup group(&config, QString::number(id()));
     group.writeEntry("id", m_contact->contact()->id());
-    group.writeEntry("avatar", m_contact->contact()->avatarData().fileName);
+    group.writeEntry("tempAvatar", m_contact->contact()->avatarData().fileName);
     group.writeEntry("relatedAccount", m_contact->accountId());
 
     config.sync();
@@ -135,9 +142,11 @@ void TelepathyContact::saveConfig()
 void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)
 {
     Q_ASSERT(newContact);
+    Q_ASSERT(relatedAccount);
 
     if (!m_contact->contact() || m_contact->contact()->id() != newContact->id()) {
-        m_contact->setContact(newContact, relatedAccount);
+        m_contact->setContact(newContact);
+        m_contact->setAccount(relatedAccount);
     }
 
     saveConfig();

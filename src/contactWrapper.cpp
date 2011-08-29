@@ -33,6 +33,7 @@ ContactWrapper::ContactWrapper(QObject* parent)
     : QObject(parent)
     , m_account(0)
     , m_contact(0)
+    , m_tempAvatar(QString("im-user"))
 {
 }
 
@@ -57,6 +58,9 @@ QString ContactWrapper::avatar() const
         } else {
             return QString("im-user");
         }
+    // check if temp avatar has been se
+    } else if (!m_tempAvatar.isEmpty()) {
+        return m_tempAvatar;
     } else {
         // return default icon
         return QString("im-user");
@@ -129,7 +133,13 @@ QString ContactWrapper::presenceStatus() const
     }
 }
 
-void ContactWrapper::setupConnects()
+void ContactWrapper::setupAccountConnects()
+{
+    // keep track of presence (online/offline is all we need)
+//     connect(m_account.data(), SIGNAL(currentPresenceChanged(Tp::Presence)), this, SIGNAL(/* something to send to QML*/));
+}
+
+void ContactWrapper::setupContactConnects()
 {
     connect(m_contact.data(), SIGNAL(avatarDataChanged(Tp::AvatarData)), this, SIGNAL(avatarChanged()));
     connect(m_contact.data(), SIGNAL(presenceChanged(Tp::Presence)), this, SIGNAL(presenceChanged()));
@@ -171,24 +181,45 @@ void ContactWrapper::startVideoCall()
     qDebug("ContactWrapper::startVideoCall");
 }
 
-void ContactWrapper::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)
+void ContactWrapper::setAccount(const Tp::AccountPtr& relatedAccount)
+{
+    qDebug() << "setting account to: " << relatedAccount->displayName();
+    undoAccountConnects();
+    m_account = relatedAccount;
+    setupAccountConnects();
+}
+
+void ContactWrapper::setContact(const Tp::ContactPtr& newContact)
 {
     qDebug() << "setting new contact to: " << newContact->id();
-    qDebug() << "with account " << relatedAccount->displayName();
 
     // disconnect signals
-    undoConnects();
+    undoContactConnects();
     m_contact = newContact;
-    m_account = relatedAccount;
 
     // establish new signals
-    setupConnects();
+    setupContactConnects();
 
     // tell QML we have a new contact
     emit(newContactSet());
 }
 
-void ContactWrapper::undoConnects()
+void ContactWrapper::setTempAvatar(const QString& path)
+{
+    m_tempAvatar = path;
+
+    // tell QML to change avatar shown
+    emit(avatarChanged());
+}
+
+void ContactWrapper::undoAccountConnects()
+{
+    if (m_account) {
+        disconnect(m_account.data(), 0, 0, 0);
+    }
+}
+
+void ContactWrapper::undoContactConnects()
 {
     if (m_contact) {
         disconnect(m_contact.data(), 0, 0, 0);
