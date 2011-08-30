@@ -78,6 +78,7 @@ void TelepathyContact::init()
         connect(m_contact, SIGNAL(newContactSet()), m_qmlObject, SLOT(updateContact()));
         connect(m_contact, SIGNAL(avatarChanged()), m_qmlObject, SLOT(updateContact()));
         connect(m_contact, SIGNAL(presenceChanged()), m_qmlObject, SLOT(updateContact()));
+        connect(m_contact, SIGNAL(accountPresenceChanged()), m_qmlObject, SLOT(accountPresenceChanged()));
     }
 }
 

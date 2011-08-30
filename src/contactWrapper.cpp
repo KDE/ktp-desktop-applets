@@ -124,6 +124,19 @@ void ContactWrapper::genericOperationFinished(Tp::PendingOperation* op)
     }
 }
 
+bool ContactWrapper::isAccountOnline() const
+{
+    if (m_account) {
+        if (m_account->currentPresence().type() == Tp::Presence::offline().type()) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
 QString ContactWrapper::presenceStatus() const
 {
     if (m_contact) {
@@ -136,7 +149,7 @@ QString ContactWrapper::presenceStatus() const
 void ContactWrapper::setupAccountConnects()
 {
     // keep track of presence (online/offline is all we need)
-//     connect(m_account.data(), SIGNAL(currentPresenceChanged(Tp::Presence)), this, SIGNAL(/* something to send to QML*/));
+    connect(m_account.data(), SIGNAL(currentPresenceChanged(Tp::Presence)), this, SIGNAL(accountPresenceChanged()));
 }
 
 void ContactWrapper::setupContactConnects()

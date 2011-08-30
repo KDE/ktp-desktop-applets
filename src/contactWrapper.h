@@ -32,6 +32,7 @@ public:
     ContactWrapper(QObject *parent = 0);
     virtual ~ContactWrapper();
 
+    Q_PROPERTY(bool accountOnline READ isAccountOnline);
     Q_PROPERTY(QString avatar READ avatar);
     Q_PROPERTY(bool canSendFile READ canSendFile);
     Q_PROPERTY(bool canStartAudioCall READ canStartAudioCall);
@@ -60,6 +61,9 @@ public:
     /** returns the display name of the contact */
     QString displayName() const;
 
+    /** returns wether the account is online/offline */
+    bool isAccountOnline() const;
+
     /** returns the contact presence status (online, offlince ... ) */
     QString presenceStatus() const;
 
@@ -87,6 +91,7 @@ public slots:
     void startVideoCall();
 
 signals:
+    void accountPresenceChanged();
     void avatarChanged();
     void newContactSet();
     void presenceChanged();

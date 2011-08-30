@@ -108,4 +108,18 @@ Item {
     {
         avatar.icon = QIcon(TelepathyContact.avatar);
     }
+
+    function accountPresenceChanged()
+    {
+        // check if user account is online
+        if (!TelepathyContact.accountOnline && avatar.enabled) {
+            avatar.enabled = false;
+            setAvatarPresenceStatus("offline");
+        } else if (TelepathyContact.accountOnline && !avatar.enabled) {
+            avatar.enabled = true;
+            // set back to normal
+            avatarPresenceStatus = TelepathyContact.presenceStatus;
+            setAvatarPresenceStatus(avatarPresenceStatus);
+        }
+    }
 }

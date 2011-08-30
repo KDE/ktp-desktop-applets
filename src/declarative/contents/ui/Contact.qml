@@ -64,4 +64,9 @@ Item {
         avatar.update();
         dropDownMenu.update();
     }
+
+    function accountPresenceChanged()
+    {
+        avatar.accountPresenceChanged();
+    }
 }

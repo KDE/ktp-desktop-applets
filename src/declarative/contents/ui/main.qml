@@ -40,4 +40,9 @@ Item {
     {
         contact.toggleMenu();
     }
+
+    function accountPresenceChanged()
+    {
+        contact.accountPresenceChanged();
+    }
 }
