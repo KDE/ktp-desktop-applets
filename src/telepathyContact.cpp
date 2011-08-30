@@ -84,13 +84,11 @@ void TelepathyContact::init()
 
 void TelepathyContact::loadConfig()
 {
-    KSharedConfigPtr config = KSharedConfig::openConfig("telepathycontactappletrc");
-    KConfigGroup group(config, QString::number(id()));
+    KConfigGroup group = Plasma::Applet::config();
 
     QString contactId = group.readEntry("id", QString());
     QString relatedAcc = group.readEntry("relatedAccount", QString());
     QString tempAvatar = group.readEntry("tempAvatar", QString());
-
 
     if (!contactId.isEmpty() && !relatedAcc.isEmpty()) {
         Tp::AccountPtr account = m_config->accountFromUniqueId(relatedAcc);
@@ -130,14 +128,14 @@ void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsIte
 
 void TelepathyContact::saveConfig()
 {
-    KConfig config("telepathycontactappletrc");
-
-    KConfigGroup group(&config, QString::number(id()));
+    KConfigGroup group = Plasma::Applet::config();
     group.writeEntry("id", m_contact->contact()->id());
     group.writeEntry("tempAvatar", m_contact->contact()->avatarData().fileName);
     group.writeEntry("relatedAccount", m_contact->accountId());
+    group.sync();
 
-    config.sync();
+    // tell plasmoid to save config
+    configNeedsSaving();
 }
 
 void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)
