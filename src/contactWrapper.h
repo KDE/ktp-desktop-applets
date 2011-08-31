@@ -83,6 +83,8 @@ public:
      */
     void setTempAvatar(const QString &path);
 
+    void setTempContactId(const QString &tempId);
+
 public slots:
     void sendMail();
     void startAudioCall();
@@ -98,6 +100,8 @@ signals:
 
 private slots:
     void genericOperationFinished(Tp::PendingOperation *op);
+    void onConnectionChanged(const Tp::ConnectionPtr &newConn);
+    void onContactManagerStateChanged(Tp::ContactListState state);
 
 private:
     void setupAccountConnects();
@@ -108,6 +112,7 @@ private:
     Tp::AccountPtr m_account;
     Tp::ContactPtr m_contact;
     QString m_tempAvatar;           /** this is the path to the cached avatar for when kde-telepathy is offline */
+    QString m_tempContactId;
 };
 
 #endif  // CONTACT_WRAPER_H

@@ -96,6 +96,7 @@ void TelepathyContact::loadConfig()
 
         // check on account. Shouldn't ever be invalid
         if (!account->isValidAccount()) {
+            /// TODO add error popup box?
             return;
         }
 
@@ -107,12 +108,14 @@ void TelepathyContact::loadConfig()
                 if (contactList.at(i)->id() == contactId) {
                     contact = contactList.at(i);
                     match = true;
-                    setContact(contact, account);
+                    m_contact->setContact(contact);
+                    m_contact->setAccount(account);
                 }
             }
         } else {
             // just load cached avatar image
             m_contact->setTempAvatar(tempAvatar);
+            m_contact->setTempContactId(contactId);
 
             // just set account. When this will go online it will automatically load the contact pointer
             // shown in the plasmoid
@@ -133,6 +136,9 @@ void TelepathyContact::saveConfig()
     group.writeEntry("tempAvatar", m_contact->contact()->avatarData().fileName);
     group.writeEntry("relatedAccount", m_contact->accountId());
     group.sync();
+
+    // update contactWrapper temp id
+    m_contact->setTempContactId(m_contact->contact()->id());
 
     // tell plasmoid to save config
     configNeedsSaving();

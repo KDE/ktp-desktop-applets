@@ -24,6 +24,7 @@
 
 #include <TelepathyQt4/AvatarData>
 #include <TelepathyQt4/ContactCapabilities>
+#include <TelepathyQt4/ContactManager>
 #include <TelepathyQt4/PendingChannelRequest>
 #include <TelepathyQt4/Presence>
 
@@ -137,6 +138,29 @@ bool ContactWrapper::isAccountOnline() const
     }
 }
 
+void ContactWrapper::onConnectionChanged(const Tp::ConnectionPtr& newConn)
+{
+    // connection needs to be valid
+    if (newConn) {
+        connect(newConn->contactManager().data(), SIGNAL(stateChanged(Tp::ContactListState)), this, SLOT(onContactManagerStateChanged(Tp::ContactListState)));
+    }
+}
+
+void ContactWrapper::onContactManagerStateChanged(Tp::ContactListState newState)
+{
+    if (newState == Tp::ContactListStateSuccess) {
+        QList<Tp::ContactPtr> contactList = m_account->connection()->contactManager()->allKnownContacts().toList();
+        bool match = false;
+
+        for (int i = 0; i < contactList.count() && !match; ++i) {
+            if (contactList.at(i)->id() == m_tempContactId) {
+                match = true;
+                setContact(contactList.at(i));
+            }
+        }
+    }
+}
+
 QString ContactWrapper::presenceStatus() const
 {
     if (m_contact) {
@@ -149,6 +173,7 @@ QString ContactWrapper::presenceStatus() const
 void ContactWrapper::setupAccountConnects()
 {
     // keep track of presence (online/offline is all we need)
+    connect(m_account.data(), SIGNAL(connectionChanged(Tp::ConnectionPtr)), this, SLOT(onConnectionChanged(Tp::ConnectionPtr)));
     connect(m_account.data(), SIGNAL(currentPresenceChanged(Tp::Presence)), this, SIGNAL(accountPresenceChanged()));
 }
 
@@ -223,6 +248,11 @@ void ContactWrapper::setTempAvatar(const QString& path)
 
     // tell QML to change avatar shown
     emit(avatarChanged());
+}
+
+void ContactWrapper::setTempContactId(const QString& tempId)
+{
+    m_tempContactId = tempId;
 }
 
 void ContactWrapper::undoAccountConnects()
