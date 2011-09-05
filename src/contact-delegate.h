@@ -21,7 +21,7 @@
 #ifndef CONTACTDELEGATECOMPACT_H
 #define CONTACTDELEGATECOMPACT_H
 
-#include "abstractContactDelegate.h"
+#include "abstract-contact-delegate.h"
 
 class ContactDelegate : public AbstractContactDelegate
 {

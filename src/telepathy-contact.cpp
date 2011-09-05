@@ -18,8 +18,8 @@
  ***************************************************************************/
 
 #include "config.h"
-#include "contactWrapper.h"
-#include "telepathyContact.h"
+#include "contact-wrapper.h"
+#include "telepathy-contact.h"
 
 #include <KConfig>
 #include <KStandardDirs>

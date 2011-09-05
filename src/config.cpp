@@ -18,7 +18,7 @@
  ***************************************************************************/
 
 #include "config.h"
-#include "contactDelegate.h"
+#include "contact-delegate.h"
 #include "models/accounts-model.h"
 #include "models/contact-model-item.h"
 #include "models/groups-model.h"

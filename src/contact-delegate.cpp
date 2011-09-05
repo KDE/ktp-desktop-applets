@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "contactDelegate.h"
+#include "contact-delegate.h"
 
 #include <QtGui/QPainter>
 #include <QtGui/QPainterPath>
@@ -166,4 +166,4 @@ QSize ContactDelegate::sizeHint(const QStyleOptionViewItem &option, const QModel
 }
 
 
-#include "contactDelegate.moc"
+#include "contact-delegate.moc"

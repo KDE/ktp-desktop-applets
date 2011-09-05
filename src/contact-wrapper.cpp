@@ -17,7 +17,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#include "contactWrapper.h"
+#include "contact-wrapper.h"
 
 #include <KToolInvocation>
 #include <KUrl>
