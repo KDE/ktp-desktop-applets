@@ -41,6 +41,7 @@ Config::Config(QWidget* parent)
 
     ui.setupUi(widget);
     setMainWidget(widget);
+    setCaption(i18n("Select a contact"));
 
     Tp::registerTypes();
 
