@@ -1,7 +1,9 @@
 [Desktop Entry]
 Name=Telepathy Contact
 Name[cs]=Kontakt Telepathy
+Name[it]=Contatti di Telepathy
 Name[nds]=Telepathy-Kontakt
+Name[nl]=Contacten van Telepathy
 Name[pt]=Contacto do Telepathy
 Name[pt_BR]=Contato do Telepathy
 Name[sv]=Telepathy Kontakt
@@ -9,7 +11,9 @@ Name[uk]=Контакт Telepathy
 Name[x-test]=xxTelepathy Contactxx
 Comment=telepathy contact applet
 Comment[cs]=Applet kontaktů Telepathy
+Comment[it]=applet dei contatti di Telepathy
 Comment[nds]=Lüttprogramm för Telepathy-Kontakten
+Comment[nl]=applet voor contacten van Telepathy
 Comment[pt]='applet' de contactos do telepathy
 Comment[pt_BR]=miniaplicativo de contatos do Telepathy
 Comment[sv]=Telepathy kontaktminiprogram
