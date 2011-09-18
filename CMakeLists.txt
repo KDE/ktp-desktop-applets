@@ -7,10 +7,10 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
 )
 
-set(KDE_MIN_VERSION "4.7.0")
+set(KDE_MIN_VERSION "4.6.0")
 
 find_package(KDE4 ${KDE_MIN_VERSION} REQUIRED)
-find_package(KDE4Workspace REQUIRED)
+#find_package(KDE4Workspace REQUIRED)
 find_package(TelepathyQt4 0.7.1 REQUIRED)
 
 include(KDE4Defaults)
