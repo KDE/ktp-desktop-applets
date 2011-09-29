@@ -2,6 +2,7 @@
 Name=Telepathy Contact
 Name[cs]=Kontakt Telepathy
 Name[da]=Telepathy-kontakt
+Name[fr]=Contact Telepathy
 Name[it]=Contatti di Telepathy
 Name[nds]=Telepathy-Kontakt
 Name[nl]=Contacten van Telepathy
@@ -13,6 +14,7 @@ Name[x-test]=xxTelepathy Contactxx
 Comment=telepathy contact applet
 Comment[cs]=Applet kontaktů Telepathy
 Comment[da]=applet til telepathy-kontakt
+Comment[fr]=Applet de contact Telepathy
 Comment[it]=applet dei contatti di Telepathy
 Comment[nds]=Lüttprogramm för Telepathy-Kontakten
 Comment[nl]=applet voor contacten van Telepathy
