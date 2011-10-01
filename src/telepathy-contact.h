@@ -56,6 +56,7 @@ private slots:
 private:
     void saveConfig();
 
+    QString m_fileToLoad;
     Config *m_config;
     Plasma::DeclarativeWidget *m_declarative;
     ContactWrapper *m_contact;

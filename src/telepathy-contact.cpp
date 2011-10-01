@@ -49,6 +49,11 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
 
     connect(m_config, SIGNAL(setNewContact(Tp::ContactPtr, Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr, Tp::AccountPtr)));
     connect(m_config, SIGNAL(loadConfig()), this, SLOT(loadConfig()));
+
+    if (args.length() == 1) {
+        m_fileToLoad = args.first().toString();
+    }
+
 }
 
 TelepathyContact::~TelepathyContact()
@@ -86,9 +91,25 @@ void TelepathyContact::loadConfig()
 {
     KConfigGroup group = Plasma::Applet::config();
 
-    QString contactId = group.readEntry("id", QString());
-    QString relatedAcc = group.readEntry("relatedAccount", QString());
-    QString tempAvatar = group.readEntry("tempAvatar", QString());
+    QString contactId;
+    QString relatedAcc;
+    QString tempAvatar;
+
+    //if provided with a file to load data from.
+    //otherwise load from configs
+    if (m_fileToLoad.isEmpty()) {
+        contactId = group.readEntry("id", QString());
+        relatedAcc = group.readEntry("relatedAccount", QString());
+        tempAvatar = group.readEntry("tempAvatar", QString());
+    } else {
+        QFile file(m_fileToLoad);
+        if (file.open(QFile::ReadOnly)) {
+            QDataStream ds(&file);
+            ds >> contactId;
+            ds >> relatedAcc ;
+            file.close();
+        }
+    }
 
     if (!contactId.isEmpty() && !relatedAcc.isEmpty()) {
         Tp::AccountPtr account = m_config->accountFromUniqueId(relatedAcc);
@@ -122,6 +143,7 @@ void TelepathyContact::loadConfig()
             m_contact->setAccount(account);
         }
     }
+    saveConfig();
 }
 
 void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
