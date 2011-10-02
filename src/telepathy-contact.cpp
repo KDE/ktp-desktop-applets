@@ -143,7 +143,6 @@ void TelepathyContact::loadConfig()
             m_contact->setAccount(account);
         }
     }
-    saveConfig();
 }
 
 void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
