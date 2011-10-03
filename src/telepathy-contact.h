@@ -25,6 +25,7 @@
 #include <Plasma/Applet>
 #include <Plasma/DeclarativeWidget>
 
+#include <TelepathyQt4/AccountManager>
 #include <TelepathyQt4/Contact>
 
 class Config;
@@ -52,15 +53,20 @@ public slots:
 
 private slots:
     void loadConfig();
+    void onAccountManagerReady(Tp::PendingOperation *op);
 
 private:
+    /** retrieve accountPtr by given unique identifier */
+    Tp::AccountPtr accountFromUniqueId(const QString &id) const;
+
     void saveConfig();
+    void setupAccountManager();
 
     QString m_fileToLoad;
-    Config *m_config;
     Plasma::DeclarativeWidget *m_declarative;
     ContactWrapper *m_contact;
     QObject *m_qmlObject;
+    Tp::AccountManagerPtr m_accountManager;
 };
 
 #endif  // TELEPATHY_CONTACT_H

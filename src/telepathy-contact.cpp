@@ -30,12 +30,15 @@
 
 #include <QtGui/QPainter>
 
+#include <TelepathyQt4/AccountManager>
 #include <TelepathyQt4/ContactManager>
+#include <TelepathyQt4/PendingOperation>
+#include <TelepathyQt4/PendingReady>
+#include <TelepathyQt4/Types>
 
 
 TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     : Plasma::Applet(parent, args)
-    , m_config(new Config())
     , m_declarative(new Plasma::DeclarativeWidget(this))
     , m_contact(new ContactWrapper(parent))
     , m_qmlObject(0)
@@ -47,8 +50,8 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     // user shouldn't be able to resize the plasmoid
     setAspectRatioMode(Plasma::FixedSize);
 
-    connect(m_config, SIGNAL(setNewContact(Tp::ContactPtr, Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr, Tp::AccountPtr)));
-    connect(m_config, SIGNAL(loadConfig()), this, SLOT(loadConfig()));
+    // prepare account manager
+    setupAccountManager();
 
     if (args.length() == 1) {
         m_fileToLoad = args.first().toString();
@@ -58,10 +61,24 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
 
 TelepathyContact::~TelepathyContact()
 {
-    delete m_config;
-    delete m_declarative;
+    m_declarative->deleteLater();
 //     delete m_contact;
 //     delete m_qmlObject;
+}
+
+Tp::AccountPtr TelepathyContact::accountFromUniqueId(const QString &id) const
+{
+    Tp::AccountPtr account;
+
+    if (m_accountManager) {
+        foreach (account, m_accountManager->allAccounts()) {
+            if (account->uniqueIdentifier() == id) {
+                return account;
+            }
+        }
+    }
+
+    return account;
 }
 
 void TelepathyContact::init()
@@ -112,7 +129,7 @@ void TelepathyContact::loadConfig()
     }
 
     if (!contactId.isEmpty() && !relatedAcc.isEmpty()) {
-        Tp::AccountPtr account = m_config->accountFromUniqueId(relatedAcc);
+        Tp::AccountPtr account = accountFromUniqueId(relatedAcc);
         Tp::ContactPtr contact;
 
         // check on account. Shouldn't ever be invalid
@@ -145,6 +162,17 @@ void TelepathyContact::loadConfig()
     }
 }
 
+void TelepathyContact::onAccountManagerReady(Tp::PendingOperation* op)
+{
+    if (op->isError()) {
+        kDebug() << op->errorName();
+        kDebug() << op->errorMessage();
+    }
+
+    // now I can load config
+    loadConfig();
+}
+
 void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
 {
     Plasma::Applet::paintInterface(p, option, contentsRect);
@@ -165,6 +193,41 @@ void TelepathyContact::saveConfig()
     configNeedsSaving();
 }
 
+void TelepathyContact::setupAccountManager()
+{
+    Tp::registerTypes();
+
+    // setup the telepathy account manager from where I'll retrieve info on accounts and contacts
+    Tp::AccountFactoryPtr  accountFactory = Tp::AccountFactory::create(QDBusConnection::sessionBus(),
+                                                                       Tp::Features() << Tp::Account::FeatureCore
+                                                                       << Tp::Account::FeatureAvatar
+                                                                       << Tp::Account::FeatureCapabilities
+                                                                       << Tp::Account::FeatureProtocolInfo
+                                                                       << Tp::Account::FeatureProfile);
+
+    Tp::ConnectionFactoryPtr connectionFactory = Tp::ConnectionFactory::create(QDBusConnection::sessionBus(),
+                                                                               Tp::Features() << Tp::Connection::FeatureCore
+                                                                               << Tp::Connection::FeatureRosterGroups
+                                                                               << Tp::Connection::FeatureRoster
+                                                                               << Tp::Connection::FeatureSelfContact);
+
+    Tp::ContactFactoryPtr contactFactory = Tp::ContactFactory::create(Tp::Features()
+                                                                      << Tp::Contact::FeatureAlias
+                                                                      << Tp::Contact::FeatureAvatarData
+                                                                      << Tp::Contact::FeatureSimplePresence
+                                                                      << Tp::Contact::FeatureCapabilities);
+
+    Tp::ChannelFactoryPtr channelFactory = Tp::ChannelFactory::create(QDBusConnection::sessionBus());
+
+    m_accountManager = Tp::AccountManager::create(QDBusConnection::sessionBus(),
+                                                  accountFactory,
+                                                  connectionFactory,
+                                                  channelFactory,
+                                                  contactFactory);
+
+    connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
+}
+
 void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::AccountPtr &relatedAccount)
 {
     Q_ASSERT(newContact);
@@ -180,7 +243,11 @@ void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::Ac
 
 void TelepathyContact::showConfigurationInterface()
 {
-    m_config->show();
+    if (!isUserConfiguring()) {
+        Config *config = new Config(m_accountManager, 0);
+        connect(config, SIGNAL(setNewContact(Tp::ContactPtr, Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr, Tp::AccountPtr)));
+        config->show();
+    }
 }
 
 // This is the command that links your applet to the .desktop file

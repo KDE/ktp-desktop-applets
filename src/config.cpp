@@ -27,73 +27,28 @@
 #include <KDebug>
 #include <KPushButton>
 
-#include <TelepathyQt4/PendingOperation>
-#include <TelepathyQt4/PendingReady>
-#include <TelepathyQt4/Types>
-
-Config::Config(QWidget* parent)
+Config::Config(const Tp::AccountManagerPtr &accountManager, QWidget* parent)
     : KDialog(parent)
     , m_model(0)
     , m_modelFilter(0)
     , m_groupsModel(0)
+    , m_accountManager(accountManager)
 {
     QWidget *widget = new QWidget(this);
 
     ui.setupUi(widget);
     setMainWidget(widget);
     setCaption(i18n("Select a contact"));
+    setupContactsList();
 
-    Tp::registerTypes();
-
-    // setup the telepathy account manager from where I'll retrieve info on accounts and contacts
-    Tp::AccountFactoryPtr  accountFactory = Tp::AccountFactory::create(QDBusConnection::sessionBus(),
-                                                                       Tp::Features() << Tp::Account::FeatureCore
-                                                                       << Tp::Account::FeatureAvatar
-                                                                       << Tp::Account::FeatureCapabilities
-                                                                       << Tp::Account::FeatureProtocolInfo
-                                                                       << Tp::Account::FeatureProfile);
-
-    Tp::ConnectionFactoryPtr connectionFactory = Tp::ConnectionFactory::create(QDBusConnection::sessionBus(),
-                                                                               Tp::Features() << Tp::Connection::FeatureCore
-                                                                               << Tp::Connection::FeatureRosterGroups
-                                                                               << Tp::Connection::FeatureRoster
-                                                                               << Tp::Connection::FeatureSelfContact);
-
-    Tp::ContactFactoryPtr contactFactory = Tp::ContactFactory::create(Tp::Features()
-                                                                        << Tp::Contact::FeatureAlias
-                                                                        << Tp::Contact::FeatureAvatarData
-                                                                        << Tp::Contact::FeatureSimplePresence
-                                                                        << Tp::Contact::FeatureCapabilities);
-
-    Tp::ChannelFactoryPtr channelFactory = Tp::ChannelFactory::create(QDBusConnection::sessionBus());
-
-    m_accountManager = Tp::AccountManager::create(QDBusConnection::sessionBus(),
-                                                  accountFactory,
-                                                  connectionFactory,
-                                                  channelFactory,
-                                                  contactFactory);
-
-    connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
     connect(this, SIGNAL(buttonClicked(KDialog::ButtonCode)), this, SLOT(slotButtonClicked(int)));
 }
 
 Config::~Config()
 {
-}
-
-Tp::AccountPtr Config::accountFromUniqueId(const QString& id) const
-{
-    Tp::AccountPtr account;
-
-    if (m_accountManager) {
-        foreach (account, m_accountManager->allAccounts()) {
-            if (account->uniqueIdentifier() == id) {
-                return account;
-            }
-        }
-    }
-
-    return account;
+    m_groupsModel->deleteLater();
+    m_model->deleteLater();
+    m_modelFilter->deleteLater();
 }
 
 void Config::activateOkButton()
@@ -115,13 +70,9 @@ void Config::enableOfflineContacts(bool enable)
     m_modelFilter->showOfflineUsers(enable);
 }
 
-void Config::onAccountManagerReady(Tp::PendingOperation* op)
+void Config::setupContactsList()
 {
-    if (op->isError()) {
-        kDebug() << op->errorName();
-        kDebug() << op->errorMessage();
-    }
-
+    // prepare models
     m_model = new AccountsModel(m_accountManager, this);
     m_groupsModel = new GroupsModel(m_model, this);
     m_modelFilter = new AccountsFilterModel(this);
@@ -138,17 +89,6 @@ void Config::onAccountManagerReady(Tp::PendingOperation* op)
     m_modelFilter->setSortRole(Qt::DisplayRole);
     m_modelFilter->setSortByPresence(true);
 
-//     // search input
-//     m_modelFilter->clearFilterString();
-//     m_modelFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-
-    setupContactsList();
-
-    emit(loadConfig());
-}
-
-void Config::setupContactsList()
-{
     // set model for the contacts tree view
     ui.contactsList->setModel(m_modelFilter);
 
@@ -182,6 +122,8 @@ void Config::slotButtonClicked(int button)
             setNewContact(item->contact(), account);
             accept();
         }
+    } else if (button == KDialog::Cancel) {
+        delayedDestruct();
     }
 
     KDialog::slotButtonClicked(button);
