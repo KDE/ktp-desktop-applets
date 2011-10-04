@@ -66,21 +66,6 @@ TelepathyContact::~TelepathyContact()
 //     delete m_qmlObject;
 }
 
-Tp::AccountPtr TelepathyContact::accountFromUniqueId(const QString &id) const
-{
-    Tp::AccountPtr account;
-
-    if (m_accountManager) {
-        foreach (account, m_accountManager->allAccounts()) {
-            if (account->uniqueIdentifier() == id) {
-                return account;
-            }
-        }
-    }
-
-    return account;
-}
-
 void TelepathyContact::init()
 {
     Plasma::Applet::init();
@@ -129,7 +114,7 @@ void TelepathyContact::loadConfig()
     }
 
     if (!contactId.isEmpty() && !relatedAcc.isEmpty()) {
-        Tp::AccountPtr account = accountFromUniqueId(relatedAcc);
+        Tp::AccountPtr account = m_accountManager->accountForPath(relatedAcc);
         Tp::ContactPtr contact;
 
         // check on account. Shouldn't ever be invalid
@@ -183,7 +168,7 @@ void TelepathyContact::saveConfig()
     KConfigGroup group = Plasma::Applet::config();
     group.writeEntry("id", m_contact->contact()->id());
     group.writeEntry("tempAvatar", m_contact->contact()->avatarData().fileName);
-    group.writeEntry("relatedAccount", m_contact->accountId());
+    group.writeEntry("relatedAccount", m_accountPath);
     group.sync();
 
     // update contactWrapper temp id
@@ -236,6 +221,7 @@ void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::Ac
     if (!m_contact->contact() || m_contact->contact()->id() != newContact->id()) {
         m_contact->setContact(newContact);
         m_contact->setAccount(relatedAccount);
+        m_accountPath = relatedAccount->objectPath();
     }
 
     saveConfig();

@@ -56,13 +56,11 @@ private slots:
     void onAccountManagerReady(Tp::PendingOperation *op);
 
 private:
-    /** retrieve accountPtr by given unique identifier */
-    Tp::AccountPtr accountFromUniqueId(const QString &id) const;
-
     void saveConfig();
     void setupAccountManager();
 
     QString m_fileToLoad;
+    QString m_accountPath;
     Plasma::DeclarativeWidget *m_declarative;
     ContactWrapper *m_contact;
     QObject *m_qmlObject;
