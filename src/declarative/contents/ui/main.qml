@@ -22,9 +22,9 @@ import Qt 4.7
 Item {
     id: mainWidget;
 
-    // default contact size (also ni metadata file) just to be sure
-    width: 128;
-    height: 128;
+    // default contact size (also in metadata file) just to be sure
+    property int minimumWidth: 128;
+    property int minimumHeight: 128;
 
     Contact {
         id: contact;
