@@ -118,8 +118,9 @@ void TelepathyContact::loadConfig()
         Tp::ContactPtr contact;
 
         // check on account. Shouldn't ever be invalid
-        if (!account->isValidAccount()) {
+        if (!account || !account->isValidAccount()) {
             /// TODO add error popup box?
+            kWarning() << "Invalid account";
             return;
         }
 
