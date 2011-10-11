@@ -19,10 +19,10 @@
 
 #include "config.h"
 #include "contact-delegate.h"
-#include "models/accounts-model.h"
-#include "models/contact-model-item.h"
-#include "models/groups-model.h"
-#include "models/accounts-filter-model.h"
+#include "common/models/accounts-model.h"
+#include "common/models/contact-model-item.h"
+#include "common/models/groups-model.h"
+#include "common/models/accounts-filter-model.h"
 
 #include <KDebug>
 #include <KPushButton>
@@ -67,7 +67,7 @@ void Config::enableGroupsView(bool enable)
 
 void Config::enableOfflineContacts(bool enable)
 {
-    m_modelFilter->showOfflineUsers(enable);
+    m_modelFilter->setShowOfflineUsers(enable);
 }
 
 void Config::setupContactsList()
@@ -85,7 +85,7 @@ void Config::setupContactsList()
     }
 
     m_modelFilter->setDynamicSortFilter(true);
-    m_modelFilter->showOfflineUsers(ui.showOfflineContacts->isChecked());
+    m_modelFilter->setShowOfflineUsers(ui.showOfflineContacts->isChecked());
     m_modelFilter->setSortRole(Qt::DisplayRole);
     m_modelFilter->setSortByPresence(true);
 

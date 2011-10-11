@@ -25,20 +25,32 @@ include_directories(${CMAKE_SOURCE_DIR}
                     ${TELEPATHY_QT4_INCLUDE_DIR}
 )
 
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.gitmodules)
+execute_process(COMMAND git submodule init
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+execute_process(COMMAND git submodule update
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.gitmodules)
+
+
 set(telepathy_contact_applet_SRCS
     src/abstract-contact-delegate.cpp
     src/config.cpp
     src/contact-delegate.cpp
     src/contact-wrapper.cpp
     src/telepathy-contact.cpp
-    src/models/accounts-filter-model.cpp
-    src/models/accounts-model-item.cpp
-    src/models/accounts-model.cpp
-    src/models/contact-model-item.cpp
-    src/models/groups-model-item.cpp
-    src/models/groups-model.cpp
-    src/models/proxy-tree-node.cpp
-    src/models/tree-node.cpp
+    src/common/models/accounts-filter-model.cpp
+    src/common/models/accounts-model-item.cpp
+    src/common/models/accounts-model.cpp
+    src/common/models/contact-model-item.cpp
+    src/common/models/groups-model-item.cpp
+    src/common/models/groups-model.cpp
+    src/common/models/proxy-tree-node.cpp
+    src/common/models/tree-node.cpp
+    src/common/service-availability-checker.cpp
 )
 
 kde4_add_ui_files(telepathy_contact_applet_SRCS
