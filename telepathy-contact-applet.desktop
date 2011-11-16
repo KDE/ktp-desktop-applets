@@ -1,10 +1,6 @@
 [Desktop Entry]
 Name=IM Contact
-Name[cs]=Kontakt IM
-Name[x-test]=xxIM Contactxx
 Comment=IM contact applet
-Comment[cs]=Applet IM kontaktu
-Comment[x-test]=xxIM contact appletxx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=im-user
