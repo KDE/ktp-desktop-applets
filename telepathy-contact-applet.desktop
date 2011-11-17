@@ -1,6 +1,20 @@
 [Desktop Entry]
 Name=IM Contact
+Name[hu]=Azonnali üzenetküldési partner
+Name[it]=Contatto di messaggistica
+Name[pt]=Contacto de IM
+Name[pt_BR]=Contato de mensagens instantâneas
+Name[sv]=Direktmeddelandekontakt
+Name[uk]=Контакт МОП
+Name[x-test]=xxIM Contactxx
 Comment=IM contact applet
+Comment[hu]=Azonnali üzenetküldési partnerlista kisalkalmazás
+Comment[it]=Applet dei contatti di messaggistica istantanea
+Comment[pt]='Applet' de contactos de IM
+Comment[pt_BR]=miniaplicativo de contatos de mensagens instantâneas
+Comment[sv]=Miniprogram för direktmeddelandekontakter
+Comment[uk]=Аплет контактів миттєвого обміну повідомленнями
+Comment[x-test]=xxIM contact appletxx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=im-user
