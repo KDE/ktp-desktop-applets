@@ -30,7 +30,7 @@ Item {
 
         PlasmaWidgets.IconWidget {
             id: callButton;
-            icon: QIcon("call-start");
+            icon: QIcon("voicecall");
             width: 22;
             height: 22
 
@@ -42,7 +42,7 @@ Item {
 
         PlasmaWidgets.IconWidget {
             id: mailButton;
-            icon: QIcon("mail-flag");
+            icon: QIcon("mail-message-new");
             width: 22;
             height: 22
 
@@ -54,7 +54,7 @@ Item {
 
         PlasmaWidgets.IconWidget {
             id: chatButton;
-            icon: QIcon("document-edit");
+            icon: QIcon("text-x-generic");
             width: 22;
             height: 22;
 
@@ -66,7 +66,7 @@ Item {
 
         PlasmaWidgets.IconWidget {
             id: videoButton;
-            icon: QIcon("camera-web");
+            icon: QIcon("webcamsend");
             width: 22;
             height: 22;
 
