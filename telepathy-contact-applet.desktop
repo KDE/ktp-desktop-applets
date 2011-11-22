@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=IM Contact
+Name[cs]=Kontakt IM
 Name[da]=IM-kontakt
 Name[hu]=Azonnali üzenetküldési partner
 Name[it]=Contatto di messaggistica
@@ -10,6 +11,7 @@ Name[sv]=Direktmeddelandekontakt
 Name[uk]=Контакт МОП
 Name[x-test]=xxIM Contactxx
 Comment=IM contact applet
+Comment[cs]=Applet kontaktů IM
 Comment[da]=Applet til IM-kontakt
 Comment[hu]=Azonnali üzenetküldési partnerlista kisalkalmazás
 Comment[it]=Applet dei contatti di messaggistica istantanea
