@@ -19,10 +19,11 @@
 
 #include "config.h"
 #include "contact-delegate.h"
-#include "common/models/accounts-model.h"
-#include "common/models/contact-model-item.h"
-#include "common/models/groups-model.h"
-#include "common/models/accounts-filter-model.h"
+
+#include <KTelepathy/Models/accounts-model.h>
+#include <KTelepathy/Models/contact-model-item.h>
+#include <KTelepathy/Models/groups-model.h>
+#include <KTelepathy/Models/accounts-filter-model.h>
 
 #include <KDebug>
 #include <KPushButton>

@@ -33,11 +33,11 @@
 #include <KGlobalSettings>
 #include <KDE/KLocale>
 
-#include "common/models/accounts-model.h"
-#include "common/models/contact-model-item.h"
-#include "common/models/proxy-tree-node.h"
-#include "common/models/groups-model-item.h"
-#include "common/models/groups-model.h"
+#include <KTelepathy/Models/accounts-model.h>
+#include <KTelepathy/Models/contact-model-item.h>
+#include <KTelepathy/Models/proxy-tree-node.h>
+#include <KTelepathy/Models/groups-model-item.h>
+#include <KTelepathy/Models/groups-model.h>
 
 const int SPACING = 4;
 const int AVATAR_SIZE = 22;

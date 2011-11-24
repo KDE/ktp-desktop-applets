@@ -32,9 +32,10 @@
 #include <KDE/KIconLoader>
 #include <KDE/KIcon>
 
-#include "common/models/accounts-model.h"
-#include "common/models/groups-model.h"
-#include "common/models/contact-model-item.h"
+#include <KTelepathy/Models/accounts-model.h>
+#include <KTelepathy/Models/accounts-model-item.h>
+#include <KTelepathy/Models/groups-model.h>
+#include <KTelepathy/Models/contact-model-item.h>
 
 const int SPACING = 2;
 const int ACCOUNT_ICON_SIZE = 13;
