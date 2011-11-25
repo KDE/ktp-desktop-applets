@@ -1,2 +1,2 @@
 #! /usr/bin/env bash
-$XGETTEXT `find . -name "*.cpp"` -o $podir/telepathy-kde-contact-applet.pot
+$XGETTEXT `find . -name "*.cpp"` -o $podir/plasma_applet_telepathy_contact.pot
