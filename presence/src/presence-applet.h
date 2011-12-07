@@ -23,12 +23,7 @@
 #include <Plasma/Applet>
 #include <Plasma/DeclarativeWidget>
 
-namespace KTp
-{
-    class GlobalPresence;
-}
-
-class PresenceAppletWrapper;
+class GlobalPresenceWrapper;
 
 class TelepathyPresenceApplet: public Plasma::Applet
 {
@@ -49,8 +44,7 @@ private:
 
     Plasma::DeclarativeWidget *m_declarative;
     QObject *m_qmlObject;
-    KTp::GlobalPresence *m_globalPresence;
-    PresenceAppletWrapper *m_presenceAppletWrapper;
+    GlobalPresenceWrapper *m_globalPresenceWrapper;
 };
 
 #endif  // TELEPATHY_KDE_PRESENCE_APPLET_H

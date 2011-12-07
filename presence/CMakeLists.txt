@@ -30,6 +30,7 @@ include_directories(${CMAKE_SOURCE_DIR}
 
 
 set(telepathy-kde-presence-applet_SRCS
+    src/globalpresencewrapper.cpp
     src/presenceapplet.cpp
 )
 #

@@ -17,6 +17,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
+#include "globalpresencewrapper.h"
 #include "presenceapplet.h"
 
 #include <KStandardDirs>
@@ -30,13 +31,11 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariant
     : Plasma::Applet(parent, args)
     , m_declarative(new Plasma::DeclarativeWidget(this))
     , m_qmlObject(0)
-    , m_globalPresence(new KTp::GlobalPresence(this))
-    , m_presenceAppletWrapper(new PresenceAppletWrapper(this))
+    , m_globalPresenceWrapper(new GlobalPresenceWrapper(this))
 {
     // setup plasmoid size
     resize(250, 250);
 //     setBackgroundHints(NoBackground);
-
     setAspectRatioMode(Plasma::FixedSize);
 }
 
@@ -51,20 +50,17 @@ void TelepathyPresenceApplet::init()
     Plasma::Applet::init();
 
     if (m_declarative) {
-        // sort this path out
+        /// TODO sort this path out
         QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-contact/contents/ui/main.qml");
         qDebug() << "LOADING: " << qmlFile;
         m_declarative->setQmlPath(qmlFile);
-//         m_declarative->engine()->rootContext()->setContextProperty("TelepathyKDEPresenceApplet", /* make presenceWrapper object to interact with QML */);
+        m_declarative->engine()->rootContext()->setContextProperty("GlobalPresence", m_globalPresenceWrapper);
 
         // setup qml object so that we can talk to the declarative part
         m_qmlObject = dynamic_cast<QObject*>(m_declarative->rootObject());
 
         // connect the qml object to recieve signals from KTP::GlobalPresece
-//         connect(m_contact, SIGNAL(newContactSet()), m_qmlObject, SLOT(updateContact()));
-//         connect(m_contact, SIGNAL(avatarChanged()), m_qmlObject, SLOT(updateContact()));
-//         connect(m_contact, SIGNAL(presenceChanged()), m_qmlObject, SLOT(updateContact()));
-//         connect(m_contact, SIGNAL(accountPresenceChanged()), m_qmlObject, SLOT(accountPresenceChanged()));
+//         connect(m_globalPresenceWrapper, SIGNAL(presenceChanged()), m_qmlObject, SLOT(/*updatePresence*/));
     }
 }
 
