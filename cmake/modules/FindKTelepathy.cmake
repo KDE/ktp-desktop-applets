@@ -22,7 +22,6 @@ endif (KTELEPATHY_INCLUDE_DIRS AND KTELEPATHY_LIBRARIES)
 find_path(KTELEPATHY_INCLUDE_DIR
   NAMES KTelepathy/presence.h
   PATHS ${KDE4_INCLUDE_DIR}
-  PATH_SUFFIXES telepathy-1.0
 )
 
 find_library(KTELEPATHY_LIBRARIES NAMES telepathykdecommoninternalsprivate )
