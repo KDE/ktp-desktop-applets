@@ -35,7 +35,6 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariant
 {
     // setup plasmoid size
     resize(250, 250);
-//     setBackgroundHints(NoBackground);
     setAspectRatioMode(Plasma::FixedSize);
 }
 
@@ -50,7 +49,7 @@ void TelepathyPresenceApplet::init()
     Plasma::Applet::init();
 
     if (m_declarative) {
-        /// TODO sort this path out
+        /// TODO sort this path out with correct one
         QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-contact/contents/ui/main.qml");
         qDebug() << "LOADING: " << qmlFile;
         m_declarative->setQmlPath(qmlFile);
@@ -59,7 +58,7 @@ void TelepathyPresenceApplet::init()
         // setup qml object so that we can talk to the declarative part
         m_qmlObject = dynamic_cast<QObject*>(m_declarative->rootObject());
 
-        // connect the qml object to recieve signals from KTP::GlobalPresece
+        // connect the qml object to recieve signals from the globalpresencewrapper
 //         connect(m_globalPresenceWrapper, SIGNAL(presenceChanged()), m_qmlObject, SLOT(/*updatePresence*/));
     }
 }

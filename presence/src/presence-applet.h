@@ -35,12 +35,13 @@ public:
     void init();
     void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
 
+    /// TODO
 //     /** overide of config signal */
 //     void showConfigurationInterface();
 
 private:
+    /// TODO
     void saveConfig();
-    void setupAccountManager();
 
     Plasma::DeclarativeWidget *m_declarative;
     QObject *m_qmlObject;
