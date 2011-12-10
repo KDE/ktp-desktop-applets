@@ -22,11 +22,11 @@
 #include <KToolInvocation>
 #include <KUrl>
 
-#include <TelepathyQt4/AvatarData>
-#include <TelepathyQt4/ContactCapabilities>
-#include <TelepathyQt4/ContactManager>
-#include <TelepathyQt4/PendingChannelRequest>
-#include <TelepathyQt4/Presence>
+#include <TelepathyQt/AvatarData>
+#include <TelepathyQt/ContactCapabilities>
+#include <TelepathyQt/ContactManager>
+#include <TelepathyQt/PendingChannelRequest>
+#include <TelepathyQt/Presence>
 
 #define PREFERRED_TEXTCHAT_HANDLER "org.freedesktop.Telepathy.Client.KDE.TextUi"
 

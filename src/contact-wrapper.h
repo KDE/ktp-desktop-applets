@@ -22,8 +22,8 @@
 
 #include <QtCore/QObject>
 
-#include <TelepathyQt4/Account>
-#include <TelepathyQt4/Contact>
+#include <TelepathyQt/Account>
+#include <TelepathyQt/Contact>
 
 class ContactWrapper : public QObject
 {

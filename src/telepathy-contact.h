@@ -25,8 +25,8 @@
 #include <Plasma/Applet>
 #include <Plasma/DeclarativeWidget>
 
-#include <TelepathyQt4/AccountManager>
-#include <TelepathyQt4/Contact>
+#include <TelepathyQt/AccountManager>
+#include <TelepathyQt/Contact>
 
 class Config;
 class ContactWrapper;

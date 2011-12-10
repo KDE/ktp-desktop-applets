@@ -23,7 +23,7 @@
 #include "ui_config.h"
 
 #include <KDialog>
-#include <TelepathyQt4/AccountManager>
+#include <TelepathyQt/AccountManager>
 
 namespace Ui {
     class Config;
