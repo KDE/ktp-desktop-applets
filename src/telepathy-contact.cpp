@@ -30,11 +30,11 @@
 
 #include <QtGui/QPainter>
 
-#include <TelepathyQt4/AccountManager>
-#include <TelepathyQt4/ContactManager>
-#include <TelepathyQt4/PendingOperation>
-#include <TelepathyQt4/PendingReady>
-#include <TelepathyQt4/Types>
+#include <TelepathyQt/AccountManager>
+#include <TelepathyQt/ContactManager>
+#include <TelepathyQt/PendingOperation>
+#include <TelepathyQt/PendingReady>
+#include <TelepathyQt/Types>
 
 
 TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
