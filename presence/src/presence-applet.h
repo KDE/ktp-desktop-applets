@@ -28,9 +28,16 @@ class GlobalPresenceWrapper;
 class TelepathyPresenceApplet: public Plasma::Applet
 {
     Q_OBJECT
+
+    Q_PROPERTY(int height READ appletHeight)
+    Q_PROPERTY(int width READ appletWidth)
+
 public:
     TelepathyPresenceApplet(QObject *parent, const QVariantList &args);
     ~TelepathyPresenceApplet();
+
+    int appletHeight() const;
+    int appletWidth() const;
 
     void init();
     void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);

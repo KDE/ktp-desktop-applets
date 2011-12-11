@@ -44,22 +44,36 @@ TelepathyPresenceApplet::~TelepathyPresenceApplet()
 //     m_qmlObject ??
 }
 
+int TelepathyPresenceApplet::appletHeight() const
+{
+    return geometry().height();
+}
+
+int TelepathyPresenceApplet::appletWidth() const
+{
+    return geometry().width();
+}
+
 void TelepathyPresenceApplet::init()
 {
     Plasma::Applet::init();
 
     if (m_declarative) {
         /// TODO sort this path out with correct one
-        QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-contact/contents/ui/main.qml");
+        QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-kde-presence-applet/contents/ui/main.qml");
         qDebug() << "LOADING: " << qmlFile;
         m_declarative->setQmlPath(qmlFile);
-        m_declarative->engine()->rootContext()->setContextProperty("GlobalPresence", m_globalPresenceWrapper);
+        m_declarative->engine()->rootContext()->setContextProperty("TelepathyPresenceApplet", m_globalPresenceWrapper);
 
         // setup qml object so that we can talk to the declarative part
         m_qmlObject = dynamic_cast<QObject*>(m_declarative->rootObject());
 
         // connect the qml object to recieve signals from the globalpresencewrapper
 //         connect(m_globalPresenceWrapper, SIGNAL(presenceChanged()), m_qmlObject, SLOT(/*updatePresence*/));
+
+        // these two signals are for the plasmoid resize. QML can't determine the Plasma::DeclarativeWidget's boundaries
+        connect(this, SIGNAL(widthChanged()), m_qmlObject, SLOT(onWidthChanged()));
+        connect(this, SIGNAL(heightChanged()), m_qmlObject, SLOT(onHeightChanged()));
     }
 }
 
@@ -68,5 +82,7 @@ void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGrap
     Plasma::Applet::paintInterface(p, option, contentsRect);
 }
 
+// This is the command that links your applet to the .desktop file
+K_EXPORT_PLASMA_APPLET(telepathy-kde-presence-applet, TelepathyPresenceApplet)
 
 
