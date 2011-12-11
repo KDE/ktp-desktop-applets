@@ -2,6 +2,7 @@
 Name=IM Contact
 Name[cs]=Kontakt IM
 Name[da]=IM-kontakt
+Name[de]=IM-Kontakt
 Name[hu]=Azonnali üzenetküldési partner
 Name[it]=Contatto di messaggistica
 Name[nl]=IM-contactpersoon
@@ -13,6 +14,7 @@ Name[x-test]=xxIM Contactxx
 Comment=IM contact applet
 Comment[cs]=Applet kontaktů IM
 Comment[da]=Applet til IM-kontakt
+Comment[de]=Miniprogramm für IM-Kontakte
 Comment[hu]=Azonnali üzenetküldési partnerlista kisalkalmazás
 Comment[it]=Applet dei contatti di messaggistica istantanea
 Comment[nl]=Applet voor IM-contacten
