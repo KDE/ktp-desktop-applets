@@ -21,6 +21,7 @@
 #include "presenceapplet.h"
 
 #include <KStandardDirs>
+
 #include <KTelepathy/global-presence.h>
 #include <KTelepathy/presence.h>
 
@@ -81,6 +82,8 @@ void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGrap
 {
     Plasma::Applet::paintInterface(p, option, contentsRect);
 }
+
+
 
 // This is the command that links your applet to the .desktop file
 K_EXPORT_PLASMA_APPLET(telepathy-kde-presence-applet, TelepathyPresenceApplet)
