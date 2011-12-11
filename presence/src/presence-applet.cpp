@@ -23,6 +23,7 @@
 #include <KAction>
 #include <KActionMenu>
 #include <KStandardDirs>
+#include <KToolInvocation>
 
 #include <KTelepathy/global-presence.h>
 #include <KTelepathy/presence.h>
@@ -61,13 +62,19 @@ QList< QAction* > TelepathyPresenceApplet::contextualActions()
 {
     QList<QAction*>contextActions;
 
+    // presence actions
     KActionMenu *presenceMenu = new KActionMenu(i18n("Set presence"), this);
+
     KAction *goOnlineAction = new KAction(KIcon("user-online"), i18n("Online"), this);
     KAction *goBusyAction = new KAction(KIcon("user-busy"), i18n("Busy"), this);
     KAction *goAwayAction = new KAction(KIcon("user-away"), i18n("Away"), this);
     KAction *goExtendedAwayAction = new KAction(KIcon("user-away-extended"), i18n("Not Available"), this);
     KAction *goHiddenAction = new KAction(KIcon("user-invisible"), i18n("Invisible"), this);
     KAction *goOfflineAction = new KAction(KIcon("user-offline"), i18n("Offline"), this);
+
+    // application actions
+    KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager"), this);
+    KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List"), this);
 
     // connect actions
     connect(goOnlineAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceOnline()));
@@ -76,6 +83,9 @@ QList< QAction* > TelepathyPresenceApplet::contextualActions()
     connect(goExtendedAwayAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceXa()));
     connect(goHiddenAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceHidden()));
     connect(goOfflineAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceOffline()));
+
+    connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
+    connect(showContactListAction, SIGNAL(triggered()), this, SLOT(startContactList()));
 
     presenceMenu->addAction(goOnlineAction);
     presenceMenu->addAction(goBusyAction);
@@ -86,6 +96,9 @@ QList< QAction* > TelepathyPresenceApplet::contextualActions()
     presenceMenu->addSeparator();
 
     contextActions.append(presenceMenu);
+    contextActions.append(presenceMenu->addSeparator());
+    contextActions.append(showAccountManagerAction);
+    contextActions.append(showContactListAction);
     contextActions.append(presenceMenu->addSeparator());
 
     return contextActions;
@@ -118,6 +131,17 @@ void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGrap
 {
     Plasma::Applet::paintInterface(p, option, contentsRect);
 }
+
+void TelepathyPresenceApplet::startAccountManager() const
+{
+    KToolInvocation::startServiceByDesktopName("kcm_telepathy_accounts");
+}
+
+void TelepathyPresenceApplet::startContactList() const
+{
+    KToolInvocation::startServiceByDesktopName("telepathy-kde-contactlist");
+}
+
 
 
 // This is the command that links your applet to the .desktop file

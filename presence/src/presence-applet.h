@@ -48,6 +48,10 @@ public:
 //     /** overide of config signal */
 //     void showConfigurationInterface();
 
+private Q_SLOTS:
+    void startAccountManager() const;
+    void startContactList() const;
+
 private:
     /// TODO
     void saveConfig();
