@@ -24,6 +24,7 @@
 #include <Plasma/DeclarativeWidget>
 
 class GlobalPresenceWrapper;
+class QAction;
 
 class TelepathyPresenceApplet: public Plasma::Applet
 {
@@ -39,6 +40,7 @@ public:
     int appletHeight() const;
     int appletWidth() const;
 
+    QList<QAction*>contextualActions();
     void init();
     void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
 

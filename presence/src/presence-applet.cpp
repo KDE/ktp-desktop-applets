@@ -20,6 +20,8 @@
 #include "globalpresencewrapper.h"
 #include "presenceapplet.h"
 
+#include <KAction>
+#include <KActionMenu>
 #include <KStandardDirs>
 
 #include <KTelepathy/global-presence.h>
@@ -55,6 +57,40 @@ int TelepathyPresenceApplet::appletWidth() const
     return geometry().width();
 }
 
+QList< QAction* > TelepathyPresenceApplet::contextualActions()
+{
+    QList<QAction*>contextActions;
+
+    KActionMenu *presenceMenu = new KActionMenu(i18n("Set presence"), this);
+    KAction *goOnlineAction = new KAction(KIcon("user-online"), i18n("Online"), this);
+    KAction *goBusyAction = new KAction(KIcon("user-busy"), i18n("Busy"), this);
+    KAction *goAwayAction = new KAction(KIcon("user-away"), i18n("Away"), this);
+    KAction *goExtendedAwayAction = new KAction(KIcon("user-away-extended"), i18n("Not Available"), this);
+    KAction *goHiddenAction = new KAction(KIcon("user-invisible"), i18n("Invisible"), this);
+    KAction *goOfflineAction = new KAction(KIcon("user-offline"), i18n("Offline"), this);
+
+    // connect actions
+    connect(goOnlineAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceOnline()));
+    connect(goBusyAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceBusy()));
+    connect(goAwayAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceAway()));
+    connect(goExtendedAwayAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceXa()));
+    connect(goHiddenAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceHidden()));
+    connect(goOfflineAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceOffline()));
+
+    presenceMenu->addAction(goOnlineAction);
+    presenceMenu->addAction(goBusyAction);
+    presenceMenu->addAction(goAwayAction);
+    presenceMenu->addAction(goExtendedAwayAction);
+    presenceMenu->addAction(goHiddenAction);
+    presenceMenu->addAction(goOfflineAction);
+    presenceMenu->addSeparator();
+
+    contextActions.append(presenceMenu);
+    contextActions.append(presenceMenu->addSeparator());
+
+    return contextActions;
+}
+
 void TelepathyPresenceApplet::init()
 {
     Plasma::Applet::init();
@@ -82,7 +118,6 @@ void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGrap
 {
     Plasma::Applet::paintInterface(p, option, contentsRect);
 }
-
 
 
 // This is the command that links your applet to the .desktop file
