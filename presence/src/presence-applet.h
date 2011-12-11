@@ -55,6 +55,10 @@ private Q_SLOTS:
 private:
     /// TODO
     void saveConfig();
+    /** used only upon creation to setup a list of actions for the context menu */
+    void setupContextMenuActions();
+
+    QList<QAction*>m_contextActions;
 
     Plasma::DeclarativeWidget *m_declarative;
     QObject *m_qmlObject;

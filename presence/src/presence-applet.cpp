@@ -40,11 +40,13 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariant
     // setup plasmoid size
     resize(250, 250);
     setAspectRatioMode(Plasma::FixedSize);
+    setupContextMenuActions();
 }
 
 TelepathyPresenceApplet::~TelepathyPresenceApplet()
 {
     m_declarative->deleteLater();   // do i need to do this?
+    m_contextActions.clear();
 //     m_qmlObject ??
 }
 
@@ -60,8 +62,39 @@ int TelepathyPresenceApplet::appletWidth() const
 
 QList< QAction* > TelepathyPresenceApplet::contextualActions()
 {
-    QList<QAction*>contextActions;
+    return m_contextActions;
+}
 
+void TelepathyPresenceApplet::init()
+{
+    Plasma::Applet::init();
+
+    if (m_declarative) {
+        /// TODO sort this path out with correct one
+        QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-kde-presence-applet/contents/ui/main.qml");
+        qDebug() << "LOADING: " << qmlFile;
+        m_declarative->setQmlPath(qmlFile);
+        m_declarative->engine()->rootContext()->setContextProperty("TelepathyPresenceApplet", m_globalPresenceWrapper);
+
+        // setup qml object so that we can talk to the declarative part
+        m_qmlObject = dynamic_cast<QObject*>(m_declarative->rootObject());
+
+        // connect the qml object to recieve signals from the globalpresencewrapper
+//         connect(m_globalPresenceWrapper, SIGNAL(presenceChanged()), m_qmlObject, SLOT(/*updatePresence*/));
+
+        // these two signals are for the plasmoid resize. QML can't determine the Plasma::DeclarativeWidget's boundaries
+        connect(this, SIGNAL(widthChanged()), m_qmlObject, SLOT(onWidthChanged()));
+        connect(this, SIGNAL(heightChanged()), m_qmlObject, SLOT(onHeightChanged()));
+    }
+}
+
+void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
+{
+    Plasma::Applet::paintInterface(p, option, contentsRect);
+}
+
+void TelepathyPresenceApplet::setupContextMenuActions()
+{
     // presence actions
     KActionMenu *presenceMenu = new KActionMenu(i18n("Set presence"), this);
 
@@ -95,41 +128,11 @@ QList< QAction* > TelepathyPresenceApplet::contextualActions()
     presenceMenu->addAction(goOfflineAction);
     presenceMenu->addSeparator();
 
-    contextActions.append(presenceMenu);
-    contextActions.append(presenceMenu->addSeparator());
-    contextActions.append(showAccountManagerAction);
-    contextActions.append(showContactListAction);
-    contextActions.append(presenceMenu->addSeparator());
-
-    return contextActions;
-}
-
-void TelepathyPresenceApplet::init()
-{
-    Plasma::Applet::init();
-
-    if (m_declarative) {
-        /// TODO sort this path out with correct one
-        QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-kde-presence-applet/contents/ui/main.qml");
-        qDebug() << "LOADING: " << qmlFile;
-        m_declarative->setQmlPath(qmlFile);
-        m_declarative->engine()->rootContext()->setContextProperty("TelepathyPresenceApplet", m_globalPresenceWrapper);
-
-        // setup qml object so that we can talk to the declarative part
-        m_qmlObject = dynamic_cast<QObject*>(m_declarative->rootObject());
-
-        // connect the qml object to recieve signals from the globalpresencewrapper
-//         connect(m_globalPresenceWrapper, SIGNAL(presenceChanged()), m_qmlObject, SLOT(/*updatePresence*/));
-
-        // these two signals are for the plasmoid resize. QML can't determine the Plasma::DeclarativeWidget's boundaries
-        connect(this, SIGNAL(widthChanged()), m_qmlObject, SLOT(onWidthChanged()));
-        connect(this, SIGNAL(heightChanged()), m_qmlObject, SLOT(onHeightChanged()));
-    }
-}
-
-void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
-{
-    Plasma::Applet::paintInterface(p, option, contentsRect);
+    m_contextActions.append(presenceMenu);
+    m_contextActions.append(presenceMenu->addSeparator());
+    m_contextActions.append(showAccountManagerAction);
+    m_contextActions.append(showContactListAction);
+    m_contextActions.append(presenceMenu->addSeparator());
 }
 
 void TelepathyPresenceApplet::startAccountManager() const
