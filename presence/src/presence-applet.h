@@ -20,25 +20,30 @@
 #ifndef TELEPATHY_KDE_PRESENCE_APPLET_H
 #define TELEPATHY_KDE_PRESENCE_APPLET_H
 
-#include <Plasma/Applet>
+#include <Plasma/PopupApplet>
 #include <Plasma/DeclarativeWidget>
+
+#include <TelepathyQt4/AccountManager>
+#include <TelepathyQt4/Presence>
+
+namespace KTp {
+    class GlobalPresence;
+}
+
+namespace Tp {
+    class PendingOperation;
+}
 
 class GlobalPresenceWrapper;
 class QAction;
 
-class TelepathyPresenceApplet: public Plasma::Applet
+class TelepathyPresenceApplet: public Plasma::PopupApplet
 {
     Q_OBJECT
-
-    Q_PROPERTY(int height READ appletHeight)
-    Q_PROPERTY(int width READ appletWidth)
 
 public:
     TelepathyPresenceApplet(QObject *parent, const QVariantList &args);
     ~TelepathyPresenceApplet();
-
-    int appletHeight() const;
-    int appletWidth() const;
 
     QList<QAction*>contextualActions();
     void init();
@@ -49,20 +54,27 @@ public:
 //     void showConfigurationInterface();
 
 private Q_SLOTS:
+    void onAccountManagerReady(Tp::PendingOperation *op);
+    void onPresenceChanged(Tp::Presence presence);
+    void setPresenceAway();
+    void setPresenceBusy();
+    void setPresenceHidden();
+    void setPresenceOffline();
+    void setPresenceOnline();
+    void setPresenceXa();
     void startAccountManager() const;
     void startContactList() const;
 
 private:
-    /// TODO
-    void saveConfig();
+    void setupAccountManager();
+
     /** used only upon creation to setup a list of actions for the context menu */
     void setupContextMenuActions();
 
     QList<QAction*>m_contextActions;
 
-    Plasma::DeclarativeWidget *m_declarative;
-    QObject *m_qmlObject;
-    GlobalPresenceWrapper *m_globalPresenceWrapper;
+    Tp::AccountManagerPtr m_accountManager;
+    KTp::GlobalPresence *m_globalPresence;
 };
 
 #endif  // TELEPATHY_KDE_PRESENCE_APPLET_H

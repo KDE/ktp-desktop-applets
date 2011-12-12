@@ -30,7 +30,6 @@ include_directories(${CMAKE_SOURCE_DIR}
 
 
 set(telepathy-kde-presence-applet_SRCS
-    src/globalpresencewrapper.cpp
     src/presenceapplet.cpp
 )
 #
@@ -45,8 +44,7 @@ target_link_libraries(telepathy-kde-presence-applet
                         ${TELEPATHY_QT4_LIBRARIES}
                         ${KTELEPATHY_LIBRARIES}
                         ${KTELEPATHY_MODELS_LIBRARIES}
-                        ${QT_QTDECLARATIVE_LIBRARY})
+                     )
 
-install(DIRECTORY src/declarative/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.telepathy-kde-presence-applet)
 install(TARGETS telepathy-kde-presence-applet DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES telepathy-kde-presence-applet.desktop DESTINATION ${SERVICES_INSTALL_DIR})

@@ -17,7 +17,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#include "globalpresencewrapper.h"
 #include "presenceapplet.h"
 
 #include <KAction>
@@ -28,36 +27,30 @@
 #include <KTelepathy/global-presence.h>
 #include <KTelepathy/presence.h>
 
-#include <QtDeclarative/QDeclarativeEngine>
-#include <QtDeclarative/QDeclarativeContext>
+#include <TelepathyQt4/PendingOperation>
+#include <TelepathyQt4/PendingReady>
+
 
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariantList& args)
-    : Plasma::Applet(parent, args)
-    , m_declarative(new Plasma::DeclarativeWidget(this))
-    , m_qmlObject(0)
-    , m_globalPresenceWrapper(new GlobalPresenceWrapper(this))
+    : Plasma::PopupApplet(parent, args)
+    , m_globalPresence(new KTp::GlobalPresence(this))
 {
-    // setup plasmoid size
-    resize(250, 250);
-    setAspectRatioMode(Plasma::FixedSize);
     setupContextMenuActions();
+    setupAccountManager();
+
+    resize(128, 128);
+    setAspectRatioMode(Plasma::KeepAspectRatio);
+    setBackgroundHints(NoBackground);
+
+    int iconSize = IconSize(KIconLoader::Small);
+    setMinimumSize(QSize(iconSize, iconSize));
+
+    connect(m_globalPresence, SIGNAL(currentPresenceChanged(Tp::Presence)), this, SLOT(onPresenceChanged(Tp::Presence)));
 }
 
 TelepathyPresenceApplet::~TelepathyPresenceApplet()
 {
-    m_declarative->deleteLater();   // do i need to do this?
     m_contextActions.clear();
-//     m_qmlObject ??
-}
-
-int TelepathyPresenceApplet::appletHeight() const
-{
-    return geometry().height();
-}
-
-int TelepathyPresenceApplet::appletWidth() const
-{
-    return geometry().width();
 }
 
 QList< QAction* > TelepathyPresenceApplet::contextualActions()
@@ -68,30 +61,48 @@ QList< QAction* > TelepathyPresenceApplet::contextualActions()
 void TelepathyPresenceApplet::init()
 {
     Plasma::Applet::init();
-
-    if (m_declarative) {
-        /// TODO sort this path out with correct one
-        QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-kde-presence-applet/contents/ui/main.qml");
-        qDebug() << "LOADING: " << qmlFile;
-        m_declarative->setQmlPath(qmlFile);
-        m_declarative->engine()->rootContext()->setContextProperty("TelepathyPresenceApplet", m_globalPresenceWrapper);
-
-        // setup qml object so that we can talk to the declarative part
-        m_qmlObject = dynamic_cast<QObject*>(m_declarative->rootObject());
-
-        // connect the qml object to recieve signals from the globalpresencewrapper
-//         connect(m_globalPresenceWrapper, SIGNAL(presenceChanged()), m_qmlObject, SLOT(/*updatePresence*/));
-
-        // these two signals are for the plasmoid resize. QML can't determine the Plasma::DeclarativeWidget's boundaries
-        connect(this, SIGNAL(widthChanged()), m_qmlObject, SLOT(onWidthChanged()));
-        connect(this, SIGNAL(heightChanged()), m_qmlObject, SLOT(onHeightChanged()));
-    }
 }
 
 void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
 {
     Plasma::Applet::paintInterface(p, option, contentsRect);
 }
+
+void TelepathyPresenceApplet::setupAccountManager()
+{
+    Tp::registerTypes();
+
+    // setup the telepathy account manager from where I'll retrieve info on accounts and contacts
+    Tp::AccountFactoryPtr  accountFactory = Tp::AccountFactory::create(QDBusConnection::sessionBus(),
+                                                                       Tp::Features() << Tp::Account::FeatureCore
+                                                                       << Tp::Account::FeatureAvatar
+                                                                       << Tp::Account::FeatureCapabilities
+                                                                       << Tp::Account::FeatureProtocolInfo
+                                                                       << Tp::Account::FeatureProfile);
+
+    Tp::ConnectionFactoryPtr connectionFactory = Tp::ConnectionFactory::create(QDBusConnection::sessionBus(),
+                                                                               Tp::Features() << Tp::Connection::FeatureCore
+                                                                               << Tp::Connection::FeatureRosterGroups
+                                                                               << Tp::Connection::FeatureRoster
+                                                                               << Tp::Connection::FeatureSelfContact);
+
+    Tp::ContactFactoryPtr contactFactory = Tp::ContactFactory::create(Tp::Features()
+    << Tp::Contact::FeatureAlias
+    << Tp::Contact::FeatureAvatarData
+    << Tp::Contact::FeatureSimplePresence
+    << Tp::Contact::FeatureCapabilities);
+
+    Tp::ChannelFactoryPtr channelFactory = Tp::ChannelFactory::create(QDBusConnection::sessionBus());
+
+    m_accountManager = Tp::AccountManager::create(QDBusConnection::sessionBus(),
+                                                  accountFactory,
+                                                  connectionFactory,
+                                                  channelFactory,
+                                                  contactFactory);
+
+    connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
+}
+
 
 void TelepathyPresenceApplet::setupContextMenuActions()
 {
@@ -110,12 +121,12 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List"), this);
 
     // connect actions
-    connect(goOnlineAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceOnline()));
-    connect(goBusyAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceBusy()));
-    connect(goAwayAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceAway()));
-    connect(goExtendedAwayAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceXa()));
-    connect(goHiddenAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceHidden()));
-    connect(goOfflineAction, SIGNAL(triggered()), m_globalPresenceWrapper, SLOT(setPresenceOffline()));
+    connect(goOnlineAction, SIGNAL(triggered()), this, SLOT(setPresenceOnline()));
+    connect(goBusyAction, SIGNAL(triggered()), this, SLOT(setPresenceBusy()));
+    connect(goAwayAction, SIGNAL(triggered()), this, SLOT(setPresenceAway()));
+    connect(goExtendedAwayAction, SIGNAL(triggered()), this, SLOT(setPresenceXa()));
+    connect(goHiddenAction, SIGNAL(triggered()), this, SLOT(setPresenceHidden()));
+    connect(goOfflineAction, SIGNAL(triggered()), this, SLOT(setPresenceOffline()));
 
     connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
     connect(showContactListAction, SIGNAL(triggered()), this, SLOT(startContactList()));
@@ -135,6 +146,68 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     m_contextActions.append(presenceMenu->addSeparator());
 }
 
+void TelepathyPresenceApplet::onAccountManagerReady(Tp::PendingOperation* op)
+{
+    if (op->isError()) {
+        kDebug() << op->errorName();
+        kDebug() << op->errorMessage();
+    }
+
+    // set the manager to the globalpresence
+    m_globalPresence->setAccountManager(m_accountManager);
+}
+
+void TelepathyPresenceApplet::onPresenceChanged(Tp::Presence presence)
+{
+    QString presenceStr = presence.status();
+
+    if (presenceStr == "available") {
+        setPopupIcon("user-online");
+    } else if (presenceStr == "busy" || presenceStr == "dnd") {
+        setPopupIcon("user-busy");
+    } else if (presenceStr == "away" || presenceStr == "brb") {
+        setPopupIcon("user-away");
+    } else if (presenceStr == "xa") {
+        setPopupIcon("user-away-extended");
+    } else if (presenceStr == "hidden") {
+        setPopupIcon("user-invisible");
+    } else if (presenceStr == "offline") {
+        setPopupIcon("user-offline");
+    } else {
+        setPopupIcon("user-offline");
+    }
+}
+
+void TelepathyPresenceApplet::setPresenceAway()
+{
+    m_globalPresence->setPresence(Tp::Presence::away(m_globalPresence->currentPresence().statusMessage()));
+}
+
+void TelepathyPresenceApplet::setPresenceBusy()
+{
+    m_globalPresence->setPresence(Tp::Presence::busy(m_globalPresence->currentPresence().statusMessage()));
+}
+
+void TelepathyPresenceApplet::setPresenceHidden()
+{
+    m_globalPresence->setPresence(Tp::Presence::hidden(m_globalPresence->currentPresence().statusMessage()));
+}
+
+void TelepathyPresenceApplet::setPresenceOffline()
+{
+    m_globalPresence->setPresence(Tp::Presence::offline(m_globalPresence->currentPresence().statusMessage()));
+}
+
+void TelepathyPresenceApplet::setPresenceOnline()
+{
+    m_globalPresence->setPresence(Tp::Presence::available(m_globalPresence->currentPresence().statusMessage()));
+}
+
+void TelepathyPresenceApplet::setPresenceXa()
+{
+    m_globalPresence->setPresence(Tp::Presence::xa(m_globalPresence->currentPresence().statusMessage()));
+}
+
 void TelepathyPresenceApplet::startAccountManager() const
 {
     KToolInvocation::startServiceByDesktopName("kcm_telepathy_accounts");
@@ -144,7 +217,6 @@ void TelepathyPresenceApplet::startContactList() const
 {
     KToolInvocation::startServiceByDesktopName("telepathy-kde-contactlist");
 }
-
 
 
 // This is the command that links your applet to the .desktop file
