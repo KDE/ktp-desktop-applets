@@ -12,7 +12,7 @@ set(KDE_MIN_VERSION "4.6.0")
 set(IS_TELEPATHY_KDE_INTERNAL_MODULE TRUE)
 
 find_package(KDE4 ${KDE_MIN_VERSION} REQUIRED)
-find_package(TelepathyQt4 0.7.1 REQUIRED)
+find_package(TelepathyQt4 0.8.90 REQUIRED)
 find_package(KTelepathy REQUIRED)
 
 include(KDE4Defaults)

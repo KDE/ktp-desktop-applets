@@ -23,8 +23,8 @@
 #include <Plasma/PopupApplet>
 #include <Plasma/DeclarativeWidget>
 
-#include <TelepathyQt4/AccountManager>
-#include <TelepathyQt4/Presence>
+#include <TelepathyQt/AccountManager>
+#include <TelepathyQt/Presence>
 
 namespace KTp {
     class GlobalPresence;

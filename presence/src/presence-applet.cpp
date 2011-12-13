@@ -27,8 +27,8 @@
 #include <KTelepathy/global-presence.h>
 #include <KTelepathy/presence.h>
 
-#include <TelepathyQt4/PendingOperation>
-#include <TelepathyQt4/PendingReady>
+#include <TelepathyQt/PendingOperation>
+#include <TelepathyQt/PendingReady>
 
 
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariantList& args)
