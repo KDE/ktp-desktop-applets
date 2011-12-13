@@ -26,6 +26,8 @@
 #include <TelepathyQt/AccountManager>
 #include <TelepathyQt/Presence>
 
+#include <KTelepathy/presence.h>
+
 namespace KTp {
     class GlobalPresence;
 }
@@ -55,13 +57,8 @@ public:
 
 private Q_SLOTS:
     void onAccountManagerReady(Tp::PendingOperation *op);
-    void onPresenceChanged(Tp::Presence presence);
-    void setPresenceAway();
-    void setPresenceBusy();
-    void setPresenceHidden();
-    void setPresenceOffline();
-    void setPresenceOnline();
-    void setPresenceXa();
+    void onPresenceChanged(KTp::Presence presence);
+    void onPresenceActionClicked();
     void startAccountManager() const;
     void startContactList() const;
     void toolTipAboutToShow();

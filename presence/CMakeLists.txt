@@ -43,7 +43,6 @@ target_link_libraries(telepathy-kde-presence-applet
                         ${KDE4_KDEUI_LIBS}
                         ${TELEPATHY_QT4_LIBRARIES}
                         ${KTELEPATHY_LIBRARIES}
-                        ${KTELEPATHY_MODELS_LIBRARIES}
                      )
 
 install(TARGETS telepathy-kde-presence-applet DESTINATION ${PLUGIN_INSTALL_DIR})
