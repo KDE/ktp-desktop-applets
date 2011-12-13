@@ -106,8 +106,7 @@ void TelepathyPresenceApplet::setupAccountManager()
 
 void TelepathyPresenceApplet::setupContextMenuActions()
 {
-    // presence actions
-    KActionMenu *presenceMenu = new KActionMenu(i18n("Set presence"), this);
+    KActionMenu *moreMenu = new KActionMenu(i18n("More"), this);
 
     KAction *goOnlineAction = new KAction(KIcon("user-online"), i18n("Online"), this);
     KAction *goBusyAction = new KAction(KIcon("user-busy"), i18n("Busy"), this);
@@ -131,19 +130,19 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
     connect(showContactListAction, SIGNAL(triggered()), this, SLOT(startContactList()));
 
-    presenceMenu->addAction(goOnlineAction);
-    presenceMenu->addAction(goBusyAction);
-    presenceMenu->addAction(goAwayAction);
-    presenceMenu->addAction(goExtendedAwayAction);
-    presenceMenu->addAction(goHiddenAction);
-    presenceMenu->addAction(goOfflineAction);
-    presenceMenu->addSeparator();
+    m_contextActions.append(goOnlineAction);
+    m_contextActions.append(goBusyAction);
+    m_contextActions.append(goAwayAction);
+    m_contextActions.append(goExtendedAwayAction);
+    m_contextActions.append(goHiddenAction);
+    m_contextActions.append(goOfflineAction);
+    m_contextActions.append(moreMenu->addSeparator());
 
-    m_contextActions.append(presenceMenu);
-    m_contextActions.append(presenceMenu->addSeparator());
-    m_contextActions.append(showAccountManagerAction);
-    m_contextActions.append(showContactListAction);
-    m_contextActions.append(presenceMenu->addSeparator());
+    moreMenu->addAction(showAccountManagerAction);
+    moreMenu->addAction(showContactListAction);
+    m_contextActions.append(moreMenu);
+
+    m_contextActions.append(moreMenu->addSeparator());
 }
 
 void TelepathyPresenceApplet::onAccountManagerReady(Tp::PendingOperation* op)
