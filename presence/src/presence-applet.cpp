@@ -21,11 +21,13 @@
 
 #include <KAction>
 #include <KActionMenu>
-#include <KStandardDirs>
 #include <KToolInvocation>
+#include <KUser>
 
 #include <KTelepathy/global-presence.h>
 #include <KTelepathy/presence.h>
+
+#include <Plasma/ToolTipManager>
 
 #include <TelepathyQt/PendingOperation>
 #include <TelepathyQt/PendingReady>
@@ -46,6 +48,9 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariant
     setMinimumSize(QSize(iconSize, iconSize));
 
     connect(m_globalPresence, SIGNAL(currentPresenceChanged(Tp::Presence)), this, SLOT(onPresenceChanged(Tp::Presence)));
+
+    // register plasmoid for tooltip
+    Plasma::ToolTipManager::self()->registerWidget(this);
 }
 
 TelepathyPresenceApplet::~TelepathyPresenceApplet()
@@ -53,7 +58,7 @@ TelepathyPresenceApplet::~TelepathyPresenceApplet()
     m_contextActions.clear();
 }
 
-QList< QAction* > TelepathyPresenceApplet::contextualActions()
+QList<QAction*> TelepathyPresenceApplet::contextualActions()
 {
     return m_contextActions;
 }
@@ -216,6 +221,27 @@ void TelepathyPresenceApplet::startContactList() const
 {
     KToolInvocation::startServiceByDesktopName("telepathy-kde-contactlist");
 }
+
+void TelepathyPresenceApplet::toolTipAboutToShow()
+{
+    Plasma::ToolTipContent content;
+    KUser user;
+
+    QString presenceMsg("\"");
+    presenceMsg.append(m_globalPresence->currentPresence().statusMessage());
+    presenceMsg.append("\"");
+
+    content.setImage(KIcon("telepathy-kde"));
+    content.setMainText(user.loginName());
+    content.setSubText(presenceMsg);
+    Plasma::ToolTipManager::self()->setContent(this, content);
+}
+
+void TelepathyPresenceApplet::toolTipHidden()
+{
+    Plasma::ToolTipManager::self()->clearContent(this);
+}
+
 
 
 // This is the command that links your applet to the .desktop file

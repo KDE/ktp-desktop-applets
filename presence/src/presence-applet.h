@@ -64,6 +64,8 @@ private Q_SLOTS:
     void setPresenceXa();
     void startAccountManager() const;
     void startContactList() const;
+    void toolTipAboutToShow();
+    void toolTipHidden();
 
 private:
     void setupAccountManager();
