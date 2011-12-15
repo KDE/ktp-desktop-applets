@@ -169,7 +169,6 @@ void TelepathyPresenceApplet::onPresenceActionClicked()
     p.setStatus(p.type(), p.status(), m_globalPresence->currentPresence().statusMessage());
 
     m_globalPresence->setPresence(p);
-    setPopupIcon(p.icon());
 }
 
 void TelepathyPresenceApplet::startAccountManager() const
