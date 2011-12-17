@@ -126,6 +126,8 @@ void AbstractContactDelegate::paint(QPainter* painter, const QStyleOptionViewIte
 
 QSize AbstractContactDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+    Q_UNUSED(option)
+    Q_UNUSED(index)
     return QSize(0, 20);
 }
 
