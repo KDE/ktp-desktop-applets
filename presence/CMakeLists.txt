@@ -30,12 +30,13 @@ include_directories(${CMAKE_SOURCE_DIR}
 
 
 set(telepathy-kde-presence-applet_SRCS
+    src/generalsettings.cpp
     src/presenceapplet.cpp
 )
-#
-# kde4_add_ui_files(telepathy-kde-presence-applet_SRCS
-#                     src/config.ui
-# )
+
+kde4_add_ui_files(telepathy-kde-presence-applet_SRCS
+                    src/generalsettings.ui
+)
 
 kde4_add_plugin(telepathy-kde-presence-applet ${telepathy-kde-presence-applet_SRCS})
 target_link_libraries(telepathy-kde-presence-applet

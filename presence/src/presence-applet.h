@@ -37,6 +37,7 @@ namespace Tp {
 }
 
 class GlobalPresenceWrapper;
+class KConfigDialog;
 class QAction;
 
 class TelepathyPresenceApplet: public Plasma::PopupApplet
@@ -44,25 +45,32 @@ class TelepathyPresenceApplet: public Plasma::PopupApplet
     Q_OBJECT
 
 public:
+    enum OnClickAction {
+        DO_NOTHING,
+        SHOW_ACCOUNT_MANAGER,
+        SHOW_CONTACTLIST
+    };
+
     TelepathyPresenceApplet(QObject *parent, const QVariantList &args);
     ~TelepathyPresenceApplet();
 
     QList<QAction*>contextualActions();
+    void createConfigurationInterface(KConfigDialog *parentDialog);
     void init();
     void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
 
-    /// TODO
-//     /** overide of config signal */
-//     void showConfigurationInterface();
-
 private Q_SLOTS:
     void onAccountManagerReady(Tp::PendingOperation *op);
+
+    /** called when plasmoid is clicked */
+    void onActivated();
     void onPresenceChanged(KTp::Presence presence);
     void onPresenceActionClicked();
     void startAccountManager() const;
     void startContactList() const;
     void toolTipAboutToShow();
     void toolTipHidden();
+    void updateClickAction(TelepathyPresenceApplet::OnClickAction);
 
 private:
     void setupAccountManager();
@@ -74,6 +82,7 @@ private:
 
     Tp::AccountManagerPtr m_accountManager;
     KTp::GlobalPresence *m_globalPresence;
+    OnClickAction m_onClickAction;
 };
 
 #endif  // TELEPATHY_KDE_PRESENCE_APPLET_H
