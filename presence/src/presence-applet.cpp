@@ -20,6 +20,8 @@
 #include "generalsettings.h"
 #include "presenceapplet.h"
 
+#include <QDBusAbstractAdaptor>
+
 #include <KAction>
 #include <KActionMenu>
 #include <KConfigDialog>
@@ -33,6 +35,20 @@
 
 #include <TelepathyQt/PendingOperation>
 #include <TelepathyQt/PendingReady>
+
+//-----------------------------------------------------------------------------------------
+
+class DBusExporter : public QDBusAbstractAdaptor
+{
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Telepathy.PresenceApplet")
+
+public:
+    DBusExporter(QObject *parent = 0) : QDBusAbstractAdaptor(parent) {}
+    ~DBusExporter() {};
+};
+
+//-----------------------------------------------------------------------------------------
 
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariantList& args)
     : Plasma::PopupApplet(parent, args)
@@ -58,6 +74,8 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariant
 TelepathyPresenceApplet::~TelepathyPresenceApplet()
 {
     m_contextActions.clear();
+    QDBusConnection::sessionBus().unregisterObject("/PresenceAppletActive");
+    QDBusConnection::sessionBus().unregisterService("org.kde.Telepathy.PresenceAppletActive");
 }
 
 QList<QAction*> TelepathyPresenceApplet::contextualActions()
@@ -91,6 +109,10 @@ void TelepathyPresenceApplet::init()
     } else {
         m_onClickAction = DO_NOTHING;
     }
+
+    m_dbusExporter = new DBusExporter(this);
+    QDBusConnection::sessionBus().registerObject("/PresenceAppletActive", this, QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerService("org.kde.Telepathy.PresenceAppletActive");
 }
 
 void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
@@ -248,6 +270,8 @@ void TelepathyPresenceApplet::updateClickAction(TelepathyPresenceApplet::OnClick
     m_onClickAction = clickAction;
 }
 
+#include "presenceapplet.moc"
+#include "moc_presenceapplet.cpp" //hack because we have two QObejcts in teh same file
 
 // This is the command that links your applet to the .desktop file
 K_EXPORT_PLASMA_APPLET(telepathy-kde-presence-applet, TelepathyPresenceApplet)

@@ -39,6 +39,7 @@ namespace Tp {
 class GlobalPresenceWrapper;
 class KConfigDialog;
 class QAction;
+class DBusExporter;
 
 class TelepathyPresenceApplet: public Plasma::PopupApplet
 {
@@ -54,10 +55,10 @@ public:
     TelepathyPresenceApplet(QObject *parent, const QVariantList &args);
     ~TelepathyPresenceApplet();
 
-    QList<QAction*>contextualActions();
+    QList<QAction*> contextualActions();
     void createConfigurationInterface(KConfigDialog *parentDialog);
     void init();
-    void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect& contentsRect);
+    void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect &contentsRect);
 
 private Q_SLOTS:
     void onAccountManagerReady(Tp::PendingOperation *op);
@@ -78,11 +79,12 @@ private:
     /** used only upon creation to setup a list of actions for the context menu */
     void setupContextMenuActions();
 
-    QList<QAction*>m_contextActions;
+    QList<QAction*>       m_contextActions;
 
     Tp::AccountManagerPtr m_accountManager;
-    KTp::GlobalPresence *m_globalPresence;
-    OnClickAction m_onClickAction;
+    KTp::GlobalPresence  *m_globalPresence;
+    OnClickAction         m_onClickAction;
+    DBusExporter         *m_dbusExporter;
 };
 
 #endif  // TELEPATHY_KDE_PRESENCE_APPLET_H
