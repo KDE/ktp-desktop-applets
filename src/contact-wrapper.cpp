@@ -21,6 +21,7 @@
 
 #include <KToolInvocation>
 #include <KUrl>
+#include <KDebug>
 
 #include <TelepathyQt/AvatarData>
 #include <TelepathyQt/ContactCapabilities>
@@ -150,12 +151,11 @@ void ContactWrapper::onContactManagerStateChanged(Tp::ContactListState newState)
 {
     if (newState == Tp::ContactListStateSuccess) {
         QList<Tp::ContactPtr> contactList = m_account->connection()->contactManager()->allKnownContacts().toList();
-        bool match = false;
 
-        for (int i = 0; i < contactList.count() && !match; ++i) {
+        for (int i = 0; i < contactList.count(); ++i) {
             if (contactList.at(i)->id() == m_tempContactId) {
-                match = true;
                 setContact(contactList.at(i));
+                break;
             }
         }
     }
@@ -194,12 +194,12 @@ void ContactWrapper::sendMail()
 
 void ContactWrapper::startAudioCall()
 {
-    qDebug("ContactWrapper::startAudioCall");
+    kDebug();
 }
 
 void ContactWrapper::startFileTransfer()
 {
-    qDebug("ContactWrapper::startFileTransfer");
+    kDebug();
 }
 
 void ContactWrapper::startTextChat()
@@ -216,12 +216,12 @@ void ContactWrapper::startTextChat()
 
 void ContactWrapper::startVideoCall()
 {
-    qDebug("ContactWrapper::startVideoCall");
+    kDebug();
 }
 
 void ContactWrapper::setAccount(const Tp::AccountPtr& relatedAccount)
 {
-    qDebug() << "setting account to: " << relatedAccount->displayName();
+    kDebug() << "setting account to: " << relatedAccount->displayName();
     undoAccountConnects();
     m_account = relatedAccount;
     setupAccountConnects();
@@ -229,7 +229,7 @@ void ContactWrapper::setAccount(const Tp::AccountPtr& relatedAccount)
 
 void ContactWrapper::setContact(const Tp::ContactPtr& newContact)
 {
-    qDebug() << "setting new contact to: " << newContact->id();
+    kDebug() << "setting new contact to: " << newContact->id();
 
     // disconnect signals
     undoContactConnects();

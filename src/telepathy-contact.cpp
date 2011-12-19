@@ -74,7 +74,7 @@ void TelepathyContact::init()
 
     if (m_declarative) {
         QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-contact/contents/ui/main.qml");
-        qDebug() << "LOADING: " << qmlFile;
+        kDebug() << "LOADING: " << qmlFile;
         m_declarative->setQmlPath(qmlFile);
         m_declarative->engine()->rootContext()->setContextProperty("TelepathyContact", m_contact);
 
@@ -126,12 +126,10 @@ void TelepathyContact::loadConfig()
 
         if (account->connection()) {
             QList<Tp::ContactPtr> contactList = account->connection()->contactManager()->allKnownContacts().toList();
-            bool match = false;
 
-            for (int i = 0; i < contactList.count() && !match; ++i) {
+            for (int i = 0; i < contactList.count(); ++i) {
                 if (contactList.at(i)->id() == contactId) {
                     contact = contactList.at(i);
-                    match = true;
                     m_contact->setContact(contact);
                     m_contact->setAccount(account);
                 }
