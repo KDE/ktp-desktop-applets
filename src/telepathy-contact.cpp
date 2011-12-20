@@ -70,7 +70,7 @@ void TelepathyContact::init()
 {
     Plasma::Applet::init();
 
-    qDebug() << "APPLET ID: " << id();
+    kDebug() << "APPLET ID: " << id();
 
     if (m_declarative) {
         QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-contact/contents/ui/main.qml");
@@ -184,16 +184,10 @@ void TelepathyContact::setupAccountManager()
     // setup the telepathy account manager from where I'll retrieve info on accounts and contacts
     Tp::AccountFactoryPtr  accountFactory = Tp::AccountFactory::create(QDBusConnection::sessionBus(),
                                                                        Tp::Features() << Tp::Account::FeatureCore
-                                                                       << Tp::Account::FeatureAvatar
-                                                                       << Tp::Account::FeatureCapabilities
-                                                                       << Tp::Account::FeatureProtocolInfo
-                                                                       << Tp::Account::FeatureProfile);
+                                                                       << Tp::Account::FeatureCapabilities);
 
     Tp::ConnectionFactoryPtr connectionFactory = Tp::ConnectionFactory::create(QDBusConnection::sessionBus(),
-                                                                               Tp::Features() << Tp::Connection::FeatureCore
-                                                                               << Tp::Connection::FeatureRosterGroups
-                                                                               << Tp::Connection::FeatureRoster
-                                                                               << Tp::Connection::FeatureSelfContact);
+                                                                               Tp::Features() << Tp::Connection::FeatureCore);
 
     Tp::ContactFactoryPtr contactFactory = Tp::ContactFactory::create(Tp::Features()
                                                                       << Tp::Contact::FeatureAlias
@@ -230,7 +224,7 @@ void TelepathyContact::showConfigurationInterface()
 {
     if (!isUserConfiguring()) {
         Config *config = new Config(m_accountManager, 0);
-        connect(config, SIGNAL(setNewContact(Tp::ContactPtr, Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr, Tp::AccountPtr)));
+        connect(config, SIGNAL(setNewContact(Tp::ContactPtr,Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr,Tp::AccountPtr)));
         config->show();
     }
 }
