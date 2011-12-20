@@ -57,16 +57,14 @@ QString ContactWrapper::avatar() const
     if (m_contact) {
         if (!m_contact->avatarData().fileName.isEmpty()) {
             return m_contact->avatarData().fileName;
-        } else {
-            return QString("im-user");
         }
-    // check if temp avatar has been se
+    // check if temp avatar has been set
     } else if (!m_tempAvatar.isEmpty()) {
         return m_tempAvatar;
-    } else {
-        // return default icon
-        return QString("im-user");
     }
+
+    // return default icon
+    return QString("im-user");
 }
 
 bool ContactWrapper::canSendFile() const
@@ -129,14 +127,12 @@ void ContactWrapper::genericOperationFinished(Tp::PendingOperation* op)
 bool ContactWrapper::isAccountOnline() const
 {
     if (m_account) {
-        if (m_account->currentPresence().type() == Tp::Presence::offline().type()) {
-            return false;
-        } else {
+        if (m_account->currentPresence().type() != Tp::Presence::offline().type()) {
             return true;
         }
-    } else {
-        return false;
     }
+
+    return false;
 }
 
 void ContactWrapper::onConnectionChanged(const Tp::ConnectionPtr& newConn)
@@ -166,7 +162,7 @@ QString ContactWrapper::presenceStatus() const
     if (m_contact) {
         return m_contact->presence().status();
     } else {
-        return QString("");
+        return QString();
     }
 }
 
