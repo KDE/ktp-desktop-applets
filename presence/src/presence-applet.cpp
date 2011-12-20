@@ -36,23 +36,9 @@
 #include <TelepathyQt/PendingOperation>
 #include <TelepathyQt/PendingReady>
 
-//-----------------------------------------------------------------------------------------
-
-class DBusExporter : public QDBusAbstractAdaptor
-{
-    Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.kde.Telepathy.PresenceApplet")
-
-public:
-    DBusExporter(QObject *parent = 0) : QDBusAbstractAdaptor(parent) {}
-    ~DBusExporter() {};
-};
-
-//-----------------------------------------------------------------------------------------
-
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariantList& args)
-    : Plasma::PopupApplet(parent, args)
-    , m_globalPresence(new KTp::GlobalPresence(this))
+    : Plasma::PopupApplet(parent, args),
+    m_globalPresence(new KTp::GlobalPresence(this))
 {
     setupContextMenuActions();
     setupAccountManager();
@@ -271,7 +257,6 @@ void TelepathyPresenceApplet::updateClickAction(TelepathyPresenceApplet::OnClick
 }
 
 #include "presenceapplet.moc"
-#include "moc_presenceapplet.cpp" //hack because we have two QObejcts in teh same file
 
 // This is the command that links your applet to the .desktop file
 K_EXPORT_PLASMA_APPLET(telepathy-kde-presence-applet, TelepathyPresenceApplet)

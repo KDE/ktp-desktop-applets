@@ -87,4 +87,16 @@ private:
     DBusExporter         *m_dbusExporter;
 };
 
+//-----------------------------------------------------------------------------------------
+
+class DBusExporter : public QDBusAbstractAdaptor
+{
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Telepathy.PresenceApplet")
+
+public:
+    DBusExporter(QObject *parent = 0) : QDBusAbstractAdaptor(parent) {}
+    ~DBusExporter() {};
+};
+
 #endif  // TELEPATHY_KDE_PRESENCE_APPLET_H
