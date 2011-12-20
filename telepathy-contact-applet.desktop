@@ -1,10 +1,6 @@
 [Desktop Entry]
 Name=Instant Messaging Contact
-Name[cs]=Kontakt Instantní Komunikace
-Name[x-test]=xxInstant Messaging Contactxx
 Comment=Applet for one of your instant messaging contacts
-Comment[cs]=Applet pro jeden kontakt instantní komunikace
-Comment[x-test]=xxApplet for one of your instant messaging contactsxx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=im-user
