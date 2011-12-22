@@ -17,8 +17,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#ifndef TELEPATHY_KDE_PRESENCE_APPLET_H
-#define TELEPATHY_KDE_PRESENCE_APPLET_H
+#ifndef KTP_PRESENCE_APPLET_H
+#define KTP_PRESENCE_APPLET_H
 
 #include <Plasma/PopupApplet>
 #include <Plasma/DeclarativeWidget>
@@ -99,4 +99,4 @@ public:
     ~DBusExporter() {};
 };
 
-#endif  // TELEPATHY_KDE_PRESENCE_APPLET_H
+#endif  // KTP_PRESENCE_APPLET_H

@@ -152,7 +152,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     goOfflineAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::offline())));
 
     // application actions
-    KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager"), this);
+    KAction *showAccountManagerAction = new KAction(KIcon("ktp"), i18n("Account Manager"), this);
     KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List"), this);
 
     // connect actions
@@ -222,7 +222,7 @@ void TelepathyPresenceApplet::startAccountManager() const
 
 void TelepathyPresenceApplet::startContactList() const
 {
-    KToolInvocation::startServiceByDesktopName("telepathy-kde-contactlist");
+    KToolInvocation::startServiceByDesktopName("ktp-contactlist");
 }
 
 void TelepathyPresenceApplet::toolTipAboutToShow()
@@ -232,7 +232,7 @@ void TelepathyPresenceApplet::toolTipAboutToShow()
 
     QString presenceMsg = QString(m_globalPresence->currentPresence().statusMessage());
 
-    content.setImage(KIcon("telepathy-kde"));
+    content.setImage(KIcon("ktp"));
     content.setMainText(user.loginName());
 
     if (m_globalPresence->isChangingPresence()) {
@@ -259,4 +259,4 @@ void TelepathyPresenceApplet::updateClickAction(TelepathyPresenceApplet::OnClick
 #include "presenceapplet.moc"
 
 // This is the command that links your applet to the .desktop file
-K_EXPORT_PLASMA_APPLET(telepathy-kde-presence-applet, TelepathyPresenceApplet)
+K_EXPORT_PLASMA_APPLET(ktp-presence-applet, TelepathyPresenceApplet)
