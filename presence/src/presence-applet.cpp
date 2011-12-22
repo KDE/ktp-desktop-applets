@@ -29,7 +29,7 @@
 #include <KToolInvocation>
 #include <KUser>
 
-#include <KTelepathy/global-presence.h>
+#include <KTp/global-presence.h>
 
 #include <Plasma/ToolTipManager>
 

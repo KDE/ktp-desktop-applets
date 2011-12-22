@@ -26,7 +26,7 @@
 #include <TelepathyQt/AccountManager>
 #include <TelepathyQt/Presence>
 
-#include <KTelepathy/presence.h>
+#include <KTp/presence.h>
 
 namespace KTp {
     class GlobalPresence;
