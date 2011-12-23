@@ -217,7 +217,7 @@ void TelepathyPresenceApplet::onPresenceActionClicked()
 
 void TelepathyPresenceApplet::startAccountManager() const
 {
-    KToolInvocation::startServiceByDesktopName("kcm_telepathy_accounts");
+    KToolInvocation::startServiceByDesktopName("kcm_ktp_accounts");
 }
 
 void TelepathyPresenceApplet::startContactList() const
