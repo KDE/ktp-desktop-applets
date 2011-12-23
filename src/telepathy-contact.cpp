@@ -73,7 +73,7 @@ void TelepathyContact::init()
     kDebug() << "APPLET ID: " << id();
 
     if (m_declarative) {
-        QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.telepathy-contact/contents/ui/main.qml");
+        QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.ktp-contact/contents/ui/main.qml");
         kDebug() << "LOADING: " << qmlFile;
         m_declarative->setQmlPath(qmlFile);
         m_declarative->engine()->rootContext()->setContextProperty("TelepathyContact", m_contact);
@@ -232,4 +232,4 @@ void TelepathyContact::showConfigurationInterface()
 }
 
 // This is the command that links your applet to the .desktop file
-K_EXPORT_PLASMA_APPLET(telepathy-contact, TelepathyContact)
+K_EXPORT_PLASMA_APPLET(ktp-contact, TelepathyContact)

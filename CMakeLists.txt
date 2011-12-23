@@ -50,6 +50,6 @@ target_link_libraries(plasma_applet_ktp_contact
                         ${KTP_MODELS_LIBRARIES}
                         ${QT_QTDECLARATIVE_LIBRARY})
 
-install(DIRECTORY src/declarative/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.telepathy-contact)
+install(DIRECTORY src/declarative/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.ktp-contact)
 install(TARGETS plasma_applet_ktp_contact DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES plasma_applet_ktp_contact.desktop DESTINATION ${SERVICES_INSTALL_DIR})
