@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Instant Messaging Contact
 Name[es]=Contacto de mensajería instantánea
+Name[hu]=Azonnali üzenetküldési partner
 Name[it]=Contatto di messaggistica istantanea
 Name[pt]=Contacto de Mensagens Instantâneas
 Name[pt_BR]=Contato de mensagens instantâneas
@@ -9,6 +10,7 @@ Name[uk]=Контакт миттєвого обміну повідомлення
 Name[x-test]=xxInstant Messaging Contactxx
 Comment=Applet for one of your instant messaging contacts
 Comment[es]=Miniaplicación para uno de sus contactos de mensajería instantánea
+Comment[hu]=Kisalkalmazás az azonnali üzenetküldési partnerei egyikének kezeléséhez
 Comment[it]=Applet per uno dei tuoi contatti di messaggistica istantanea
 Comment[pt]='Applet' para um dos seus contactos das mensagens instantâneas
 Comment[pt_BR]=Miniaplicativo para um dos seus contatos de mensagens instantâneas
