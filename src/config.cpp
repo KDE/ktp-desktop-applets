@@ -74,7 +74,8 @@ void Config::enableOfflineContacts(bool enable)
 void Config::setupContactsList()
 {
     // prepare models
-    m_model = new AccountsModel(m_accountManager, this);
+    m_model = new AccountsModel(this);
+    m_model->setAccountManager(m_accountManager);
     m_groupsModel = new GroupsModel(m_model, this);
     m_modelFilter = new AccountsFilterModel(this);
 
