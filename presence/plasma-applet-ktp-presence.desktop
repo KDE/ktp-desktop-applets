@@ -1,12 +1,5 @@
 [Desktop Entry]
 Name=Instant Messaging Presence Applet
-Name[hu]=Azonnali üzenetküldési jelenlét kisalkalmazás
-Name[it]=Applet di presenza di messaggistica istantanea
-Name[nl]=Aanwezigheidsapplet van Instant Messaging
-Name[pt]='Applet' de Presença nas Mensagens Instantâneas
-Name[pt_BR]=Miniaplicativo de presença nas mensagens instantâneas
-Name[uk]=Аплет присутності у системі обміну повідомленнями
-Name[x-test]=xxInstant Messaging Presence Appletxx
 Type=Service
 ServiceTypes=Plasma/Applet,Plasma/PopupApplet
 Icon=user-online
