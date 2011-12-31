@@ -152,7 +152,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     goOfflineAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::offline())));
 
     // application actions
-    KAction *showAccountManagerAction = new KAction(KIcon("ktp"), i18n("Account Manager"), this);
+    KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager"), this);
     KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List"), this);
 
     // connect actions
