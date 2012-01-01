@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Instant Messaging Presence Applet
+Name=Instant Messaging Presence
 Type=Service
 ServiceTypes=Plasma/Applet,Plasma/PopupApplet
 Icon=user-online
