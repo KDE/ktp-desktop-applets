@@ -232,7 +232,7 @@ void TelepathyPresenceApplet::toolTipAboutToShow()
 
     QString presenceMsg = QString(m_globalPresence->currentPresence().statusMessage());
 
-    content.setImage(KIcon("ktp"));
+    content.setImage(KIcon("telepathy-kde"));
     content.setMainText(user.loginName());
 
     if (m_globalPresence->isChangingPresence()) {
