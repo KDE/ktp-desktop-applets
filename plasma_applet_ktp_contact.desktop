@@ -1,6 +1,20 @@
 [Desktop Entry]
 Name=Instant Messaging Contact
+Name[es]=Contacto de mensajería instantánea
+Name[hu]=Azonnali üzenetküldési partner
+Name[nl]=Contactpersoon van Instant Messaging
+Name[pt]=Contacto de Mensagens Instantâneas
+Name[sv]=Direktmeddelandekontakt
+Name[x-test]=xxInstant Messaging Contactxx
+Name[zh_TW]=即時通訊聯絡人
 Comment=Applet for one of your instant messaging contacts
+Comment[es]=Miniaplicación para uno de sus contactos de mensajería instantánea
+Comment[hu]=Kisalkalmazás az azonnali üzenetküldési partnerei egyikének kezeléséhez
+Comment[nl]=Applet voor één van uw contactpersonen van Instant Messaging
+Comment[pt]='Applet' para um dos seus contactos das mensagens instantâneas
+Comment[sv]=Miniprogram för en direktmeddelandekontakt
+Comment[x-test]=xxApplet for one of your instant messaging contactsxx
+Comment[zh_TW]=您的即時訊息聯絡人
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=im-user
