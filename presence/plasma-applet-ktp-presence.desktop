@@ -1,5 +1,8 @@
 [Desktop Entry]
 Name=Instant Messaging Presence
+Name[hu]=Azonnali üzenetküldési jelenlét
+Name[sv]=Direktmeddelande finns
+Name[x-test]=xxInstant Messaging Presencexx
 Type=Service
 ServiceTypes=Plasma/Applet,Plasma/PopupApplet
 Icon=user-online
