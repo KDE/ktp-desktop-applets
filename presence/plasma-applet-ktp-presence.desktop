@@ -1,8 +1,14 @@
 [Desktop Entry]
 Name=Instant Messaging Presence
+Name[es]=Estado presencial en mensajería instantánea
 Name[hu]=Azonnali üzenetküldési jelenlét
+Name[nl]=Aanwezigheid van Instant Messaging
+Name[pt]=Presença nas Mensagens Instantâneas
+Name[pt_BR]=Presença nas mensagens instantâneas
 Name[sv]=Direktmeddelande finns
+Name[uk]=Присутність у обміні повідомленнями
 Name[x-test]=xxInstant Messaging Presencexx
+Name[zh_TW]=即時訊息呈現
 Type=Service
 ServiceTypes=Plasma/Applet,Plasma/PopupApplet
 Icon=user-online
