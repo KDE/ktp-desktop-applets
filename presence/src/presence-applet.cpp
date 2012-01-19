@@ -235,11 +235,11 @@ void TelepathyPresenceApplet::toolTipAboutToShow()
     content.setImage(KIcon("telepathy-kde"));
     content.setMainText(user.loginName());
 
-    if (m_globalPresence->isChangingPresence()) {
+    if (m_globalPresence->connectionStatus() == Tp::ConnectionStatusConnecting) {
         content.setSubText(i18n("Connecting..."));
-    } else if (!presenceMsg.isEmpty() && !m_globalPresence->isChangingPresence()) {
+    } else if (!presenceMsg.isEmpty()) {
         content.setSubText(presenceMsg);
-    } else if (presenceMsg.isEmpty() && !m_globalPresence->isChangingPresence()) {
+    } else {
         content.setSubText(m_globalPresence->currentPresence().displayString());
     }
 
