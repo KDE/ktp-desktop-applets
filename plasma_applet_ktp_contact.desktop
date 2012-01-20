@@ -2,6 +2,7 @@
 Name=Instant Messaging Contact
 Name[cs]=Kontakt komunikátoru
 Name[da]=Instant messaging-kontakt
+Name[el]=Επαφή με στιγμιαίο μήνυμα
 Name[es]=Contacto de mensajería instantánea
 Name[et]=K&iirsuhtluskontakt
 Name[hu]=Azonnali üzenetküldési partner
@@ -16,6 +17,7 @@ Name[x-test]=xxInstant Messaging Contactxx
 Name[zh_TW]=即時通訊聯絡人
 Comment=Applet for one of your instant messaging contacts
 Comment[da]=Applet til en af dine instant messaging-kontakter
+Comment[el]=Μικροεφαρμογή για μία από τις επαφές σας με στιγμιαία μηνύματα
 Comment[es]=Miniaplicación para uno de sus contactos de mensajería instantánea
 Comment[et]=Aplett mõne sinu kiirsuhtluskontakti jaoks
 Comment[hu]=Kisalkalmazás az azonnali üzenetküldési partnerei egyikének kezeléséhez
