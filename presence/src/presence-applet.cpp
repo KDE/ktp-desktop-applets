@@ -259,4 +259,4 @@ void TelepathyPresenceApplet::updateClickAction(TelepathyPresenceApplet::OnClick
 #include "presenceapplet.moc"
 
 // This is the command that links your applet to the .desktop file
-K_EXPORT_PLASMA_APPLET(ktp-presence-applet, TelepathyPresenceApplet)
+K_EXPORT_PLASMA_APPLET(ktp_presence, TelepathyPresenceApplet)

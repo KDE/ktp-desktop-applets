@@ -29,22 +29,22 @@ include_directories(${CMAKE_SOURCE_DIR}
 )
 
 
-set(ktp-presence-applet_SRCS
+set(plasma_applet_ktp_presence_SRCS
     src/generalsettings.cpp
     src/presenceapplet.cpp
 )
 
-kde4_add_ui_files(ktp-presence-applet_SRCS
+kde4_add_ui_files(plasma_applet_ktp_presence_SRCS
                     src/generalsettings.ui
 )
 
-kde4_add_plugin(ktp-presence-applet ${ktp-presence-applet_SRCS})
-target_link_libraries(ktp-presence-applet
+kde4_add_plugin(plasma_applet_ktp_presence ${plasma_applet_ktp_presence_SRCS})
+target_link_libraries(plasma_applet_ktp_presence
                         ${KDE4_PLASMA_LIBS}
                         ${KDE4_KDEUI_LIBS}
                         ${TELEPATHY_QT4_LIBRARIES}
                         ${KTP_LIBRARIES}
                      )
 
-install(TARGETS ktp-presence-applet DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES ktp-presence-applet.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(TARGETS plasma_applet_ktp_presence DESTINATION ${PLUGIN_INSTALL_DIR})
+install(FILES plasma_applet_ktp_presence.desktop DESTINATION ${SERVICES_INSTALL_DIR})
