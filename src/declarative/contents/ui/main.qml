@@ -31,15 +31,12 @@ Item {
     width: 230;
     height: 380;
 
-    // TODO make plasmoid busy when loading contacts on startup to avoid the user
-    // complaining about sluggish plasmoid. The "slowness" is caused by nepomuk storing 1000000000000 contacts
-    // need to make model faster (talk to david)
 
     // contact listview
     ContactList {
         id: contactList;
         anchors.fill: parent;
-        state: "gridView";//"listView";      // start with list view
+        state: "listView";   // start with list view
     }
 
     Rectangle {

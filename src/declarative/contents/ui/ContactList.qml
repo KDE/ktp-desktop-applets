@@ -20,8 +20,6 @@
 import Qt 4.7
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 
-// import nepomuk models
-import org.kde.telepathy.declarativeplugins 0.1 as TelepathyDeclarative
 
 /// TODO
 // - connect buttons in toolbar to switch view
@@ -30,18 +28,23 @@ import org.kde.telepathy.declarativeplugins 0.1 as TelepathyDeclarative
 // - get contact list to load nepomuk:/bla/foo/bar images as contact avatars
 // - add side panel with common contact actions
 // - highlight contacts on click
+// - Use properties properly and get rid of all the stupid onSomethingChagned methods.
+
 
 Item {
     id: contactListContainer;
     anchors.fill: parent;
 
+
+    
+    
     // TOOLBAR
     ToolBar {
         id: toolbar;
         height: 20;
 
         anchors {
-            top: parent;
+//             top: parent;
             left: parent.left;
             right: parent.right;
         }
@@ -71,11 +74,11 @@ Item {
         }
 
         clip: true;
-        model: TelepathyDeclarative.ContactListModel{}
+        model: contactListModel;
 
         delegate:
             ListContactDelegate {
-                delegateDisplayName: displayName;
+                delegateDisplayName: aliasName;
                 delegateAvatar: avatar;
 //                delegatePresenceIcon: presenceIcon;
                 delegatePresenceMessage: presenceMessage;
@@ -98,7 +101,7 @@ Item {
             bottomMargin: 20;
         }
 
-        model: TelepathyDeclarative.ContactListModel{}
+        model: contactListModel;
 
         cellWidth: 48;
         cellHeight: 48;
@@ -106,12 +109,15 @@ Item {
         delegate:
             GridContactDelegate {
                 id: gridDelegate;
-                delegateDisplayName: displayName;
+                
+                //Dave - why does any of this exist just use the correct fucking names in the delegate.???
+                delegateDisplayName: aliasName;
                 delegateAvatar: avatar;
 //                delegatePresenceIcon: presenceIcon;
-                delegatePresenceName: presenceName;
+                delegatePresenceName: presenceType;
                 delegatePresenceMessage: presenceMessage;
 
+                //Dave - this is a stupid name for the method. Be careful when using words like "set"
                 onSetGridContactDisplayName: {
                     console.log("SETTING NAME TO: " + gridContactDisplayName + " with presence msg: " + gridPresenceMessage);
                     contactDisplay.contactNickToShow = gridContactDisplayName;
