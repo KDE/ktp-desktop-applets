@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Instant Messaging Contact
+Name[ca]=Contacte de missatgeria instantània
 Name[cs]=Kontakt komunikátoru
 Name[da]=Instant messaging-kontakt
 Name[el]=Επαφή με στιγμιαίο μήνυμα
@@ -18,6 +19,7 @@ Name[x-test]=xxInstant Messaging Contactxx
 Name[zh_CN]=即时通讯联系
 Name[zh_TW]=即時通訊聯絡人
 Comment=Applet for one of your instant messaging contacts
+Comment[ca]=Miniaplicació per un dels contactes de missatgeria instantània
 Comment[da]=Applet til en af dine instant messaging-kontakter
 Comment[el]=Μικροεφαρμογή για μία από τις επαφές σας με στιγμιαία μηνύματα
 Comment[es]=Miniaplicación para uno de sus contactos de mensajería instantánea
