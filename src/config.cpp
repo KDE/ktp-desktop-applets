@@ -68,7 +68,7 @@ void Config::enableGroupsView(bool enable)
 
 void Config::enableOfflineContacts(bool enable)
 {
-    m_modelFilter->setShowOfflineUsers(enable);
+    m_modelFilter->setPresenceTypeFilterFlags(enable ? AccountsFilterModel::DoNotFilterByPresence : AccountsFilterModel::ShowOnlyConnected);
 }
 
 void Config::setupContactsList()
@@ -87,9 +87,8 @@ void Config::setupContactsList()
     }
 
     m_modelFilter->setDynamicSortFilter(true);
-    m_modelFilter->setShowOfflineUsers(ui.showOfflineContacts->isChecked());
-    m_modelFilter->setSortRole(Qt::DisplayRole);
-    m_modelFilter->setSortByPresence(true);
+    m_modelFilter->setPresenceTypeFilterFlags(ui.showOfflineContacts->isChecked() ? AccountsFilterModel::DoNotFilterByPresence : AccountsFilterModel::ShowOnlyConnected);
+    m_modelFilter->setSortMode(AccountsFilterModel::SortByPresence);
 
     // set model for the contacts tree view
     ui.contactsList->setModel(m_modelFilter);
