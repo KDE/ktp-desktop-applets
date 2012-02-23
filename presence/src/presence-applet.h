@@ -46,17 +46,10 @@ class TelepathyPresenceApplet: public Plasma::PopupApplet
     Q_OBJECT
 
 public:
-    enum OnClickAction {
-        DO_NOTHING,
-        SHOW_ACCOUNT_MANAGER,
-        SHOW_CONTACTLIST
-    };
-
     TelepathyPresenceApplet(QObject *parent, const QVariantList &args);
     ~TelepathyPresenceApplet();
 
     QList<QAction*> contextualActions();
-    void createConfigurationInterface(KConfigDialog *parentDialog);
     void init();
     void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect &contentsRect);
 
@@ -67,15 +60,10 @@ private Q_SLOTS:
     void onActivated();
     void onPresenceChanged(KTp::Presence presence);
     void onPresenceActionClicked();
-    void startAccountManager() const;
-    void startContactList() const;
     void toolTipAboutToShow();
     void toolTipHidden();
-    void updateClickAction(TelepathyPresenceApplet::OnClickAction);
 
 private:
-    void setupAccountManager();
-
     /** used only upon creation to setup a list of actions for the context menu */
     void setupContextMenuActions();
 
@@ -83,7 +71,6 @@ private:
 
     Tp::AccountManagerPtr m_accountManager;
     KTp::GlobalPresence  *m_globalPresence;
-    OnClickAction         m_onClickAction;
     DBusExporter         *m_dbusExporter;
 };
 

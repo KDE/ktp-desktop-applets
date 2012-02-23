@@ -17,7 +17,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#include "generalsettings.h"
 #include "presenceapplet.h"
 
 #include <QDBusAbstractAdaptor>
@@ -36,12 +35,11 @@
 #include <TelepathyQt/PendingOperation>
 #include <TelepathyQt/PendingReady>
 
-TelepathyPresenceApplet::TelepathyPresenceApplet(QObject* parent, const QVariantList& args)
+TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariantList &args)
     : Plasma::PopupApplet(parent, args),
-    m_globalPresence(new KTp::GlobalPresence(this))
+      m_globalPresence(new KTp::GlobalPresence(this))
 {
     setupContextMenuActions();
-    setupAccountManager();
 
     resize(128, 128);
     setAspectRatioMode(Plasma::KeepAspectRatio);
@@ -69,52 +67,19 @@ QList<QAction*> TelepathyPresenceApplet::contextualActions()
     return m_contextActions;
 }
 
-void TelepathyPresenceApplet::createConfigurationInterface(KConfigDialog* parentDialog)
-{
-    GeneralSettings *genSett = new GeneralSettings(m_onClickAction);
-    parentDialog->addPage(genSett, i18n("General"), "configure");
-
-    connect(genSett, SIGNAL(modified()), parentDialog, SLOT(settingsModified()));
-    connect(genSett, SIGNAL(clickActionUpdated(TelepathyPresenceApplet::OnClickAction)), this, SLOT(updateClickAction(TelepathyPresenceApplet::OnClickAction)));
-    connect(parentDialog, SIGNAL(applyClicked()), genSett, SLOT(save()));
-}
-
 void TelepathyPresenceApplet::init()
 {
     Plasma::Applet::init();
 
-    // load on click config
-    KSharedConfigPtr config = KSharedConfig::openConfig(QLatin1String("ktelepathyrc"));
-    KConfigGroup presenceConfig = config->group("PresencePlasmoid");
-    QString actionOnClick = presenceConfig.readEntry("onClick", "nothing");
-
-    if (actionOnClick == "contactlist") {
-        m_onClickAction = SHOW_CONTACTLIST;
-    } else if (actionOnClick == "accounts") {
-        m_onClickAction = SHOW_ACCOUNT_MANAGER;
-    } else {
-        m_onClickAction = DO_NOTHING;
-    }
-
     m_dbusExporter = new DBusExporter(this);
     QDBusConnection::sessionBus().registerObject("/PresenceAppletActive", this, QDBusConnection::ExportAdaptors);
     QDBusConnection::sessionBus().registerService("org.kde.Telepathy.PresenceAppletActive");
-}
 
-void TelepathyPresenceApplet::paintInterface(QPainter* p, const QStyleOptionGraphicsItem* option, const QRect& contentsRect)
-{
-    Plasma::Applet::paintInterface(p, option, contentsRect);
-}
-
-void TelepathyPresenceApplet::setupAccountManager()
-{
     Tp::registerTypes();
 
     // setup the telepathy account manager from where I'll retrieve info on accounts and contacts
     Tp::AccountFactoryPtr  accountFactory = Tp::AccountFactory::create(QDBusConnection::sessionBus(),
                                                                        Tp::Features() << Tp::Account::FeatureCore
-                                                                       << Tp::Account::FeatureAvatar
-                                                                       << Tp::Account::FeatureCapabilities
                                                                        << Tp::Account::FeatureProtocolInfo
                                                                        << Tp::Account::FeatureProfile);
 
@@ -132,6 +97,10 @@ void TelepathyPresenceApplet::setupAccountManager()
     connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
 }
 
+void TelepathyPresenceApplet::paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect &contentsRect)
+{
+    Plasma::Applet::paintInterface(p, option, contentsRect);
+}
 
 void TelepathyPresenceApplet::setupContextMenuActions()
 {
@@ -194,11 +163,7 @@ void TelepathyPresenceApplet::onAccountManagerReady(Tp::PendingOperation* op)
 
 void TelepathyPresenceApplet::onActivated()
 {
-    if (m_onClickAction == SHOW_CONTACTLIST) {
-        startContactList();
-    } else if (m_onClickAction == SHOW_ACCOUNT_MANAGER) {
-        startAccountManager();
-    }
+    KToolInvocation::startServiceByDesktopName("ktp-contactlist");
 }
 
 void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)
@@ -213,16 +178,6 @@ void TelepathyPresenceApplet::onPresenceActionClicked()
     p.setStatus(p.type(), p.status(), m_globalPresence->currentPresence().statusMessage());
 
     m_globalPresence->setPresence(p);
-}
-
-void TelepathyPresenceApplet::startAccountManager() const
-{
-    KToolInvocation::startServiceByDesktopName("kcm_ktp_accounts");
-}
-
-void TelepathyPresenceApplet::startContactList() const
-{
-    KToolInvocation::startServiceByDesktopName("ktp-contactlist");
 }
 
 void TelepathyPresenceApplet::toolTipAboutToShow()
@@ -249,11 +204,6 @@ void TelepathyPresenceApplet::toolTipAboutToShow()
 void TelepathyPresenceApplet::toolTipHidden()
 {
     Plasma::ToolTipManager::self()->clearContent(this);
-}
-
-void TelepathyPresenceApplet::updateClickAction(TelepathyPresenceApplet::OnClickAction clickAction)
-{
-    m_onClickAction = clickAction;
 }
 
 #include "presenceapplet.moc"

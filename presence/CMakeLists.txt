@@ -28,13 +28,9 @@ include_directories(${CMAKE_SOURCE_DIR}
 
 
 set(plasma_applet_ktp_presence_SRCS
-    src/generalsettings.cpp
     src/presenceapplet.cpp
 )
 
-kde4_add_ui_files(plasma_applet_ktp_presence_SRCS
-                    src/generalsettings.ui
-)
 
 kde4_add_plugin(plasma_applet_ktp_presence ${plasma_applet_ktp_presence_SRCS})
 target_link_libraries(plasma_applet_ktp_presence
