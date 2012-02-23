@@ -163,6 +163,16 @@ void TelepathyPresenceApplet::onAccountManagerReady(Tp::PendingOperation* op)
 
 void TelepathyPresenceApplet::onActivated()
 {
+    startContactList();
+}
+
+void TelepathyPresenceApplet::startAccountManager()
+{
+    KToolInvocation::startServiceByDesktopName("kcm_ktp_accounts");
+}
+
+void TelepathyPresenceApplet::startContactList()
+{
     KToolInvocation::startServiceByDesktopName("ktp-contactlist");
 }
 

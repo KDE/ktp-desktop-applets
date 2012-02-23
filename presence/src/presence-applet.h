@@ -63,6 +63,9 @@ private Q_SLOTS:
     void toolTipAboutToShow();
     void toolTipHidden();
 
+    void startAccountManager();
+    void startContactList();
+
 private:
     /** used only upon creation to setup a list of actions for the context menu */
     void setupContextMenuActions();
