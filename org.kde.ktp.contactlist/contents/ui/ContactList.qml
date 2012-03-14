@@ -19,6 +19,8 @@
 
 import Qt 4.7
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+import org.kde.telepathy.contactlist 0.1 as KtpContactList
+
 
 
 /// TODO
@@ -34,6 +36,11 @@ import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 Item {
     id: contactListContainer;
     anchors.fill: parent;    
+    
+    KtpContactList.ContactList {
+        id: contactList
+    }
+    
     
     // TOOLBAR
     ToolBar {
@@ -71,7 +78,7 @@ Item {
         }
 
         clip: true;
-        model: contactListModel;
+        model: contactList.model;
         boundsBehavior: Flickable.StopAtBounds
 
         delegate:

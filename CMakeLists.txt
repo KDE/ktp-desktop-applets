@@ -16,33 +16,11 @@ find_package(KTp REQUIRED)
 #find_package (KTelepathy REQUIRED)
 
 
-include(KDE4Defaults)
+add_subdirectory(declarative-plugin)
+install(DIRECTORY org.kde.ktp.contactlist
+        DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/)
 
-add_definitions(${QT_DEFINITIONS}
-                ${KDE4_DEFINITIONS}
-)
 
-include_directories(${CMAKE_SOURCE_DIR}
-                    ${CMAKE_BINARY_DIR}
-                    ${KDE4_INCLUDES}
-                    ${TELEPATHY_QT4_INCLUDE_DIR}
-                    ${KTP_INCLUDE_DIR}
-)
-
-set(telepathy_contact_list_applet_SRCS
-    src/telepathyContactList.cpp
-)
-
-kde4_add_plugin(plasma_applet_telepathy_contact_list ${telepathy_contact_list_applet_SRCS})
-
-target_link_libraries(plasma_applet_telepathy_contact_list
-                        ${KDE4_PLASMA_LIBS}
-                        ${KDE4_KDEUI_LIBS}
-                        ${TELEPATHY_QT4_LIBRARIES}
-                        ${QT_QTDECLARATIVE_LIBRARY}
-                        ${KTP_MODELS_LIBRARIES})
-#                        ${KTELEPATHY_MODELS_LIBRARIES})
-
-install(DIRECTORY src/declarative/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.telepathy-contact-list)
-install(TARGETS plasma_applet_telepathy_contact_list DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES telepathy-contact-list-applet.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(FILES org.kde.ktp.contactlist/metadata.desktop
+        DESTINATION ${SERVICES_INSTALL_DIR}
+        RENAME plasma-applet-ktp-contactlist.desktop)

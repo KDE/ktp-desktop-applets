@@ -22,9 +22,9 @@ import Qt 4.7
 Item {
     id: main;
 
-    anchors.fill: parent
-    // plasmoid starting size
-
+    width: 200
+    height: 300
+    
     // contact listview
     ContactList {
         id: contactList;
@@ -36,11 +36,4 @@ Item {
         
         state: "listView";   // start with list view
     }
-
-//     Rectangle {
-//         anchors.fill: parent;
-//         color: "transparent";
-//         border.color: "green"
-//     }
-
 }
