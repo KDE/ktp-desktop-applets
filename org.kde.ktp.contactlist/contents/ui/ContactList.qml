@@ -41,36 +41,11 @@ Item {
         id: contactList
     }
     
-    
-    // TOOLBAR
-    ToolBar {
-        id: toolbar;
-        height: 20;
-
-        anchors {
-//             top: parent;
-            left: parent.left;
-            right: parent.right;
-        }
-    }
-
-    // TOP SEPARATOR
-    PlasmaWidgets.Separator {
-        id: topSeparator;
-        anchors {
-            top: toolbar.bottom;
-            topMargin: 5;
-            left: parent.left;
-            right:parent.right;
-        }
-    }
-
-    // LISTVIEW
     ListView {
         id: contactsList;
 
         anchors {
-            top: topSeparator.bottom;
+            top: parent.top;
             topMargin: 5;
             left: parent.left;
             right: parent.right;
@@ -84,105 +59,4 @@ Item {
         delegate: ListContactDelegate {}
     }
 
-    // GRIDVIEW
-    GridView {
-        id: contactsGrid;
-        boundsBehavior: Flickable.StopAtBounds;
-        clip: true;
-
-        anchors {
-            top: topSeparator.bottom;
-            left: parent.left;
-            right: parent.right;
-            bottom: parent.bottom;
-            bottomMargin: 20;
-        }
-
-        model: contactListModel;
-
-        cellWidth: 48;
-        cellHeight: 48;
-
-        delegate:
-            GridContactDelegate {
-                id: gridDelegate;
-                
-                //Dave - why does any of this exist just use the correct fucking names in the delegate.???
-                delegateDisplayName: aliasName;
-                delegateAvatar: avatar;
-//                delegatePresenceIcon: presenceIcon;
-                delegatePresenceName: presenceType;
-                delegatePresenceMessage: presenceMessage;
-
-                //Dave - this is a stupid name for the method. Be careful when using words like "set"
-                onSetGridContactDisplayName: {
-                    console.log("SETTING NAME TO: " + gridContactDisplayName + " with presence msg: " + gridPresenceMessage);
-                    contactDisplay.contactNickToShow = gridContactDisplayName;
-                    contactDisplay.contactPresenceMessage = gridPresenceMessage;
-                }
-            }
-    }
-
-    PlasmaWidgets.Separator {
-        id: separator;
-        anchors {
-            top: contactsGrid.bottom;
-            left: parent.left;
-            right:parent.right;
-            bottom: contactDisplay.top;
-        }
-    }
-
-    ContactDisplayName {
-        id: contactDisplay;
-
-        anchors {
-            top: contactsGrid.bottom;
-            left: contactListContainer.left;
-            right: contactListContainer.right;
-            bottom: contactListContainer.bottom;
-            margins: 5;
-        }
-    }
-
-    states: [
-        State {
-            name: "listView";
-            PropertyChanges {
-                target: contactsList;
-                opacity: 1;
-            }
-            PropertyChanges {
-                target: contactsGrid;
-                opacity: 0;
-            }
-            PropertyChanges {
-                target: contactDisplay;
-                opacity: 0;
-            }
-            PropertyChanges {
-                target: separator;
-                opacity: 0
-            }
-        },
-        State {
-            name: "gridView";
-            PropertyChanges {
-                target: contactsList;
-                opacity: 0;
-            }
-            PropertyChanges {
-                target: contactsGrid;
-                opacity: 1;
-            }
-            PropertyChanges {
-                target: contactDisplay;
-                opacity: 1;
-            }
-            PropertyChanges {
-                target: separator;
-                opacity: 1;
-            }
-        }
-    ]
 }
