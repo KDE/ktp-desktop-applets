@@ -103,35 +103,16 @@ Item {
         }
     }
 
-    Rectangle {
-        color: "transparent";
-        border.color: "red";
-        anchors.fill: parent;
-    }
-
-//    onDelegateDisplayNameChanged: {
-//        console.log("CHANGING TEXT to " + delegateDisplayName)
-//        nick.text = delegateDisplayName;
-//    }
-
-//    onDelegatePresenceMessageChanged: {
-//        console.log("PRESENCE MESSAGE: "+ delegatePresenceMessage);
-//    }
+//     Rectangle {
+//         color: "transparent";
+//         border.color: "red";
+//         anchors.fill: parent;
+//     }
 
     onDelegatePresenceNameChanged: {
         console.log("PRESENCE NAME: "+ delegatePresenceName);
         setAvatarPresenceStatus(delegatePresenceName);
     }
-
-//    onDelegatePresenceTypeChanged: {
-//        console.log("PRESENCE TYPE: "+ delegatePresenceType);
-//    }
-
-//    onDelegateAvatarChanged: {
-//        console.log("AAAAAAAAAAAAAAA")
-//        console.log("NEW URI IS: " + TelepathyContactList.extractAvatarPathFromNepomuk(delegate.delegateAvatar));
-//        delegateAvatar = TelepathyContactList.extractAvatarPathFromNepomuk(delegate.delegateAvatar);
-//    }
 
     function setAvatarPresenceStatus(presenceStatus)
     {

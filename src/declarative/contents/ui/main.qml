@@ -31,7 +31,6 @@ Item {
     width: 230;
     height: 380;
 
-
     // contact listview
     ContactList {
         id: contactList;
@@ -39,11 +38,11 @@ Item {
         state: "listView";   // start with list view
     }
 
-    Rectangle {
-        anchors.fill: parent;
-        color: "transparent";
-        border.color: "green"
-    }
+//     Rectangle {
+//         anchors.fill: parent;
+//         color: "transparent";
+//         border.color: "green"
+//     }
 
     function onWidthChanged()
     {
@@ -54,35 +53,4 @@ Item {
     {
         main.height = TelepathyContactList.height - 20;
     }
-
-
-    // THIS WILL NOT BE NEEDED.
-//    // set Label on the left
-//    ExternalLabel {
-//        id: label;
-//        width: 150;
-//        height: 30;
-
-//        Component.onCompleted: {
-//            setLabelOrientation();
-//        }
-
-//        onOrientationChanged: {
-//            setLabelOrientation();
-//        }
-//    }
-
-//    // set correct orientation for components according to the
-//    // contactlist orientation
-//    function setLabelOrientation()
-//    {
-//        switch (label.orientation) {
-//            case "left": {
-//                label.anchors.bottom = main.bottom;
-//                label.anchors.left = main.left;
-//                label.transformOrigin = Item.BottomLeft;
-//                label.rotation = 270;
-//            }
-//        }
-//    }
 }
