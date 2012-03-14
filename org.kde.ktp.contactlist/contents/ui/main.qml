@@ -29,11 +29,9 @@ Item {
     ContactList {
         id: contactList;
         anchors.fill: parent;
-        anchors.topMargin:10
-        anchors.bottomMargin:10
-        anchors.leftMargin:10
-        anchors.rightMargin:10
-        
-        state: "listView";   // start with list view
+//         anchors.topMargin:10
+//         anchors.bottomMargin:10
+//         anchors.leftMargin:10
+//         anchors.rightMargin:10
     }
 }

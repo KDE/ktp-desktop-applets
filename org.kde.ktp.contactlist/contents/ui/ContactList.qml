@@ -18,8 +18,9 @@
  ***************************************************************************/
 
 import Qt 4.7
-import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+
 import org.kde.telepathy.contactlist 0.1 as KtpContactList
+import org.kde.plasma.components 0.1 as PlasmaComponents
 
 
 
@@ -48,7 +49,7 @@ Item {
             top: parent.top;
             topMargin: 5;
             left: parent.left;
-            right: parent.right;
+            right: viewScrollBar.left;
             bottom: parent.bottom;
         }
 
@@ -57,6 +58,20 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
 
         delegate: ListContactDelegate {}
+    }
+    
+    PlasmaComponents.ScrollBar {
+        id: viewScrollBar
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            right: parent.right
+        }
+
+        flickableItem: contactsList
+        interactive: true
+        opacity: 1
+        orientation: Qt.Vertical
     }
 
 }
