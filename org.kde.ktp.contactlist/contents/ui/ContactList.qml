@@ -81,15 +81,7 @@ Item {
         model: contactList.model;
         boundsBehavior: Flickable.StopAtBounds
 
-        delegate:
-            ListContactDelegate {
-                delegateDisplayName: aliasName;
-                delegateAvatar: avatar;
-//                delegatePresenceIcon: presenceIcon;
-                delegatePresenceMessage: presenceMessage;
-                delegatePresenceName: presenceName;
-//                delegatePresenceType: presenceType;
-            }
+        delegate: ListContactDelegate {}
     }
 
     // GRIDVIEW

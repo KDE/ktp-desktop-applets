@@ -27,16 +27,6 @@ Item {
     height: 30;
     width: parent.width;
 
-    property string delegateDisplayName;
-    property string delegateAvatar;
-//    property string delegatePresenceIcon;
-    property string delegatePresenceMessage;
-//    property string delegatePresenceType;
-    property string delegatePresenceName;
-
-    // get color from current plasma theme
-    property QtObject theme: PlasmaCore.Theme {}
-
     PlasmaWidgets.IconWidget {
         id: avatar;
         width: 22;
@@ -47,13 +37,6 @@ Item {
             left: parent.left;
             leftMargin: 2;
             verticalCenter: parent.verticalCenter;
-        }
-
-        Component.onCompleted: {
-            console.log("LOADED: " + delegate.delegateAvatar);
-//            console.log("NEW URI IS: " + TelepathyContactList.extractAvatarPathFromNepomuk(delegate.delegateAvatar));
-//            console.log("PRESENCE ICON: " + delegatePresenceIcon);
-            console.log("PRESENCE MESSAGE: "+ delegatePresenceMessage);
         }
     }
 
@@ -76,9 +59,9 @@ Item {
     }
 
     Text {
-        id: nick;
-        text: delegateDisplayName;
-        color: theme.textColor;
+        id: nickLabel;
+        text: aliasName;
+        color: PlasmaCore.Theme.textColor;
         font.bold: true;
 
         anchors {
@@ -89,14 +72,14 @@ Item {
     }
 
     Text {
-        id: presenceMessage;
-        text: delegatePresenceMessage;
-        color: theme.textColor;
+        id: presenceMessageLabel;
+        text: presenceMessage;
+        color: PlasmaCore.Theme.textColor;
         elide: Text.ElideRight;
         font.italic: true;
 
         anchors {
-            left: nick.right;
+            left: nickLabel.right;
             leftMargin: 4;
             right: parent.right;
             verticalCenter: parent.verticalCenter;
@@ -108,11 +91,6 @@ Item {
 //         border.color: "red";
 //         anchors.fill: parent;
 //     }
-
-    onDelegatePresenceNameChanged: {
-        console.log("PRESENCE NAME: "+ delegatePresenceName);
-        setAvatarPresenceStatus(delegatePresenceName);
-    }
 
     function setAvatarPresenceStatus(presenceStatus)
     {
