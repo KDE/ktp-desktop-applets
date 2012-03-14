@@ -31,7 +31,6 @@ include_directories(${CMAKE_SOURCE_DIR}
 
 set(telepathy_contact_list_applet_SRCS
     src/telepathyContactList.cpp
-    src/flat-model-proxy.cpp
 )
 
 kde4_add_plugin(plasma_applet_telepathy_contact_list ${telepathy_contact_list_applet_SRCS})
