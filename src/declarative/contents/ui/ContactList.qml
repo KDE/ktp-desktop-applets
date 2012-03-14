@@ -33,10 +33,7 @@ import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 
 Item {
     id: contactListContainer;
-    anchors.fill: parent;
-
-
-    
+    anchors.fill: parent;    
     
     // TOOLBAR
     ToolBar {

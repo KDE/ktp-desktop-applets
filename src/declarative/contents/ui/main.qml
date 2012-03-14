@@ -22,19 +22,18 @@ import Qt 4.7
 Item {
     id: main;
 
-    // these settings are made to stay in bounds of the Plasma::DeclarativeWidget
-    x: 10;
-    y:10;
-
+    anchors.fill: parent
     // plasmoid starting size
-    /// TODO load this from KConfig and read from C++
-    width: 230;
-    height: 380;
 
     // contact listview
     ContactList {
         id: contactList;
         anchors.fill: parent;
+        anchors.topMargin:10
+        anchors.bottomMargin:10
+        anchors.leftMargin:10
+        anchors.rightMargin:10
+        
         state: "listView";   // start with list view
     }
 
@@ -44,13 +43,4 @@ Item {
 //         border.color: "green"
 //     }
 
-    function onWidthChanged()
-    {
-        main.width = TelepathyContactList.width - 20;
-    }
-
-    function onHeightChanged()
-    {
-        main.height = TelepathyContactList.height - 20;
-    }
 }
