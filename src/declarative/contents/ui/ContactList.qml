@@ -75,6 +75,7 @@ Item {
 
         clip: true;
         model: contactListModel;
+        boundsBehavior: Flickable.StopAtBounds
 
         delegate:
             ListContactDelegate {
