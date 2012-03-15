@@ -127,4 +127,11 @@ Item {
                 break;
         }
     }
+    
+    MouseArea {
+        anchors.fill: parent
+        onDoubleClicked: {
+            contactList.startChat(item);
+        }
+    }
 }
