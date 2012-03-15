@@ -40,6 +40,7 @@ Item {
     
     KtpContactList.ContactList {
         id: contactList
+        
     }
     
     ListView {
@@ -72,6 +73,11 @@ Item {
         interactive: true
         opacity: 1
         orientation: Qt.Vertical
+    }
+    
+    Component.onCompleted : {
+         contactList.filter.sortMode = SortByPresence;
+         contactList.filter.presenceTypeFilterFlags = HideAllOffline;
     }
 
 }
