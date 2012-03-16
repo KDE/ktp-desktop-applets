@@ -34,4 +34,8 @@ Item {
 //         anchors.leftMargin:10
 //         anchors.rightMargin:10
     }
+    
+    Component.onCompleted: {
+        plasmoid.aspectRatioMode = IgnoreAspectRatio;
+    }
 }

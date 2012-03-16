@@ -5,9 +5,6 @@ Type=Service
 ServiceTypes=Plasma/Applet
 Icon=meeting-attending
 
-X-Plasma-DefaultSize=250,300
-
-
 X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/main.qml
 X-Plasma-DefaultSize=200,100
