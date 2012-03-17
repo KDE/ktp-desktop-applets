@@ -1,4 +1,4 @@
-project(plasma_applet_telepathy_contact_list)
+project(ktp_plasma)
 
 cmake_minimum_required(VERSION 2.8)
 
@@ -13,10 +13,10 @@ find_package(KDE4 ${KDE_MIN_VERSION} REQUIRED)
 find_package(KDE4Workspace REQUIRED)
 find_package(TelepathyQt4 0.8.90 REQUIRED)
 find_package(KTp REQUIRED)
-#find_package (KTelepathy REQUIRED)
 
-
+add_subdirectory(contact-applet)
 add_subdirectory(declarative-plugin)
+
 install(DIRECTORY org.kde.ktp.contactlist
         DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/)
 

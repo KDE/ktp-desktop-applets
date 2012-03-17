@@ -166,4 +166,4 @@ QSize ContactDelegate::sizeHint(const QStyleOptionViewItem &option, const QModel
 }
 
 
-#include "contact-delegate.moc"
+// #include "contact-delegate.moc"

@@ -1,14 +1,14 @@
-set(ktpcontactlistqmlplugin_SRCS
-        qml-plugin.cpp
-        contact-list.cpp
-    )
-
 include_directories(
         ${CMAKE_SOURCE_DIR}
         ${CMAKE_BINARY_DIR}
         ${KDE4_INCLUDES}
         ${TELEPATHY_QT4_INCLUDE_DIR}
 )
+
+set(ktpcontactlistqmlplugin_SRCS
+        qml-plugin.cpp
+        contact-list.cpp
+    )
 
 kde4_add_library(ktpcontactlistqmlplugin SHARED ${ktpcontactlistqmlplugin_SRCS})
 
