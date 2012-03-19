@@ -22,11 +22,12 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 import org.kde.plasma.components 0.1 as PlasmaComponents
 
-Item {
+PlasmaComponents.ListItem {
     id: delegate;
-
+    enabled: true
+    
     height: 30;
-    width: parent.width;
+//     width: parent.width;
 
     PlasmaWidgets.IconWidget {
         id: avatar;
@@ -37,24 +38,6 @@ Item {
         anchors {
             left: parent.left;
             leftMargin: 2;
-            verticalCenter: parent.verticalCenter;
-        }
-    }
-
-    BorderImage {
-        id: avatarFrame;
-        width: 26;
-        height: 26;
-
-        border {
-            left: 2
-            right: 2
-            top: 2
-            bottom: 2
-        }
-
-        anchors {
-            left: parent.left;
             verticalCenter: parent.verticalCenter;
         }
     }
@@ -91,46 +74,11 @@ Item {
 //         anchors.fill: parent;
 //     }
 
-    function setAvatarPresenceStatus(presenceStatus)
-    {
-        switch (presenceStatus) {
-            case "available":
-                avatarFrame.source = "../frames/online.png";
-                if (!avatar.enabled) {
-                    avatar.enabled = true;
-                }
-                break;
-            case "dnd":
-                avatarFrame.source = "../frames/busy.png";
-                if (!avatar.enabled) {
-                    avatar.enabled = true;
-                }
-                break;
-            case "away":
-                avatarFrame.source = "../frames/away.png";
-                if (!avatar.enabled) {
-                    avatar.enabled = true;
-                }
-                break;
-            case "offline":
-                avatarFrame.source = "../frames/offline.png";
-                if (avatar.enabled) {
-                    avatar.enabled = false;
-                }
-                break;
-            default:
-                avatarFrame.source = "../frames/offline.png";
-                if (avatar.enabled) {
-                    avatar.enabled = false;
-                }
-                break;
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        onDoubleClicked: {
-            contactList.startChat(item);
-        }
-    }
+  
+//     MouseArea {
+//         anchors.fill: parent
+//         onDoubleClicked: {
+//             contactList.startChat(item);
+//         }
+//     }
 }
