@@ -45,29 +45,44 @@ PlasmaComponents.ListItem {
     PlasmaComponents.Label {
         id: nickLabel;
         text: aliasName;
-        font.bold: true;
+        font.bold: true
+        elide: Text.ElideRight
 
         anchors {
             left: avatar.right;
+            right: presenceIcon.left
             leftMargin: 4;
             verticalCenter: parent.verticalCenter;
         }
     }
 
-    PlasmaComponents.Label {
-        id: presenceMessageLabel;
-        text: presenceMessage;
-        elide: Text.ElideRight;
-        font.italic: true;
-
-        anchors {
-            left: nickLabel.right;
-            leftMargin: 4;
-            right: parent.right;
-            verticalCenter: parent.verticalCenter;
-        }
+//     PlasmaComponents.Label {
+//         id: presenceMessageLabel;
+//         text: presenceMessage;
+//         elide: Text.ElideRight;
+//         font.italic: true;
+// 
+//         anchors {
+//             left: nickLabel.right;
+//             leftMargin: 4;
+//             right: presenceIcon.left;
+//             verticalCenter: parent.verticalCenter;
+//         }
+//     }
+    
+    PlasmaWidgets.IconWidget {
+            id: presenceIcon
+            width: 22
+            height: parent.height
+            icon: QIcon("user-online")
+            anchors {
+                right:parent.right
+                leftMargin: 4
+                verticalCenter: parent.verticalCenter
+            }
     }
 
+    
 //     Rectangle {
 //         color: "transparent";
 //         border.color: "red";
