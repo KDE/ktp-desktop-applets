@@ -20,6 +20,7 @@
 import Qt 4.7
 import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+import org.kde.plasma.components 0.1 as PlasmaComponents
 
 Item {
     id: delegate;
@@ -58,10 +59,9 @@ Item {
         }
     }
 
-    Text {
+    PlasmaComponents.Label {
         id: nickLabel;
         text: aliasName;
-        color: PlasmaCore.Theme.textColor;
         font.bold: true;
 
         anchors {
@@ -71,10 +71,9 @@ Item {
         }
     }
 
-    Text {
+    PlasmaComponents.Label {
         id: presenceMessageLabel;
         text: presenceMessage;
-        color: PlasmaCore.Theme.textColor;
         elide: Text.ElideRight;
         font.italic: true;
 
@@ -127,7 +126,7 @@ Item {
                 break;
         }
     }
-    
+
     MouseArea {
         anchors.fill: parent
         onDoubleClicked: {
