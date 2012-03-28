@@ -30,7 +30,7 @@ Item {
 
         PlasmaWidgets.IconWidget {
             id: callButton;
-            icon: QIcon("voicecall");
+            icon: QIcon("audio-headset");
             width: 22;
             height: 22
 
@@ -66,7 +66,7 @@ Item {
 
         PlasmaWidgets.IconWidget {
             id: videoButton;
-            icon: QIcon("webcamsend");
+            icon: QIcon("camera-web");
             width: 22;
             height: 22;
 
