@@ -21,17 +21,7 @@ import Qt 4.7
 
 import org.kde.telepathy.contactlist 0.1 as KtpContactList
 import org.kde.plasma.components 0.1 as PlasmaComponents
-
-
-
-/// TODO
-// - connect buttons in toolbar to switch view
-// - (after above) animation from list to grid
-// - add bar @ the bottom for gridview (hidden in list view)
-// - get contact list to load nepomuk:/bla/foo/bar images as contact avatars
-// - add side panel with common contact actions
-// - highlight contacts on click
-// - Use properties properly and get rid of all the stupid onSomethingChagned methods.
+import org.kde.plasma.core 0.1 as PlasmaCore
 
 
 Item {
@@ -39,8 +29,23 @@ Item {
     anchors.fill: parent;    
     
     KtpContactList.ContactList {
-        id: contactList
-        
+        id: contactList   
+    }
+    
+    Component {
+        id: highlightBar
+        PlasmaCore.FrameSvgItem {
+                imagePath: "widgets/viewitem"
+                prefix: "hover"
+                width: contactsList.width
+                opacity: 0
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 250
+                        easing.type: Easing.OutQuad
+                    }
+                }
+            }
     }
     
     ListView {
@@ -51,6 +56,7 @@ Item {
             topMargin: 5;
             left: parent.left;
             right: viewScrollBar.left;
+            rightMargin: 1
             bottom: parent.bottom;
         }
 
@@ -59,6 +65,15 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
 
         delegate: ListContactDelegate {}
+        highlight: highlightBar
+        highlightMoveDuration: 250
+        highlightMoveSpeed: 1
+        highlightFollowsCurrentItem: true
+        
+        focus: true
+        
+        
+
     }
     
     PlasmaComponents.ScrollBar {
@@ -76,8 +91,8 @@ Item {
     }
     
     Component.onCompleted : {
-         contactList.filter.sortMode = SortByPresence;
-         contactList.filter.presenceTypeFilterFlags = HideAllOffline;
+         contactList.filter.sortMode = KtpContactList.AccountsFilterModel.SortByPresence;
+         contactList.filter.presenceTypeFilterFlags = KtpContactList.AccountsFilterModel.HideAllOffline
     }
 
 }

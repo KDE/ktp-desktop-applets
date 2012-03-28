@@ -28,6 +28,7 @@ void QmlPlugin::registerTypes(const char *uri)
     // this can be used in QML because it spits out Conversations which
     // can be given to ChatWidget.qml
     qmlRegisterType<ContactList> (uri, 0, 1, "ContactList");
+    qmlRegisterUncreatableType<AccountsFilterModel> (uri, 0, 1, "AccountsFilterModel", "Filter cannot be created. Access through ContactList.filter");
 }
 
 Q_EXPORT_PLUGIN2(contactlist, QmlPlugin);
