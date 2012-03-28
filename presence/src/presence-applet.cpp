@@ -27,13 +27,18 @@
 #include <KConfigGroup>
 #include <KToolInvocation>
 #include <KUser>
+#include <KMessageBox>
 
 #include <KTp/global-presence.h>
+#include <KTp/Models/accounts-model.h>
+#include <KTp/Widgets/add-contact-dialog.h>
 
 #include <Plasma/ToolTipManager>
 
 #include <TelepathyQt/PendingOperation>
+#include <TelepathyQt/PendingContacts>
 #include <TelepathyQt/PendingReady>
+#include <TelepathyQt/Account>
 
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariantList &args)
     : Plasma::PopupApplet(parent, args),
@@ -85,6 +90,7 @@ void TelepathyPresenceApplet::init()
 
     Tp::ConnectionFactoryPtr connectionFactory = Tp::ConnectionFactory::create(QDBusConnection::sessionBus(),
                                                                                Tp::Features() << Tp::Connection::FeatureCore
+                                                                               << Tp::Connection::FeatureRoster
                                                                                << Tp::Connection::FeatureSelfContact);
 
     Tp::ChannelFactoryPtr channelFactory = Tp::ChannelFactory::create(QDBusConnection::sessionBus());
@@ -123,6 +129,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     // application actions
     KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager"), this);
     KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List"), this);
+    KAction *addContactAction = new KAction(KIcon("list-add-user"), i18n("Add New Contacts"), this);
 
     // connect actions
     connect(goOnlineAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
@@ -134,6 +141,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
 
     connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
     connect(showContactListAction, SIGNAL(triggered()), this, SLOT(startContactList()));
+    connect(addContactAction, SIGNAL(triggered()),this, SLOT(onAddContactRequest()));
 
     m_contextActions.append(goOnlineAction);
     m_contextActions.append(goBusyAction);
@@ -145,6 +153,9 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     m_contextActions.append(moreMenu->addSeparator());
     m_contextActions.append(showAccountManagerAction);
     m_contextActions.append(showContactListAction);
+
+    m_contextActions.append(moreMenu->addSeparator());
+    m_contextActions.append(addContactAction);
 
     m_contextActions.append(moreMenu->addSeparator());
 }
@@ -174,6 +185,45 @@ void TelepathyPresenceApplet::startAccountManager()
 void TelepathyPresenceApplet::startContactList()
 {
     KToolInvocation::startServiceByDesktopName("ktp-contactlist");
+}
+
+void TelepathyPresenceApplet::onAddContactRequest() {
+    QWeakPointer<AccountsModel> accountModel = new AccountsModel();
+    accountModel.data()->setAccountManager(m_accountManager);
+    
+    QWeakPointer<KTp::AddContactDialog> dialog = new KTp::AddContactDialog(accountModel.data(), 0);
+    if (dialog.data()->exec() == QDialog::Accepted) {
+        Tp::AccountPtr account = dialog.data()->account();
+        if (account.isNull()) {
+            KMessageBox::error(dialog.data(),
+                               i18n("Seems like you forgot to select an account. Also do not forget to connect it first."),
+                               i18n("No Account Selected"));
+        }
+        else if (account->connection().isNull()) {
+            KMessageBox::error(dialog.data(),
+                               i18n("An error we did not anticipate just happened and so the contact could not be added. Sorry."),
+                               i18n("Account Error"));
+        } else {
+            QStringList identifiers = QStringList() << dialog.data()->screenName();
+            Tp::PendingContacts* pendingContacts = account->connection()->contactManager()->contactsForIdentifiers(identifiers);
+            connect(pendingContacts, SIGNAL(finished(Tp::PendingOperation*)), SLOT(onAddContactRequestFoundContacts(Tp::PendingOperation*)));
+        }
+    }
+    delete dialog.data();
+    delete accountModel.data();
+}
+
+void TelepathyPresenceApplet::onAddContactRequestFoundContacts(Tp::PendingOperation *operation) {
+    Tp::PendingContacts *pendingContacts = qobject_cast<Tp::PendingContacts*>(operation);
+
+    if (! pendingContacts->isError()) {
+        //request subscription
+        pendingContacts->manager()->requestPresenceSubscription(pendingContacts->contacts());
+    }
+    else {
+        kDebug() << pendingContacts->errorName();
+        kDebug() << pendingContacts->errorMessage();
+    }
 }
 
 void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)

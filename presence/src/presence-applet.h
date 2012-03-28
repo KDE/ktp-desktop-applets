@@ -24,6 +24,7 @@
 #include <Plasma/DeclarativeWidget>
 
 #include <TelepathyQt/AccountManager>
+#include <TelepathyQt/ContactManager>
 #include <TelepathyQt/Presence>
 
 #include <KTp/presence.h>
@@ -65,6 +66,8 @@ private Q_SLOTS:
 
     void startAccountManager();
     void startContactList();
+    void onAddContactRequest();
+    void onAddContactRequestFoundContacts(Tp::PendingOperation *operation);
 
 private:
     /** used only upon creation to setup a list of actions for the context menu */
