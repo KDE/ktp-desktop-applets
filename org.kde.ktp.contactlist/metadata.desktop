@@ -1,6 +1,16 @@
 [Desktop Entry]
 Name=Telepathy Contact List Applet
+Name[it]=Applet della lista dei contatti di Telepathy
+Name[pt]='Applet' da Lista de Contactos do Telepathy
+Name[sv]=Telepathy miniprogram med kontaktlistor
+Name[uk]=Аплет списку контактів Telepathy
+Name[x-test]=xxTelepathy Contact List Appletxx
 Comment=telepathy contact list applet
+Comment[it]=Applet della lista dei contatti di Telepathy
+Comment[pt]='applet' da lista de contactos do Telepathy
+Comment[sv]=Telepathy miniprogram med kontaktlistor
+Comment[uk]=Аплет списку контактів Telepathy
+Comment[x-test]=xxtelepathy contact list appletxx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=meeting-attending
