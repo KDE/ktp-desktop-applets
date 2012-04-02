@@ -2,6 +2,7 @@
 Name=Telepathy Contact List Applet
 Name[da]=Kontaktliste-applet til Telepathy
 Name[it]=Applet della lista dei contatti di Telepathy
+Name[nl]=Applet voor contacten van Telepathy
 Name[pt]='Applet' da Lista de Contactos do Telepathy
 Name[pt_BR]=Miniaplicativo de lista de contatos do Telepathy
 Name[sv]=Telepathy miniprogram med kontaktlistor
@@ -10,6 +11,7 @@ Name[x-test]=xxTelepathy Contact List Appletxx
 Comment=telepathy contact list applet
 Comment[da]=Kontaktliste-applet til Telepathy
 Comment[it]=Applet della lista dei contatti di Telepathy
+Comment[nl]=applet voor contacten van telepathy
 Comment[pt]='applet' da lista de contactos do Telepathy
 Comment[pt_BR]=miniaplicativo da lista de contatos do Telepathy
 Comment[sv]=Telepathy miniprogram med kontaktlistor
