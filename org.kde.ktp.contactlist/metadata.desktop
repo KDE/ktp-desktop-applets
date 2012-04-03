@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Telepathy Contact List Applet
 Name[da]=Kontaktliste-applet til Telepathy
+Name[el]=Μικροεφαρμογή λίστας επαφών telepathy
 Name[it]=Applet della lista dei contatti di Telepathy
 Name[nl]=Applet voor contacten van Telepathy
 Name[pt]='Applet' da Lista de Contactos do Telepathy
@@ -10,6 +11,7 @@ Name[uk]=Аплет списку контактів Telepathy
 Name[x-test]=xxTelepathy Contact List Appletxx
 Comment=telepathy contact list applet
 Comment[da]=Kontaktliste-applet til Telepathy
+Comment[el]=μικροεφαρμογή λίστας επαφών telepathy
 Comment[it]=Applet della lista dei contatti di Telepathy
 Comment[nl]=applet voor contacten van telepathy
 Comment[pt]='applet' da lista de contactos do Telepathy
