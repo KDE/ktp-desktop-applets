@@ -19,8 +19,8 @@
 
 import Qt 4.7
 import org.kde.plasma.core 0.1 as PlasmaCore
-import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 import org.kde.plasma.components 0.1 as PlasmaComponents
+import org.kde.qtextracomponents 0.1 as ExtraComponents
 
 Item {
     id: delegate;
@@ -45,12 +45,12 @@ Item {
         anchors.rightMargin: padding.margins.right
         
 
-        PlasmaWidgets.IconWidget {
+        ExtraComponents.QIconItem {
             id: avatarLabel;
             width: 30;
             height: parent.height;
             
-            icon : QIcon(avatar ? avatar : "im-user")
+            icon : (avatar ? avatar : "im-user")
             anchors {
                 left: parent.left;
                 verticalCenter: parent.verticalCenter;
@@ -71,7 +71,7 @@ Item {
             }
         }
     
-        PlasmaWidgets.IconWidget {
+        ExtraComponents.QIconItem {
                 id: presenceLabel
                 width: 22
                 height: parent.height
