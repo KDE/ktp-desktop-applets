@@ -49,6 +49,7 @@ Comment[sr@latin]=Aplet za jedan od vaših brzoglasničkih kontakata
 Comment[sv]=Miniprogram för en direktmeddelandekontakt
 Comment[uk]=Аплет одного з ваших записів контактів миттєвого обміну повідомленнями
 Comment[x-test]=xxApplet for one of your instant messaging contactsxx
+Comment[zh_CN]=显示某个您的及时通讯联系人的部件
 Comment[zh_TW]=您的即時訊息聯絡人
 Type=Service
 ServiceTypes=Plasma/Applet
