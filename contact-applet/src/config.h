@@ -38,7 +38,7 @@ class Config : public KDialog
     Q_OBJECT
 
 public:
-    Config(const Tp::AccountManagerPtr &accountManager, QWidget *parent = 0);
+    explicit Config(const Tp::AccountManagerPtr &accountManager, QWidget *parent = 0);
     ~Config();
 
 signals:
