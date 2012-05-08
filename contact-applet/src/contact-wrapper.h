@@ -46,22 +46,22 @@ public:
     /** returns the avatar location for the contact */
     QString avatar() const;
 
-    /** returns wether the contact can send files */
+    /** returns whether the contact can send files */
     bool canSendFile() const;
 
-    /** returns wether the contact can start/recieve audio calls */
+    /** returns whether the contact can start/receive audio calls */
     bool canStartAudioCall() const;
 
-    /** returns wether the contact can start/recieve video */
+    /** returns whether the contact can start/receive video */
     bool canStartVideo() const;
 
-    /** returns current contact being rappresented */
+    /** returns current contact being represented */
     Tp::ContactPtr contact() const;
 
     /** returns the display name of the contact */
     QString displayName() const;
 
-    /** returns wether the account is online/offline */
+    /** returns whether the account is online/offline */
     bool isAccountOnline() const;
 
     /** returns the contact presence status (online, offlince ... ) */
@@ -72,8 +72,8 @@ public:
      */
     void setAccount(const Tp::AccountPtr &relatedAccount);
 
-    /** set new contact to rappresent
-     * @param newContact the contact to rappresent
+    /** set new contact to represent
+     * @param newContact the contact to represent
      */
     void setContact(const Tp::ContactPtr &newContact);
 
