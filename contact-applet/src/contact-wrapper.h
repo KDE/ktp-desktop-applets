@@ -17,8 +17,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#ifndef CONTACT_WRAPER_H
-#define CONTACT_WRAPER_H
+#ifndef CONTACT_WRAPPER_H
+#define CONTACT_WRAPPER_H
 
 #include <QtCore/QObject>
 

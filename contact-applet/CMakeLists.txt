@@ -8,14 +8,14 @@ include_directories(
 
 set(plasma_applet_ktp_contact_SRCS
     src/abstract-contact-delegate.cpp
-    src/config.cpp
+    src/applet_config.cpp
     src/contact-delegate.cpp
     src/contact-wrapper.cpp
     src/telepathy-contact.cpp
 )
 
 kde4_add_ui_files(plasma_applet_ktp_contact_SRCS
-                    src/config.ui
+                    src/applet_config.ui
 )
 
 kde4_add_plugin(plasma_applet_ktp_contact ${plasma_applet_ktp_contact_SRCS})

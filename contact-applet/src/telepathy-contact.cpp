@@ -17,9 +17,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#include "config.h"
-#include "contact-wrapper.h"
 #include "telepathy-contact.h"
+#include "applet_config.h"
+#include "contact-wrapper.h"
 
 #include <KConfig>
 #include <KStandardDirs>
@@ -225,7 +225,7 @@ void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::Ac
 void TelepathyContact::showConfigurationInterface()
 {
     if (!isUserConfiguring()) {
-        Config *config = new Config(m_accountManager, 0);
+        AppletConfig *config = new AppletConfig(m_accountManager, 0);
         connect(config, SIGNAL(setNewContact(Tp::ContactPtr,Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr,Tp::AccountPtr)));
         config->show();
     }

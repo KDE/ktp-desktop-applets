@@ -17,7 +17,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#include "config.h"
+#include "applet_config.h"
 #include "contact-delegate.h"
 
 #include <KTp/Models/accounts-model.h>
@@ -28,7 +28,7 @@
 #include <KDebug>
 #include <KPushButton>
 
-Config::Config(const Tp::AccountManagerPtr &accountManager, QWidget* parent)
+AppletConfig::AppletConfig(const Tp::AccountManagerPtr &accountManager, QWidget* parent)
     : KDialog(parent)
     , m_model(0)
     , m_modelFilter(0)
@@ -45,19 +45,19 @@ Config::Config(const Tp::AccountManagerPtr &accountManager, QWidget* parent)
     connect(this, SIGNAL(buttonClicked(KDialog::ButtonCode)), this, SLOT(slotButtonClicked(int)));
 }
 
-Config::~Config()
+AppletConfig::~AppletConfig()
 {
     m_groupsModel->deleteLater();
     m_model->deleteLater();
     m_modelFilter->deleteLater();
 }
 
-void Config::activateOkButton()
+void AppletConfig::activateOkButton()
 {
     button(Ok)->setEnabled(true);
 }
 
-void Config::enableGroupsView(bool enable)
+void AppletConfig::enableGroupsView(bool enable)
 {
     if (enable) {
         m_modelFilter->setSourceModel(m_groupsModel);
@@ -66,12 +66,12 @@ void Config::enableGroupsView(bool enable)
     }
 }
 
-void Config::enableOfflineContacts(bool enable)
+void AppletConfig::enableOfflineContacts(bool enable)
 {
     m_modelFilter->setPresenceTypeFilterFlags(enable ? AccountsFilterModel::DoNotFilterByPresence : AccountsFilterModel::ShowOnlyConnected);
 }
 
-void Config::setupContactsList()
+void AppletConfig::setupContactsList()
 {
     // prepare models
     m_model = new AccountsModel(this);
@@ -109,7 +109,7 @@ void Config::setupContactsList()
     connect(ui.showGroups, SIGNAL(toggled(bool)), this, SLOT(enableGroupsView(bool)));
 }
 
-void Config::slotButtonClicked(int button)
+void AppletConfig::slotButtonClicked(int button)
 {
     QModelIndex selectedItem = ui.contactsList->currentIndex();
 

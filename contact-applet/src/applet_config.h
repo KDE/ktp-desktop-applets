@@ -17,10 +17,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef APPLET_CONFIG_H
+#define APPLET_CONFIG_H
 
-#include "ui_config.h"
+#include "ui_applet_config.h"
 
 #include <KDialog>
 #include <TelepathyQt/AccountManager>
@@ -33,13 +33,13 @@ class AccountsModel;
 class AccountsFilterModel;
 class GroupsModel;
 
-class Config : public KDialog
+class AppletConfig : public KDialog
 {
     Q_OBJECT
 
 public:
-    explicit Config(const Tp::AccountManagerPtr &accountManager, QWidget *parent = 0);
-    ~Config();
+    explicit AppletConfig(const Tp::AccountManagerPtr &accountManager, QWidget *parent = 0);
+    ~AppletConfig();
 
 signals:
     void setNewContact(const Tp::ContactPtr &newContact, const Tp::AccountPtr &relatedAccount);
@@ -64,4 +64,4 @@ private:
 };
 
 
-#endif  // CONFIG_H
+#endif  // APPLET_CONFIG_H
