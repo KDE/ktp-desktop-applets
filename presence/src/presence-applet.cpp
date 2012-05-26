@@ -20,6 +20,7 @@
 #include "presenceapplet.h"
 
 #include <QDBusAbstractAdaptor>
+#include <QGraphicsLinearLayout>
 
 #include <KAction>
 #include <KActionMenu>
@@ -41,20 +42,32 @@
 #include <TelepathyQt/Account>
 
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariantList &args)
-    : Plasma::PopupApplet(parent, args),
+    : Plasma::Applet(parent, args),
       m_globalPresence(new KTp::GlobalPresence(this))
 {
     setupContextMenuActions();
 
-    resize(128, 128);
-    setAspectRatioMode(Plasma::KeepAspectRatio);
+    setAspectRatioMode(Plasma::ConstrainedSquare);
+    setMinimumSize(16, 16);
     setBackgroundHints(NoBackground);
+    resize(150, 150);
+
+    m_icon = new Plasma::IconWidget(this);
+    connect(m_icon, SIGNAL(clicked()), this, SLOT(startContactList()));
+    m_icon->setIcon(m_globalPresence->currentPresence().icon());
+
+    QGraphicsLinearLayout *layout = new QGraphicsLinearLayout();
+    layout->setContentsMargins(2, 2, 2, 2);
+    layout->setSpacing(0);
+    layout->setOrientation(Qt::Horizontal);
+    layout->addItem(m_icon);
+    layout->setAlignment(m_icon, Qt::AlignCenter);
+    setLayout(layout);
 
     int iconSize = IconSize(KIconLoader::Small);
     setMinimumSize(QSize(iconSize, iconSize));
 
     connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), this, SLOT(onPresenceChanged(KTp::Presence)));
-    connect(this, SIGNAL(activate()), this, SLOT(onActivated()));
 
     // register plasmoid for tooltip
     Plasma::ToolTipManager::self()->registerWidget(this);
@@ -74,8 +87,6 @@ QList<QAction*> TelepathyPresenceApplet::contextualActions()
 
 void TelepathyPresenceApplet::init()
 {
-    Plasma::Applet::init();
-
     m_dbusExporter = new DBusExporter(this);
     QDBusConnection::sessionBus().registerObject("/PresenceAppletActive", this, QDBusConnection::ExportAdaptors);
     QDBusConnection::sessionBus().registerService("org.kde.Telepathy.PresenceAppletActive");
@@ -101,11 +112,6 @@ void TelepathyPresenceApplet::init()
                                                   channelFactory);
 
     connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
-}
-
-void TelepathyPresenceApplet::paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect &contentsRect)
-{
-    Plasma::Applet::paintInterface(p, option, contentsRect);
 }
 
 void TelepathyPresenceApplet::setupContextMenuActions()
@@ -169,12 +175,6 @@ void TelepathyPresenceApplet::onAccountManagerReady(Tp::PendingOperation* op)
 
     // set the manager to the globalpresence
     m_globalPresence->setAccountManager(m_accountManager);
-    setPopupIcon(m_globalPresence->currentPresence().icon());
-}
-
-void TelepathyPresenceApplet::onActivated()
-{
-    startContactList();
 }
 
 void TelepathyPresenceApplet::startAccountManager()
@@ -187,40 +187,43 @@ void TelepathyPresenceApplet::startContactList()
     KToolInvocation::startServiceByDesktopName("ktp-contactlist");
 }
 
-void TelepathyPresenceApplet::onAddContactRequest() {
+void TelepathyPresenceApplet::onAddContactRequest()
+{
     QWeakPointer<AccountsModel> accountModel = new AccountsModel();
     accountModel.data()->setAccountManager(m_accountManager);
-    
+
     QWeakPointer<KTp::AddContactDialog> dialog = new KTp::AddContactDialog(accountModel.data(), 0);
-    if (dialog.data()->exec() == QDialog::Accepted) {
+    if (dialog.data()->exec() == QDialog::Accepted)
+    {
         Tp::AccountPtr account = dialog.data()->account();
         if (account.isNull()) {
             KMessageBox::error(dialog.data(),
                                i18n("Seems like you forgot to select an account. Also do not forget to connect it first."),
                                i18n("No Account Selected"));
-        }
-        else if (account->connection().isNull()) {
+        } else if (account->connection().isNull()) {
             KMessageBox::error(dialog.data(),
                                i18n("An error we did not anticipate just happened and so the contact could not be added. Sorry."),
                                i18n("Account Error"));
         } else {
             QStringList identifiers = QStringList() << dialog.data()->screenName();
-            Tp::PendingContacts* pendingContacts = account->connection()->contactManager()->contactsForIdentifiers(identifiers);
-            connect(pendingContacts, SIGNAL(finished(Tp::PendingOperation*)), SLOT(onAddContactRequestFoundContacts(Tp::PendingOperation*)));
+            Tp::PendingContacts *pendingContacts = account->connection()->contactManager()->contactsForIdentifiers(identifiers);
+            connect(pendingContacts, SIGNAL(finished(Tp::PendingOperation*)),
+                    this, SLOT(onAddContactRequestFoundContacts(Tp::PendingOperation*)));
         }
     }
+
     delete dialog.data();
     delete accountModel.data();
 }
 
-void TelepathyPresenceApplet::onAddContactRequestFoundContacts(Tp::PendingOperation *operation) {
+void TelepathyPresenceApplet::onAddContactRequestFoundContacts(Tp::PendingOperation *operation)
+{
     Tp::PendingContacts *pendingContacts = qobject_cast<Tp::PendingContacts*>(operation);
 
-    if (! pendingContacts->isError()) {
+    if (!pendingContacts->isError()) {
         //request subscription
         pendingContacts->manager()->requestPresenceSubscription(pendingContacts->contacts());
-    }
-    else {
+    } else {
         kDebug() << pendingContacts->errorName();
         kDebug() << pendingContacts->errorMessage();
     }
@@ -228,13 +231,12 @@ void TelepathyPresenceApplet::onAddContactRequestFoundContacts(Tp::PendingOperat
 
 void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)
 {
-    setPopupIcon(presence.icon());
+    m_icon->setIcon(presence.icon());
 }
 
 void TelepathyPresenceApplet::onPresenceActionClicked()
 {
     KTp::Presence p = qobject_cast<KAction*>(sender())->data().value<KTp::Presence>();
-    //TODO: lobby for the setStatusMessage() in tp-qt4
     p.setStatus(p.type(), p.status(), m_globalPresence->currentPresence().statusMessage());
 
     m_globalPresence->setPresence(p);

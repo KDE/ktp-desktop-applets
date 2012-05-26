@@ -20,8 +20,9 @@
 #ifndef KTP_PRESENCE_APPLET_H
 #define KTP_PRESENCE_APPLET_H
 
-#include <Plasma/PopupApplet>
+#include <Plasma/Applet>
 #include <Plasma/DeclarativeWidget>
+#include <Plasma/IconWidget>
 
 #include <TelepathyQt/AccountManager>
 #include <TelepathyQt/ContactManager>
@@ -42,7 +43,7 @@ class KConfigDialog;
 class QAction;
 class DBusExporter;
 
-class TelepathyPresenceApplet: public Plasma::PopupApplet
+class TelepathyPresenceApplet: public Plasma::Applet
 {
     Q_OBJECT
 
@@ -52,13 +53,10 @@ public:
 
     QList<QAction*> contextualActions();
     void init();
-    void paintInterface(QPainter *p, const QStyleOptionGraphicsItem *option, const QRect &contentsRect);
 
 private Q_SLOTS:
     void onAccountManagerReady(Tp::PendingOperation *op);
 
-    /** called when plasmoid is clicked */
-    void onActivated();
     void onPresenceChanged(KTp::Presence presence);
     void onPresenceActionClicked();
     void toolTipAboutToShow();
@@ -74,6 +72,7 @@ private:
     void setupContextMenuActions();
 
     QList<QAction*>       m_contextActions;
+    Plasma::IconWidget   *m_icon;
 
     Tp::AccountManagerPtr m_accountManager;
     KTp::GlobalPresence  *m_globalPresence;
