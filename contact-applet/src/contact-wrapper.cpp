@@ -29,7 +29,7 @@
 #include <TelepathyQt/PendingChannelRequest>
 #include <TelepathyQt/Presence>
 
-#define PREFERRED_TEXTCHAT_HANDLER "org.freedesktop.Telepathy.Client.KDE.TextUi"
+#define PREFERRED_TEXTCHAT_HANDLER "org.freedesktop.Telepathy.Client.KTp.TextUi"
 
 ContactWrapper::ContactWrapper(QObject* parent)
     : QObject(parent)
