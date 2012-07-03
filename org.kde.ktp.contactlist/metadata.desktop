@@ -2,6 +2,7 @@
 Name=Telepathy Contact List Applet
 Name[ca]=Miniaplicació de llista de contactes del Telepathy
 Name[da]=Kontaktliste-applet til Telepathy
+Name[de]=Telepathy-Kontaktlisten-Miniprogramm
 Name[et]=Telepathy kontaktide nimekirja aplett
 Name[hu]=Telepathy partnerlista kisalkalmazás
 Name[it]=Applet della lista dei contatti di Telepathy
@@ -18,6 +19,7 @@ Name[zh_TW]=Telepathy 聯絡人清單小程式
 Comment=telepathy contact list applet
 Comment[ca]=miniaplicació de llista de contactes del telepathy
 Comment[da]=Kontaktliste-applet til Telepathy
+Comment[de]=Telepathy-Kontaktlisten-Miniprogramm
 Comment[et]=Telepathy kontaktide nimekirja aplett
 Comment[hu]=Telepathy partnerlista kisalkalmazás
 Comment[it]=Applet della lista dei contatti di Telepathy
