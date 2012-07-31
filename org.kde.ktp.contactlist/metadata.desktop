@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Telepathy Contact List Applet
 Name[ca]=Miniaplicació de llista de contactes del Telepathy
+Name[cs]=Applet seznamu kontaktů Telepathy
 Name[da]=Kontaktliste-applet til Telepathy
 Name[de]=Telepathy-Kontaktlisten-Miniprogramm
 Name[es]=Miniaplicación de lista de contactos de Telepathy
@@ -24,6 +25,7 @@ Name[zh_CN]=Telepathy 联系人列表部件
 Name[zh_TW]=Telepathy 聯絡人清單小程式
 Comment=telepathy contact list applet
 Comment[ca]=miniaplicació de llista de contactes del telepathy
+Comment[cs]=Applet seznamu kontaktů Telepathy
 Comment[da]=Kontaktliste-applet til Telepathy
 Comment[de]=Telepathy-Kontaktlisten-Miniprogramm
 Comment[es]=Miniaplicación de lista de contactos de Telepathy
