@@ -29,6 +29,7 @@
 #include <KToolInvocation>
 #include <KUser>
 #include <KMessageBox>
+#include <KStandardDirs>
 
 #include <KTp/global-presence.h>
 #include <KTp/Models/accounts-model.h>
@@ -136,6 +137,10 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager"), this);
     KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List"), this);
     KAction *addContactAction = new KAction(KIcon("list-add-user"), i18n("Add New Contacts"), this);
+    KAction *makeCallAction = 0;
+    if (!KStandardDirs::findExe(QLatin1String("ktp-dialout-ui")).isEmpty()) {
+        makeCallAction = new KAction(KIcon("internet-telephony"), i18n("Make a Call"), this);
+    }
 
     // connect actions
     connect(goOnlineAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
@@ -148,6 +153,9 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
     connect(showContactListAction, SIGNAL(triggered()), this, SLOT(startContactList()));
     connect(addContactAction, SIGNAL(triggered()),this, SLOT(onAddContactRequest()));
+    if (makeCallAction) {
+        connect(makeCallAction, SIGNAL(triggered()), this, SLOT(onMakeCallRequest()));
+    }
 
     m_contextActions.append(goOnlineAction);
     m_contextActions.append(goBusyAction);
@@ -162,6 +170,9 @@ void TelepathyPresenceApplet::setupContextMenuActions()
 
     m_contextActions.append(moreMenu->addSeparator());
     m_contextActions.append(addContactAction);
+    if (makeCallAction) {
+        m_contextActions.append(makeCallAction);
+    }
 
     m_contextActions.append(moreMenu->addSeparator());
 }
@@ -196,6 +207,11 @@ void TelepathyPresenceApplet::onAddContactRequest()
     accountsModel->setParent(dialog); //delete the model with the dialog
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
+}
+
+void TelepathyPresenceApplet::onMakeCallRequest()
+{
+    KToolInvocation::kdeinitExec(QLatin1String("ktp-dialout-ui"));
 }
 
 void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)

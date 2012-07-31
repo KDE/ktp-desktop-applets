@@ -65,6 +65,7 @@ private Q_SLOTS:
     void startAccountManager();
     void startContactList();
     void onAddContactRequest();
+    void onMakeCallRequest();
 
 private:
     /** used only upon creation to setup a list of actions for the context menu */
