@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=Instant Messaging Contact List
 Name[cs]=Seznam kontaktů komunikátoru
+Name[da]=Instant messaging-kontaktliste
 Name[hu]=Azonnali üzenetküldési partnerlista
 Name[it]=Lista dei contatti di messaggistica istantanea
+Name[nl]=Lijst met contactpersoon van Instant Messaging
 Name[pt]=Lista de Contactos das Mensagens Instantâneas
 Name[pt_BR]=Lista de contatos de mensagens instantâneas
 Name[sk]=Zoznam kontaktov instant messagingu
@@ -11,8 +13,10 @@ Name[uk]=Список контактів миттєвого обміну пов�
 Name[x-test]=xxInstant Messaging Contact Listxx
 Comment=List instant messaging contacts
 Comment[cs]=Vypsat kontakty komunikátoru
+Comment[da]=Oplist instant messaging-kontakter
 Comment[hu]=Azonnali üzenetküldési partnerek listázása
 Comment[it]=Elenca i contatti di messaggistica istantanea
+Comment[nl]=Lijst met contactpersoon van Instant Messaging
 Comment[pt]=Apresenta os contactos das mensagens instantâneas
 Comment[pt_BR]=Lista os contatos de mensagens instantâneas
 Comment[sk]=Vypísať kontakty instant messagingu
