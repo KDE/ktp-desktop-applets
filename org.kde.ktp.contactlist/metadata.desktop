@@ -2,6 +2,7 @@
 Name=Instant Messaging Contact List
 Name[cs]=Seznam kontaktů komunikátoru
 Name[da]=Instant messaging-kontaktliste
+Name[fi]=Pikaviestinnän yhteystietoluettelo
 Name[hu]=Azonnali üzenetküldési partnerlista
 Name[it]=Lista dei contatti di messaggistica istantanea
 Name[nl]=Lijst met contactpersoon van Instant Messaging
@@ -14,6 +15,7 @@ Name[x-test]=xxInstant Messaging Contact Listxx
 Comment=List instant messaging contacts
 Comment[cs]=Vypsat kontakty komunikátoru
 Comment[da]=Oplist instant messaging-kontakter
+Comment[fi]=Luettele pikaviestiyhteystiedot
 Comment[hu]=Azonnali üzenetküldési partnerek listázása
 Comment[it]=Elenca i contatti di messaggistica istantanea
 Comment[nl]=Lijst met contactpersoon van Instant Messaging
