@@ -59,6 +59,7 @@ private Q_SLOTS:
 
     void onPresenceChanged(KTp::Presence presence);
     void onPresenceActionClicked();
+    void onJoinChatRoomRequest();
     void toolTipAboutToShow();
     void toolTipHidden();
 

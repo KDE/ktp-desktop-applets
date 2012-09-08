@@ -34,13 +34,17 @@
 #include <KTp/global-presence.h>
 #include <KTp/Models/accounts-model.h>
 #include <KTp/Widgets/add-contact-dialog.h>
+#include <KTp/Widgets/join-chat-room-dialog.h>
 
 #include <Plasma/ToolTipManager>
 
 #include <TelepathyQt/PendingOperation>
 #include <TelepathyQt/PendingContacts>
 #include <TelepathyQt/PendingReady>
+#include <TelepathyQt/PendingChannelRequest>
 #include <TelepathyQt/Account>
+
+#define PREFERRED_TEXTCHAT_HANDLER "org.freedesktop.Telepathy.Client.KDE.TextUi"
 
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariantList &args)
     : Plasma::Applet(parent, args),
@@ -125,6 +129,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     KAction *goExtendedAwayAction = new KAction(KIcon("user-away-extended"), i18n("Not Available"), this);
     KAction *goHiddenAction = new KAction(KIcon("user-invisible"), i18n("Invisible"), this);
     KAction *goOfflineAction = new KAction(KIcon("user-offline"), i18n("Offline"), this);
+    KAction *joinChatroomAction = new KAction(KIcon("user-group-new"), i18n("Join Chat Room"), this);
 
     goOnlineAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::available())));
     goBusyAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::busy())));
@@ -152,7 +157,8 @@ void TelepathyPresenceApplet::setupContextMenuActions()
 
     connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
     connect(showContactListAction, SIGNAL(triggered()), this, SLOT(startContactList()));
-    connect(addContactAction, SIGNAL(triggered()),this, SLOT(onAddContactRequest()));
+    connect(addContactAction, SIGNAL(triggered()), this, SLOT(onAddContactRequest()));
+    connect(joinChatroomAction, SIGNAL(triggered()), this, SLOT(onJoinChatRoomRequest()));
     if (makeCallAction) {
         connect(makeCallAction, SIGNAL(triggered()), this, SLOT(onMakeCallRequest()));
     }
@@ -170,6 +176,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
 
     m_contextActions.append(moreMenu->addSeparator());
     m_contextActions.append(addContactAction);
+    m_contextActions.append(joinChatroomAction);
     if (makeCallAction) {
         m_contextActions.append(makeCallAction);
     }
@@ -207,6 +214,31 @@ void TelepathyPresenceApplet::onAddContactRequest()
     accountsModel->setParent(dialog); //delete the model with the dialog
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
+}
+
+void TelepathyPresenceApplet::onJoinChatRoomRequest()
+{
+    QWeakPointer<KTp::JoinChatRoomDialog> dialog = new KTp::JoinChatRoomDialog(m_accountManager);
+
+    if (dialog.data()->exec() == QDialog::Accepted) {
+        Tp::AccountPtr account = dialog.data()->selectedAccount();
+
+        // check account validity. Should NEVER be invalid
+        if (!account.isNull()) {
+            // ensure chat room
+            Tp::ChannelRequestHints hints;
+            hints.setHint("org.kde.telepathy","forceRaiseWindow", QVariant(true));
+
+            Tp::PendingChannelRequest *channelRequest = account->ensureTextChatroom(dialog.data()->selectedChatRoom(),
+                                                                                    QDateTime::currentDateTime(),
+                                                                                    PREFERRED_TEXTCHAT_HANDLER,
+                                                                                    hints);
+
+            connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), SLOT(onGenericOperationFinished(Tp::PendingOperation*)));
+        }
+    }
+
+    delete dialog.data();
 }
 
 void TelepathyPresenceApplet::onMakeCallRequest()
