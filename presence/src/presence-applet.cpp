@@ -74,6 +74,8 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
 
     connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), this, SLOT(onPresenceChanged(KTp::Presence)));
 
+    setStatus(Plasma::PassiveStatus);
+
     // register plasmoid for tooltip
     Plasma::ToolTipManager::self()->registerWidget(this);
 }
@@ -116,6 +118,7 @@ void TelepathyPresenceApplet::init()
                                                   connectionFactory,
                                                   channelFactory);
 
+    connect(m_accountManager.data(), SIGNAL(newAccount(Tp::AccountPtr)), SLOT(onAccountsChanged()));
     connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
 }
 
@@ -191,8 +194,20 @@ void TelepathyPresenceApplet::onAccountManagerReady(Tp::PendingOperation* op)
         kDebug() << op->errorMessage();
     }
 
+    onAccountsChanged();
+
     // set the manager to the globalpresence
     m_globalPresence->setAccountManager(m_accountManager);
+}
+
+void TelepathyPresenceApplet::onAccountsChanged()
+{
+    //if connection to MC failed, or user has no accounts, hide presence icon.
+    if (m_accountManager->isValid() && m_accountManager->allAccounts().size() > 0) {
+        setStatus(Plasma::ActiveStatus);
+    } else {
+        setStatus(Plasma::PassiveStatus);
+    }
 }
 
 void TelepathyPresenceApplet::startAccountManager()

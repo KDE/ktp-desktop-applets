@@ -56,6 +56,7 @@ public:
 
 private Q_SLOTS:
     void onAccountManagerReady(Tp::PendingOperation *op);
+    void onAccountsChanged();
 
     void onPresenceChanged(KTp::Presence presence);
     void onPresenceActionClicked();
