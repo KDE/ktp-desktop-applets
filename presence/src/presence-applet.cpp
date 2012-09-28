@@ -73,6 +73,9 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
     setMinimumSize(QSize(iconSize, iconSize));
 
     connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), this, SLOT(onPresenceChanged(KTp::Presence)));
+    connect(m_globalPresence, SIGNAL(changingPresence(bool)), this, SLOT(setBusy(bool)));
+
+    setStatus(Plasma::PassiveStatus);
 
     setStatus(Plasma::PassiveStatus);
 
