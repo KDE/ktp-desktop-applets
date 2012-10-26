@@ -19,7 +19,8 @@
 
 #include "presenceapplet.h"
 
-#include <QDBusAbstractAdaptor>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
 #include <QGraphicsLinearLayout>
 
 #include <KAction>
@@ -46,10 +47,13 @@
 
 #define PREFERRED_TEXTCHAT_HANDLER "org.freedesktop.Telepathy.Client.KDE.TextUi"
 
+int TelepathyPresenceApplet::s_instanceCount = 0;
+
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariantList &args)
     : Plasma::Applet(parent, args),
       m_globalPresence(new KTp::GlobalPresence(this))
 {
+    s_instanceCount ++;
     setupContextMenuActions();
 
     setAspectRatioMode(Plasma::ConstrainedSquare);
@@ -86,8 +90,11 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
 TelepathyPresenceApplet::~TelepathyPresenceApplet()
 {
     m_contextActions.clear();
-    QDBusConnection::sessionBus().unregisterObject("/PresenceAppletActive");
-    QDBusConnection::sessionBus().unregisterService("org.kde.Telepathy.PresenceAppletActive");
+
+    s_instanceCount--;
+    if (s_instanceCount == 0) {
+        QDBusConnection::sessionBus().unregisterService("org.kde.Telepathy.PresenceAppletActive");
+    }
 }
 
 QList<QAction*> TelepathyPresenceApplet::contextualActions()
@@ -97,8 +104,6 @@ QList<QAction*> TelepathyPresenceApplet::contextualActions()
 
 void TelepathyPresenceApplet::init()
 {
-    m_dbusExporter = new DBusExporter(this);
-    QDBusConnection::sessionBus().registerObject("/PresenceAppletActive", this, QDBusConnection::ExportAdaptors);
     QDBusConnection::sessionBus().registerService("org.kde.Telepathy.PresenceAppletActive");
 
     Tp::registerTypes();

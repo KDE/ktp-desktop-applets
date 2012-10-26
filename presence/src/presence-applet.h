@@ -41,7 +41,6 @@ namespace Tp {
 class GlobalPresenceWrapper;
 class KConfigDialog;
 class QAction;
-class DBusExporter;
 
 class TelepathyPresenceApplet: public Plasma::Applet
 {
@@ -73,24 +72,14 @@ private:
     /** used only upon creation to setup a list of actions for the context menu */
     void setupContextMenuActions();
 
+    /** the number of instances which have tried to register the DBus service*/
+    static int s_instanceCount;
+
     QList<QAction*>       m_contextActions;
     Plasma::IconWidget   *m_icon;
 
     Tp::AccountManagerPtr m_accountManager;
     KTp::GlobalPresence  *m_globalPresence;
-    DBusExporter         *m_dbusExporter;
-};
-
-//-----------------------------------------------------------------------------------------
-
-class DBusExporter : public QDBusAbstractAdaptor
-{
-    Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.kde.Telepathy.PresenceApplet")
-
-public:
-    DBusExporter(QObject *parent = 0) : QDBusAbstractAdaptor(parent) {}
-    ~DBusExporter() {};
 };
 
 #endif  // KTP_PRESENCE_APPLET_H
