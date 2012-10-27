@@ -145,12 +145,12 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     goOfflineAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::offline())));
 
     // application actions
-    KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager"), this);
-    KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List"), this);
-    KAction *addContactAction = new KAction(KIcon("list-add-user"), i18n("Add New Contacts"), this);
+    KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager..."), this);
+    KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List..."), this);
+    KAction *addContactAction = new KAction(KIcon("list-add-user"), i18n("Add New Contacts..."), this);
     KAction *makeCallAction = 0;
     if (!KStandardDirs::findExe(QLatin1String("ktp-dialout-ui")).isEmpty()) {
-        makeCallAction = new KAction(KIcon("internet-telephony"), i18n("Make a Call"), this);
+        makeCallAction = new KAction(KIcon("internet-telephony"), i18n("Make a Call..."), this);
     }
 
     // connect actions
