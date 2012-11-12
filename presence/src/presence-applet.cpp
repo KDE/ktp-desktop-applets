@@ -33,7 +33,7 @@
 #include <KStandardDirs>
 
 #include <KTp/global-presence.h>
-#include <KTp/Models/accounts-model.h>
+#include <KTp/Models/contacts-model.h>
 #include <KTp/Widgets/add-contact-dialog.h>
 #include <KTp/Widgets/join-chat-room-dialog.h>
 
@@ -230,11 +230,11 @@ void TelepathyPresenceApplet::startContactList()
 
 void TelepathyPresenceApplet::onAddContactRequest()
 {
-    AccountsModel *accountsModel = new AccountsModel();
-    accountsModel->setAccountManager(m_accountManager);
+    ContactsModel *contactsModel = new ContactsModel();
+    contactsModel->setAccountManager(m_accountManager);
 
-    KTp::AddContactDialog *dialog = new KTp::AddContactDialog(accountsModel);
-    accountsModel->setParent(dialog); //delete the model with the dialog
+    KTp::AddContactDialog *dialog = new KTp::AddContactDialog(contactsModel);
+    contactsModel->setParent(dialog); //delete the model with the dialog
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     dialog->show();
 }
