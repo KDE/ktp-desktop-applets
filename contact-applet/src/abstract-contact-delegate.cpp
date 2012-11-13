@@ -32,7 +32,7 @@
 #include <KDE/KIconLoader>
 #include <KDE/KIcon>
 
-#include <KTp/Models/accounts-model.h>
+#include <KTp/Models/contacts-model.h>
 #include <KTp/Models/accounts-model-item.h>
 #include <KTp/Models/groups-model.h>
 #include <KTp/Models/contact-model-item.h>
@@ -79,11 +79,11 @@ void AbstractContactDelegate::paint(QPainter* painter, const QStyleOptionViewIte
 
     QFont groupFont = KGlobalSettings::smallestReadableFont();
 
-    QString counts = QString(" (%1/%2)").arg(index.data(AccountsModel::OnlineUsersCountRole).toString(),
-                   index.data(AccountsModel::TotalUsersCountRole).toString());
+    QString counts = QString(" (%1/%2)").arg(index.data(ContactsModel::OnlineUsersCountRole).toString(),
+                   index.data(ContactsModel::TotalUsersCountRole).toString());
 
-    if (index.data(AccountsModel::ItemRole).userType() == qMetaTypeId<AccountsModelItem*>()) {
-        painter->drawPixmap(accountGroupRect, KIcon(index.data(AccountsModel::IconRole).toString())
+    if (index.data(ContactsModel::ItemRole).userType() == qMetaTypeId<AccountsModelItem*>()) {
+        painter->drawPixmap(accountGroupRect, KIcon(index.data(ContactsModel::IconRole).toString())
         .pixmap(ACCOUNT_ICON_SIZE, ACCOUNT_ICON_SIZE));
     } else {
         painter->drawPixmap(accountGroupRect, KIconLoader::global()->loadIcon(QString("system-users"),
@@ -137,7 +137,7 @@ bool AbstractContactDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *vi
     Q_UNUSED(option);
 
     // Check and make sure that we only want it to work on contacts and nothing else.
-    if (index.data(AccountsModel::ItemRole).userType() != qMetaTypeId<ContactModelItem*>()) {
+    if (index.data(ContactsModel::ItemRole).userType() != qMetaTypeId<ContactModelItem*>()) {
         return false;
     }
 
@@ -145,16 +145,16 @@ bool AbstractContactDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *vi
         return false;
     }
 
-    const QString contactAvatar = index.data(AccountsModel::AvatarRole).toString();
-    const QString displayName = index.parent().data(AccountsModel::DisplayNameRole).toString();
-    const QString cmIconPath = KIconLoader::global()->iconPath(index.parent().data(AccountsModel::IconRole).toString(), 1);
-    const QString alias = index.data(AccountsModel::AliasRole).toString();
-    const QString id = index.data(AccountsModel::IdRole).toString();
-    const QString presenceStatus = index.data(AccountsModel::PresenceMessageRole).toString();
+    const QString contactAvatar = index.data(ContactsModel::AvatarRole).toString();
+    const QString displayName = index.parent().data(ContactsModel::DisplayNameRole).toString();
+    const QString cmIconPath = KIconLoader::global()->iconPath(index.parent().data(ContactsModel::IconRole).toString(), 1);
+    const QString alias = index.data(ContactsModel::AliasRole).toString();
+    const QString id = index.data(ContactsModel::IdRole).toString();
+    const QString presenceStatus = index.data(ContactsModel::PresenceMessageRole).toString();
     QString presenceIconPath;
     QString presenceText;
 
-    switch (index.data(AccountsModel::PresenceTypeRole).toUInt()) {
+    switch (index.data(ContactsModel::PresenceTypeRole).toUInt()) {
         case Tp::ConnectionPresenceTypeAvailable:
             presenceIconPath = KIconLoader::global()->iconPath("user-online", 1);
             presenceText = i18nc("This is an IM user status", "Online");
@@ -212,7 +212,7 @@ bool AbstractContactDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *vi
     table += QString("<tr><td>");
     table += QString("%2").arg(presenceStatus.isEmpty() ? presenceText : presenceStatus);
     table += QString("</td></tr>");
-    if (index.data(AccountsModel::BlockedRole).toBool()) {
+    if (index.data(ContactsModel::BlockedRole).toBool()) {
         table += QString("<tr><td colspan='2'>%1</td></tr>").arg(i18n("User is blocked"));
     }
     table += QString("</table>");

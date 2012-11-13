@@ -29,7 +29,7 @@ namespace Ui {
     class Config;
 }
 
-class AccountsModel;
+class ContactsModel;
 class AccountsFilterModel;
 class GroupsModel;
 
@@ -55,7 +55,7 @@ private slots:
 private:
     void setupContactsList();                               /** prepare the contacts to be show in the list */
 
-    AccountsModel *m_model;
+    ContactsModel *m_model;
     AccountsFilterModel *m_modelFilter;
     GroupsModel *m_groupsModel;
     Tp::AccountManagerPtr m_accountManager;

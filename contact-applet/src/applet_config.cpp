@@ -20,7 +20,7 @@
 #include "applet_config.h"
 #include "contact-delegate.h"
 
-#include <KTp/Models/accounts-model.h>
+#include <KTp/Models/contacts-model.h>
 #include <KTp/Models/contact-model-item.h>
 #include <KTp/Models/groups-model.h>
 #include <KTp/Models/accounts-filter-model.h>
@@ -74,7 +74,7 @@ void AppletConfig::enableOfflineContacts(bool enable)
 void AppletConfig::setupContactsList()
 {
     // prepare models
-    m_model = new AccountsModel(this);
+    m_model = new ContactsModel(this);
     m_model->setAccountManager(m_accountManager);
     m_groupsModel = new GroupsModel(m_model, this);
     m_modelFilter = new AccountsFilterModel(this);
@@ -114,8 +114,8 @@ void AppletConfig::slotButtonClicked(int button)
     QModelIndex selectedItem = ui.contactsList->currentIndex();
 
     if (button == KDialog::Ok && selectedItem.isValid()) {
-        if (selectedItem.data(AccountsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>()) {
-            ContactModelItem *item = selectedItem.data(AccountsModel::ItemRole).value<ContactModelItem*>();
+        if (selectedItem.data(ContactsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>()) {
+            ContactModelItem *item = selectedItem.data(ContactsModel::ItemRole).value<ContactModelItem*>();
 
             // retrieve account related to the contact
             Tp::AccountPtr account = m_model->accountForContactItem(item);

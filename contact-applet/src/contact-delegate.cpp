@@ -33,7 +33,7 @@
 #include <KGlobalSettings>
 #include <KDE/KLocale>
 
-#include <KTp/Models/accounts-model.h>
+#include <KTp/Models/contacts-model.h>
 #include <KTp/Models/contact-model-item.h>
 #include <KTp/Models/proxy-tree-node.h>
 #include <KTp/Models/groups-model-item.h>
@@ -67,7 +67,7 @@ void ContactDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
     QStyle *style = QApplication::style();
     style->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter);
 
-    bool isContact = index.data(AccountsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>();
+    bool isContact = index.data(ContactsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>();
 
     if (isContact) {
         QRect iconRect = optV4.rect;
@@ -75,7 +75,7 @@ void ContactDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
         iconRect.moveTo(QPoint(iconRect.x() + SPACING, iconRect.y() + SPACING));
 
         QPixmap avatar;
-        avatar.load(index.data(AccountsModel::AvatarRole).toString());
+        avatar.load(index.data(ContactsModel::AvatarRole).toString());
 
         bool noContactAvatar = avatar.isNull();
 
@@ -87,7 +87,7 @@ void ContactDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
 
         QPixmap icon;
 
-        switch (index.data(AccountsModel::PresenceTypeRole).toInt()) {
+        switch (index.data(ContactsModel::PresenceTypeRole).toInt()) {
         case Tp::ConnectionPresenceTypeAvailable:
             icon = SmallIcon("user-online", KIconLoader::SizeSmallMedium);
             break;
@@ -144,7 +144,7 @@ void ContactDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
         painter->setPen(presenceMessagePen);
 
         painter->drawText(presenceMessageRect,
-                          nameFontMetrics.elidedText(index.data(AccountsModel::PresenceMessageRole).toString(),
+                          nameFontMetrics.elidedText(index.data(ContactsModel::PresenceMessageRole).toString(),
                                                      Qt::ElideRight, presenceMessageRect.width()));
     } else {
         AbstractContactDelegate::paint(painter, option, index);
@@ -156,7 +156,7 @@ void ContactDelegate::paint(QPainter * painter, const QStyleOptionViewItem & opt
 QSize ContactDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(option);
-    bool isContact = index.data(AccountsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>();
+    bool isContact = index.data(ContactsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>();
 
     if (isContact) {
         return QSize(0, 28);
