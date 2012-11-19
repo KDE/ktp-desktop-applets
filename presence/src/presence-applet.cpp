@@ -72,8 +72,10 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
     layout->setAlignment(m_icon, Qt::AlignCenter);
     setLayout(layout);
 
-    int iconSize = IconSize(KIconLoader::Small);
-    setMinimumSize(QSize(iconSize, iconSize));
+    if (formFactor() == Plasma::Planar) {
+        int iconSize = IconSize(KIconLoader::Small);
+        setMinimumSize(QSize(iconSize, iconSize));
+    }
 
     connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), this, SLOT(onPresenceChanged(KTp::Presence)));
     connect(m_globalPresence, SIGNAL(changingPresence(bool)), this, SLOT(setBusy(bool)));
