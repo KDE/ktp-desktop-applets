@@ -25,10 +25,10 @@ import org.kde.qtextracomponents 0.1 as ExtraComponents
 Item {
     id: delegate;
     enabled: true
-    
+
     height: 36;
     width: parent.width
-    
+
     PlasmaCore.FrameSvgItem {
         id: padding
         imagePath: "widgets/viewitem"
@@ -36,25 +36,25 @@ Item {
         opacity: 0
         anchors.fill: parent
     }
-    
+
     Item {
         anchors.fill: parent
         anchors.topMargin: padding.margins.top
         anchors.bottomMargin: padding.margins.bottom
         anchors.leftMargin: padding.margins.left
         anchors.rightMargin: padding.margins.right
-        
+
 
         ExtraComponents.QIconItem {
             id: avatarLabel;
             width: 30;
             height: parent.height;
-            
+
             icon : (avatar ? avatar : "im-user")
             anchors {
                 left: parent.left;
                 verticalCenter: parent.verticalCenter;
-            }       
+            }
         }
 
         PlasmaComponents.Label {
@@ -70,7 +70,7 @@ Item {
                 verticalCenter: parent.verticalCenter;
             }
         }
-    
+
         ExtraComponents.QIconItem {
                 id: presenceLabel
                 width: 22
@@ -83,16 +83,16 @@ Item {
                 }
         }
     }
-      
+
     MouseArea {
         anchors.fill: parent
-        
+
         hoverEnabled: true
 
         onDoubleClicked: {
-            contactList.startChat(item);
+            contactList.startChat(model.account, model.contact);
         }
-        
+
         onEntered: {
             contactsList.currentIndex = index;
             contactsList.highlightItem.opacity = 1;
