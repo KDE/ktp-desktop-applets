@@ -82,8 +82,6 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
 
     setStatus(Plasma::PassiveStatus);
 
-    setStatus(Plasma::PassiveStatus);
-
     // register plasmoid for tooltip
     Plasma::ToolTipManager::self()->registerWidget(this);
 }
