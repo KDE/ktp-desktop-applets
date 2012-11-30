@@ -37,6 +37,7 @@
 #include <KTp/Widgets/join-chat-room-dialog.h>
 
 #include <Plasma/ToolTipManager>
+#include <Plasma/Svg>
 
 #include <TelepathyQt/PendingOperation>
 #include <TelepathyQt/PendingContacts>
@@ -62,7 +63,7 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
 
     m_icon = new Plasma::IconWidget(this);
     connect(m_icon, SIGNAL(clicked()), this, SLOT(startContactList()));
-    m_icon->setIcon(m_globalPresence->currentPresence().icon());
+    onPresenceChanged(m_globalPresence->currentPresence());
 
     QGraphicsLinearLayout *layout = new QGraphicsLinearLayout();
     layout->setContentsMargins(2, 2, 2, 2);
@@ -266,7 +267,18 @@ void TelepathyPresenceApplet::onMakeCallRequest()
 
 void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)
 {
-    m_icon->setIcon(presence.icon());
+    QString iconBaseName = presence.iconName(false);
+
+    Plasma::Svg svgIcon;
+    svgIcon.setImagePath("icons/presence-applet");
+    if (svgIcon.hasElement(iconBaseName+"-plasma")) {
+        svgIcon.resize(150,150);
+        KIcon icon = KIcon(svgIcon.pixmap(iconBaseName+"-plasma"));
+        m_icon->setIcon(icon);
+    } else {
+        m_icon->setIcon(presence.icon());
+    }
+ }
 }
 
 void TelepathyPresenceApplet::onPresenceActionClicked()
