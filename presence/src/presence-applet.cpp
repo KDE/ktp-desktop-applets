@@ -244,7 +244,6 @@ void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)
     } else {
         m_icon->setIcon(presence.icon());
     }
- }
 }
 
 void TelepathyPresenceApplet::onPresenceActionClicked()
