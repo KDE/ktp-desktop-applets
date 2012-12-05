@@ -130,16 +130,31 @@ void TelepathyPresenceApplet::init()
     connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
 }
 
+KIcon TelepathyPresenceApplet::getThemedIcon(const QString &iconBaseName) const
+{
+    Plasma::Svg svgIcon;
+    svgIcon.setImagePath("icons/presence-applet");
+
+    QString iconPlasmaName = iconBaseName + "-plasma";
+
+    if (svgIcon.hasElement(iconPlasmaName)) {
+	svgIcon.resize(150, 150);
+	return KIcon(svgIcon.pixmap(iconPlasmaName));
+    } else {
+	return KIcon(iconBaseName);
+    }
+}
+
 void TelepathyPresenceApplet::setupContextMenuActions()
 {
     KActionMenu *moreMenu = new KActionMenu(i18n("More"), this);
 
-    KAction *goOnlineAction = new KAction(KIcon("user-online"), i18n("Online"), this);
-    KAction *goBusyAction = new KAction(KIcon("user-busy"), i18n("Busy"), this);
-    KAction *goAwayAction = new KAction(KIcon("user-away"), i18n("Away"), this);
-    KAction *goExtendedAwayAction = new KAction(KIcon("user-away-extended"), i18n("Not Available"), this);
-    KAction *goHiddenAction = new KAction(KIcon("user-invisible"), i18n("Invisible"), this);
-    KAction *goOfflineAction = new KAction(KIcon("user-offline"), i18n("Offline"), this);
+    KAction *goOnlineAction = new KAction(getThemedIcon("user-online"), i18n("Online"), this);
+    KAction *goBusyAction = new KAction(getThemedIcon("user-busy"), i18n("Busy"), this);
+    KAction *goAwayAction = new KAction(getThemedIcon("user-away"), i18n("Away"), this);
+    KAction *goExtendedAwayAction = new KAction(getThemedIcon("user-away-extended"), i18n("Not Available"), this);
+    KAction *goHiddenAction = new KAction(getThemedIcon("user-invisible"), i18n("Invisible"), this);
+    KAction *goOfflineAction = new KAction(getThemedIcon("user-offline"), i18n("Offline"), this);
     KAction *joinChatroomAction = new KAction(KIcon("user-group-new"), i18n("Join Chat Room"), this);
 
     goOnlineAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::available())));
@@ -268,16 +283,7 @@ void TelepathyPresenceApplet::onMakeCallRequest()
 void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)
 {
     QString iconBaseName = presence.iconName(false);
-
-    Plasma::Svg svgIcon;
-    svgIcon.setImagePath("icons/presence-applet");
-    if (svgIcon.hasElement(iconBaseName+"-plasma")) {
-        svgIcon.resize(150,150);
-        KIcon icon = KIcon(svgIcon.pixmap(iconBaseName+"-plasma"));
-        m_icon->setIcon(icon);
-    } else {
-        m_icon->setIcon(presence.icon());
-    }
+    m_icon->setIcon(getThemedIcon(iconBaseName));
 }
 
 void TelepathyPresenceApplet::onPresenceActionClicked()

@@ -69,6 +69,10 @@ private Q_SLOTS:
     void onMakeCallRequest();
 
 private:
+
+    /** used to get the correct icon from either the Plasma theme or the Oxygen icon set */
+    KIcon getThemedIcon(const QString &iconBaseName) const;
+
     /** used only upon creation to setup a list of actions for the context menu */
     void setupContextMenuActions();
 
