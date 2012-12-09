@@ -56,7 +56,6 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
 
     m_icon = new Plasma::IconWidget(this);
     connect(m_icon, SIGNAL(clicked()), this, SLOT(startContactList()));
-    onPresenceChanged(m_globalPresence->currentPresence());
 
     QGraphicsLinearLayout *layout = new QGraphicsLinearLayout();
     layout->setContentsMargins(2, 2, 2, 2);
@@ -69,8 +68,12 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
     int iconSize = IconSize(KIconLoader::Small);
     setMinimumSize(QSize(iconSize, iconSize));
 
-    connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), this, SLOT(onPresenceChanged(KTp::Presence)));
-    connect(m_globalPresence, SIGNAL(changingPresence(bool)), this, SLOT(setBusy(bool)));
+    connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), SLOT(onPresenceChanged(KTp::Presence)));
+    onPresenceChanged(m_globalPresence->currentPresence());
+
+    connect(m_globalPresence, SIGNAL(connectionStatusChanged(Tp::ConnectionStatus)), SLOT(onConnectionStatusChanged(Tp::ConnectionStatus)));
+    onConnectionStatusChanged(m_globalPresence->connectionStatus());
+
 
     setStatus(Plasma::PassiveStatus);
 
@@ -243,6 +246,15 @@ void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)
         m_icon->setIcon(icon);
     } else {
         m_icon->setIcon(presence.icon());
+    }
+}
+
+void TelepathyPresenceApplet::onConnectionStatusChanged(Tp::ConnectionStatus connectionStatus)
+{
+    if (connectionStatus == Tp::ConnectionStatusConnecting) {
+        setBusy(true);
+    } else {
+        setBusy(false);
     }
 }
 
