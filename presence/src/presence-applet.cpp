@@ -63,7 +63,6 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
 
     m_icon = new Plasma::IconWidget(this);
     connect(m_icon, SIGNAL(clicked()), this, SLOT(startContactList()));
-    onPresenceChanged(m_globalPresence->currentPresence());
 
     QGraphicsLinearLayout *layout = new QGraphicsLinearLayout();
     layout->setContentsMargins(2, 2, 2, 2);
@@ -78,8 +77,12 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
         setMinimumSize(QSize(iconSize, iconSize));
     }
 
-    connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), this, SLOT(onPresenceChanged(KTp::Presence)));
-    connect(m_globalPresence, SIGNAL(changingPresence(bool)), this, SLOT(setBusy(bool)));
+    connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), SLOT(onPresenceChanged(KTp::Presence)));
+    onPresenceChanged(m_globalPresence->currentPresence());
+
+    connect(m_globalPresence, SIGNAL(connectionStatusChanged(Tp::ConnectionStatus)), SLOT(onConnectionStatusChanged(Tp::ConnectionStatus)));
+    onConnectionStatusChanged(m_globalPresence->connectionStatus());
+
 
     setStatus(Plasma::PassiveStatus);
 
@@ -283,7 +286,25 @@ void TelepathyPresenceApplet::onMakeCallRequest()
 void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)
 {
     QString iconBaseName = presence.iconName(false);
-    m_icon->setIcon(getThemedIcon(iconBaseName));
+
+    Plasma::Svg svgIcon;
+    svgIcon.setImagePath("icons/presence-applet");
+    if (svgIcon.hasElement(iconBaseName+"-plasma")) {
+        svgIcon.resize(150,150);
+        KIcon icon = KIcon(svgIcon.pixmap(iconBaseName+"-plasma"));
+        m_icon->setIcon(icon);
+    } else {
+        m_icon->setIcon(presence.icon());
+    }
+}
+
+void TelepathyPresenceApplet::onConnectionStatusChanged(Tp::ConnectionStatus connectionStatus)
+{
+    if (connectionStatus == Tp::ConnectionStatusConnecting) {
+        setBusy(true);
+    } else {
+        setBusy(false);
+    }
 }
 
 void TelepathyPresenceApplet::onPresenceActionClicked()

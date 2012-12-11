@@ -58,6 +58,7 @@ private Q_SLOTS:
     void onAccountsChanged();
 
     void onPresenceChanged(KTp::Presence presence);
+    void onConnectionStatusChanged(Tp::ConnectionStatus connectionStatus);
     void onPresenceActionClicked();
     void onJoinChatRoomRequest();
     void toolTipAboutToShow();
