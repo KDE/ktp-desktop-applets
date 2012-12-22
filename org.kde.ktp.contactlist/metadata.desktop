@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Instant Messaging Contact List
+Name[bs]=Lista za instant poruke
 Name[ca]=Llista de contactes de missatgeria instantània
 Name[cs]=Seznam kontaktů komunikátoru
 Name[da]=Instant messaging-kontaktliste
@@ -30,6 +31,7 @@ Name[x-test]=xxInstant Messaging Contact Listxx
 Name[zh_CN]=即时通讯联系人列表
 Name[zh_TW]=即時通訊聯絡人清單
 Comment=List instant messaging contacts
+Comment[bs]=Lista za instant poruke
 Comment[ca]=Llista els contactes de missatgeria instantània
 Comment[cs]=Vypsat kontakty komunikátoru
 Comment[da]=Oplist instant messaging-kontakter
