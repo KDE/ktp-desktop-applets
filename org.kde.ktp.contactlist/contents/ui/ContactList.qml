@@ -18,19 +18,19 @@
  ***************************************************************************/
 
 import QtQuick 1.1
-import org.kde.telepathy.contactlist 0.1 as KtpContactList
+import org.kde.telepathy 0.1 as KTp
 import org.kde.plasma.components 0.1 as PlasmaComponents
 import org.kde.plasma.core 0.1 as PlasmaCore
 
 
 Item {
     id: contactListContainer;
-    anchors.fill: parent;    
-    
-    KtpContactList.ContactList {
-        id: contactList   
+    anchors.fill: parent;
+
+    KTp.ContactList {
+        id: contactList
     }
-    
+
     Component {
         id: highlightBar
         PlasmaCore.FrameSvgItem {
@@ -46,7 +46,7 @@ Item {
                 }
             }
     }
-    
+
     ListView {
         id: contactsList;
 
@@ -68,13 +68,11 @@ Item {
         highlightMoveDuration: 250
         highlightMoveSpeed: 1
         highlightFollowsCurrentItem: true
-        
+
         focus: true
-        
-        
 
     }
-    
+
     PlasmaComponents.ScrollBar {
         id: viewScrollBar
         anchors {
@@ -88,10 +86,10 @@ Item {
         opacity: 1
         orientation: Qt.Vertical
     }
-    
+
     Component.onCompleted : {
-         contactList.filter.sortMode = KtpContactList.AccountsFilterModel.SortByPresence;
-         contactList.filter.presenceTypeFilterFlags = KtpContactList.AccountsFilterModel.HideAllOffline
+         contactList.filter.sortMode = KTp.AccountsFilterModel.SortByPresence;
+         contactList.filter.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
     }
 
 }
