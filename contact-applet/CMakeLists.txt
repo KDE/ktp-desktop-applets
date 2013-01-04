@@ -15,7 +15,7 @@ set(plasma_applet_ktp_contact_SRCS
 )
 
 kde4_add_ui_files(plasma_applet_ktp_contact_SRCS
-                    src/applet_config.ui
+                  src/applet_config.ui
 )
 
 kde4_add_plugin(plasma_applet_ktp_contact ${plasma_applet_ktp_contact_SRCS})
@@ -29,4 +29,4 @@ target_link_libraries(plasma_applet_ktp_contact
 
 install(DIRECTORY src/declarative/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.ktp-contact)
 install(TARGETS plasma_applet_ktp_contact DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES plasma_applet_ktp_contact.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(FILES plasma-applet-ktp-contact.desktop DESTINATION ${SERVICES_INSTALL_DIR})
