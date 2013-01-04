@@ -16,6 +16,7 @@ include_directories(${KDE4_INCLUDES}
                     ${TELEPATHY_QT4_INCLUDE_DIR}
 )
 
+add_subdirectory(chat)
 add_subdirectory(contact-applet)
 add_subdirectory(contactlist)
 add_subdirectory(presence)
