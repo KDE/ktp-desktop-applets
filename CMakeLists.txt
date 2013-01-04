@@ -12,7 +12,6 @@ find_package(TelepathyQt4 0.8.90 REQUIRED)
 find_package(KTp REQUIRED)
 
 add_subdirectory(contact-applet)
-add_subdirectory(declarative-plugin)
 
 install(DIRECTORY org.kde.ktp.contactlist
         DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/)
