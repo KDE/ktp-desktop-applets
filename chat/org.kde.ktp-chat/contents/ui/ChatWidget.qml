@@ -19,7 +19,7 @@
 */
 
 import QtQuick 1.1
-import org.kde.telepathy.chat 0.1
+import org.kde.telepathy 0.1
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 import org.kde.qtextracomponents 0.1 as ExtraComponents
 import org.kde.plasma.components 0.1 as PlasmaComponents

@@ -11,6 +11,6 @@ find_package(KDE4 ${KDE_MIN_VERSION} REQUIRED)
 find_package(TelepathyQt4 0.8.90 REQUIRED)
 find_package(KTp REQUIRED)
 
+add_subdirectory(chat)
 add_subdirectory(contact)
 add_subdirectory(contactlist)
-
