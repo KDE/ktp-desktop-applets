@@ -18,7 +18,7 @@
  ***************************************************************************/
 
 import QtQuick 1.1
-import org.kde.telepathy.contactlist 0.1 as KtpContactList
+import org.kde.telepathy 0.1 as KTp
 import org.kde.plasma.components 0.1 as PlasmaComponents
 import org.kde.plasma.core 0.1 as PlasmaCore
 
@@ -27,7 +27,7 @@ Item {
     id: contactListContainer;
     anchors.fill: parent;    
     
-    KtpContactList.ContactList {
+    KTp.ContactList {
         id: contactList   
     }
     
@@ -90,8 +90,8 @@ Item {
     }
     
     Component.onCompleted : {
-         contactList.filter.sortMode = KtpContactList.AccountsFilterModel.SortByPresence;
-         contactList.filter.presenceTypeFilterFlags = KtpContactList.AccountsFilterModel.HideAllOffline
+         contactList.filter.sortMode = KTp.AccountsFilterModel.SortByPresence;
+         contactList.filter.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
     }
 
 }
