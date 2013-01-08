@@ -41,7 +41,7 @@ Icon=user-online
 X-Plasma-DefaultSize=128,128
 
 X-KDE-Library=plasma_applet_ktp_presence
-X-KDE-PluginInfo-Name=ktp_presence
+X-KDE-PluginInfo-Name=org.kde.ktp-presence
 X-KDE-PluginInfo-Category=Online Services
 X-KDE-PluginInfo-Author=Francesco Nwokeka
 X-KDE-PluginInfo-Email=francesco.nwokeka@gmail.com

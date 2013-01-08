@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "presenceapplet.h"
+#include "presence-applet.h"
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -341,7 +341,7 @@ void TelepathyPresenceApplet::toolTipHidden()
     Plasma::ToolTipManager::self()->clearContent(this);
 }
 
-#include "presenceapplet.moc"
+#include "presence-applet.moc"
 
 // This is the command that links your applet to the .desktop file
-K_EXPORT_PLASMA_APPLET(ktp_presence, TelepathyPresenceApplet)
+K_EXPORT_PLASMA_APPLET(org.kde.ktp-presence, TelepathyPresenceApplet)
