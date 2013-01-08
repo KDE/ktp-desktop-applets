@@ -1,0 +1,55 @@
+[Desktop Entry]
+Name=Instant Messaging Presence
+Name[bs]=Prisutnost instant poruka
+Name[ca]=Presència de missatgeria instantània
+Name[cs]=Stav na IM
+Name[da]=Tilstedeværelse på instant messaging
+Name[de]=Instant-Messenger-Anwesenheit
+Name[el]=Instant Messaging Presence
+Name[es]=Estado presencial en mensajería instantánea
+Name[et]=Kohalolek kiirsuhtluses
+Name[fi]=Pikaviestinnän läsnäolo
+Name[fr]=Présence sur la messagerie instantanée
+Name[ga]=Láithreacht Teachtaireachtaí Meandaracha
+Name[gl]=Presenza da mensaxaría instantánea
+Name[hu]=Azonnali üzenetküldési jelenlét
+Name[it]=Presenza di messaggistica istantanea
+Name[kk]=Лезде хабарласу бар ма
+Name[km]=បង្ហាញ​ការ​ផ្ញើ​សារ​បន្ទាន់
+Name[lt]=Tikralaikių pokalbių būsena
+Name[nb]=Tilstede for lynmeldingssystemet
+Name[nl]=Aanwezigheid van Instant Messaging
+Name[pl]=Obecność dla komunikatora internetowego
+Name[pt]=Presença nas Mensagens Instantâneas
+Name[pt_BR]=Presença nas mensagens instantâneas
+Name[ro]=Prezență în mesageria instantanee
+Name[ru]=Статус сети мгновенных сообщений
+Name[sk]=Prítomnosť instant messagingu
+Name[sr]=Брзогласничка присутност
+Name[sr@ijekavian]=Брзогласничка присутност
+Name[sr@ijekavianlatin]=Brzoglasnička prisutnost
+Name[sr@latin]=Brzoglasnička prisutnost
+Name[sv]=Direktmeddelande finns
+Name[uk]=Присутність у обміні повідомленнями
+Name[x-test]=xxInstant Messaging Presencexx
+Name[zh_CN]=即时通讯状态
+Name[zh_TW]=即時訊息呈現
+Type=Service
+ServiceTypes=Plasma/Applet
+Icon=user-online
+
+X-Plasma-DefaultSize=128,128
+
+X-KDE-Library=plasma_applet_ktp_presence
+X-KDE-PluginInfo-Name=ktp_presence
+X-KDE-PluginInfo-Category=Online Services
+X-KDE-PluginInfo-Author=Francesco Nwokeka
+X-KDE-PluginInfo-Email=francesco.nwokeka@gmail.com
+X-KDE-PluginInfo-Version=0.5.2
+X-KDE-PluginInfo-Website=http://telepathy.freedesktop.org/
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=LGPL
+X-KDE-PluginInfo-EnabledByDefault=true
+
+X-Plasma-NotificationArea=true
+
