@@ -1,6 +1,16 @@
 [Desktop Entry]
 Name=Quick Chat
+Name[nl]=Snelle chat
+Name[pt]=Conversa Rápida
+Name[pt_BR]=Conversa Rápida
+Name[uk]=Швидке спілкування
+Name[x-test]=xxQuick Chatxx
 Comment=Simple chats from your workspace
+Comment[nl]=Eenvoudige chats vanuit uw werkruimte
+Comment[pt]=Conversas simples a partir do seu espaço de trabalho
+Comment[pt_BR]=Conversas simples a partir do seu ambiente de trabalho
+Comment[uk]=Прості вікна спілкування з вашого робочого простору
+Comment[x-test]=xxSimple chats from your workspacexx
 Icon=telepathy-kde
 
 X-Plasma-API=declarativeappletscript
