@@ -27,8 +27,10 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
     id: chatWidget
     property Conversation conv
+    property alias pinned: pinButton.checked
 
     signal closeRequested
+    signal pinnedClicked
 
     Item {
         id: titleArea
@@ -57,13 +59,27 @@ Item {
             id: contactName
             anchors {
                 left: contactIcon.right
-                right: minimizeButton.left
+                right: pinButton.left
                 top: parent.top
                 bottom: parent.bottom
                 leftMargin: 5
             }
             text: conv.target.nick
             elide: Text.ElideRight
+        }
+
+        PlasmaComponents.ToolButton {
+            id: pinButton
+
+            anchors {
+                top: parent.top
+                right: minimizeButton.left
+                bottom: parent.bottom
+            }
+            checkable: true
+
+            iconSource: "rating"
+            onClicked: chatWidget.pinnedClicked()
         }
 
         PlasmaComponents.ToolButton {
@@ -107,7 +123,10 @@ Item {
 
             iconSource: "dialog-close"
 
-            onClicked: conv.requestClose()
+            onClicked: {
+                conv.requestClose()
+                closeRequested()
+            }
         }
     }
 

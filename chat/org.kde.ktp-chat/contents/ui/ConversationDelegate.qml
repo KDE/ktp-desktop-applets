@@ -19,39 +19,76 @@
 */
 
 import QtQuick 1.1
-import org.kde.plasma.components 0.1 as PlasmaComponents
-import org.kde.qtextracomponents 0.1 as ExtraComponents
 import org.kde.plasma.core 0.1 as PlasmaCore
+import org.kde.telepathy 0.1
 
-PlasmaComponents.ToolButton {
-    id: base
-    width: height
+ConversationDelegateButton {
+    id: convButton
+    property alias isCurrentConversation: dialog.visible
     
-    checked: ListView.isCurrentItem
+    avatar: model.conversation.target.avatar
+    nick: model.conversation.target.nick
+    presenceIconName: model.conversation.target.presenceIconName
+    onClicked: toggleVisibility()
     
-    ExtraComponents.QIconItem {
-        id: icon
-        icon: model.conversation.target.avatar
-        anchors {
-            fill: parent
-            margins: 5
+    function toggleVisibility() { setVisible(!isCurrentConversation) }
+    function setVisible(v) { base.currentIndex = v ? index : -1 }
+    function closeConversation() { base.currentIndex = -1 }
+    function openConversation() { base.currentIndex = index }
+    
+    Component.onCompleted: setVisible(model.conversation.messages.shouldStartOpened)
+    
+    ContactPin {
+        id: pin
+        model: pinnedModel
+        contact: conversation.target.contact
+        account: conversation.target.account
+    }
+
+    //FIXME: put in a loader to not slow down the model
+    PlasmaCore.Dialog {
+        id: dialog
+        windowFlags: Qt.WindowStaysOnTopHint
+        visible: base.currentIndex==index
+
+        mainItem: ChatWidget {
+            id: chatWidget
+            width: 250
+            height: 350
+            conv: model.conversation
+
+            onCloseRequested: closeConversation()
+            onPinnedClicked: pin.toggle()
+            pinned: pin.pinned
+        }
+
+        onVisibleChanged: {
+            if(visible) {
+                windowHide.hideWindowFromTaskbar(dialog.windowId)
+                var point = dialog.popupPosition(convButton, Qt.AlignBottom);
+                console.log("Showing dialog at (" + point.x + "," + point.y + ")");
+
+                dialog.x = point.x;
+                dialog.y = point.y;
+                dialog.activateWindow()
+            }
         }
     }
-    
-    PlasmaCore.ToolTip {
-      target: icon
-      mainText: model.conversation.target.nick
-      image: model.conversation.target.presenceIconName
+
+    Connections {
+        target: model.conversation.messages
+        onPopoutRequested: closeConversation()
     }
 
-
-    Rectangle {
-        anchors {
-            right: parent.right
-            top: parent.top
-        }
-        width: parent.width / 3
-        height: parent.height / 3
+    // needed to let MessageModel know when messages are visible
+    // so that it can acknowledge them properly
+    Binding {
+        target: model.conversation.messages
+        property: "visibleToUser"
+        value: dialog.visible
+    }
+    
+    overlay: Rectangle {
         color: "red"
         radius: 3
 
