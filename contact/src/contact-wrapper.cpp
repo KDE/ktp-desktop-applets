@@ -22,14 +22,13 @@
 #include <KToolInvocation>
 #include <KUrl>
 #include <KDebug>
+#include <KTp/actions.h>
 
 #include <TelepathyQt/AvatarData>
 #include <TelepathyQt/ContactCapabilities>
 #include <TelepathyQt/ContactManager>
 #include <TelepathyQt/PendingChannelRequest>
 #include <TelepathyQt/Presence>
-
-#define PREFERRED_TEXTCHAT_HANDLER "org.freedesktop.Telepathy.Client.KTp.TextUi"
 
 ContactWrapper::ContactWrapper(QObject* parent)
     : QObject(parent)
@@ -204,9 +203,7 @@ void ContactWrapper::startTextChat()
         return;
     }
 
-    Tp::PendingChannelRequest* channelRequest = m_account->ensureTextChat(m_contact,
-                                                                        QDateTime::currentDateTime(),
-                                                                        PREFERRED_TEXTCHAT_HANDLER);
+    Tp::PendingChannelRequest* channelRequest = KTp::Actions::startChat(m_account, m_contact);
     connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
 }
 
