@@ -232,4 +232,4 @@ void TelepathyContact::showConfigurationInterface()
 }
 
 // This is the command that links your applet to the .desktop file
-K_EXPORT_PLASMA_APPLET(ktp_contact, TelepathyContact)
+K_EXPORT_PLASMA_APPLET(org.kde.ktp-contact, TelepathyContact)
