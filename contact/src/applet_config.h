@@ -48,7 +48,8 @@ protected slots:
     void slotButtonClicked(int button);
 
 private slots:
-    void activateOkButton();
+    void contactListClicked(const QModelIndex &index);
+    void contactListDoubleClicked(const QModelIndex &index);
     void enableGroupsView(bool enable);                     /** enable/disable groups view */
     void enableOfflineContacts(bool enable);                /** enable/disable offline contacts */
 

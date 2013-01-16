@@ -52,11 +52,6 @@ AppletConfig::~AppletConfig()
     m_modelFilter->deleteLater();
 }
 
-void AppletConfig::activateOkButton()
-{
-    button(Ok)->setEnabled(true);
-}
-
 void AppletConfig::enableGroupsView(bool enable)
 {
     if (enable) {
@@ -103,10 +98,37 @@ void AppletConfig::setupContactsList()
     ui.contactsList->sortByColumn(0, Qt::AscendingOrder);
     ui.contactsList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui.contactsList->setSelectionBehavior(QAbstractItemView::SelectItems);
+    ui.contactsList->setExpandsOnDoubleClick(false);
 
-    connect(ui.contactsList, SIGNAL(clicked(QModelIndex)), this, SLOT(activateOkButton()));
+    connect(ui.contactsList, SIGNAL(clicked(QModelIndex)), this, SLOT(contactListClicked(QModelIndex)));
+    connect(ui.contactsList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(contactListDoubleClicked(QModelIndex)));
     connect(ui.showOfflineContacts, SIGNAL(toggled(bool)), this, SLOT(enableOfflineContacts(bool)));
     connect(ui.showGroups, SIGNAL(toggled(bool)), this, SLOT(enableGroupsView(bool)));
+}
+
+void AppletConfig::contactListClicked(const QModelIndex& index)
+{
+    if (index.data(ContactsModel::TypeRole).toUInt() == ContactsModel::ContactRowType) {
+        button(Ok)->setEnabled(true);
+    } else if (index.data(ContactsModel::TypeRole).toUInt() == ContactsModel::AccountRowType) {
+        button(Ok)->setEnabled(false);
+
+        if (ui.contactsList->isExpanded(index)) {
+            ui.contactsList->collapse(index);
+        } else {
+            ui.contactsList->expand(index);
+        }
+    } else {
+        button(Ok)->setEnabled(false);
+    }
+}
+
+void AppletConfig::contactListDoubleClicked(const QModelIndex& index)
+{
+    if (index.data(ContactsModel::TypeRole).toUInt() == ContactsModel::ContactRowType) {
+        button(Ok)->setEnabled(true);
+        slotButtonClicked(Ok);
+    }
 }
 
 void AppletConfig::slotButtonClicked(int button)
