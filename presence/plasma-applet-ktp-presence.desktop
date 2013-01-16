@@ -1,5 +1,18 @@
 [Desktop Entry]
 Name=Instant Messaging Presence
+Name[cs]=Stav na IM
+Name[da]=Instant messaging-tilstedeværelse
+Name[de]=Instant-Messenger-Anwesenheit
+Name[el]=Παρουσία με στιγμιαίο μήνυμα
+Name[et]=Kiirsuhtluse olek
+Name[it]=Presenza di messaggistica istantanea
+Name[nl]=Aanwezigheid van Instant Messaging
+Name[pt]=Presença nas Mensagens Instantâneas
+Name[pt_BR]=Presença nas mensagens instantâneas
+Name[sk]=Prítomnosť instant messagingu
+Name[sv]=Direktmeddelande finns
+Name[uk]=Присутність у обміні повідомленнями
+Name[x-test]=xxInstant Messaging Presencexx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=user-online

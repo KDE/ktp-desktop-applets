@@ -1,6 +1,32 @@
 [Desktop Entry]
 Name=Quick Chat
+Name[cs]=Rychlý rozhovor
+Name[da]=Kvikchat
+Name[de]=Schnell-Chat
+Name[el]=Σύντομη συνομιλία
+Name[et]=Kiirvestlus
+Name[it]=Chat veloce
+Name[nl]=Snelle chat
+Name[pt]=Conversa Rápida
+Name[pt_BR]=Conversa Rápida
+Name[sk]=Rýchly rozhovor
+Name[sv]=Snabbchatt
+Name[uk]=Швидке спілкування
+Name[x-test]=xxQuick Chatxx
 Comment=Simple chats from your workspace
+Comment[cs]=Jednoduché rozhovory z vaší pracovní plochy
+Comment[da]=Simple chats fra dit arbejdsområde
+Comment[de]=Einfache Chats von Ihrer Arbeitsfläche
+Comment[el]=Απλές συνομιλίες από το χώρο εργασίας σας
+Comment[et]=Lihtne vestlus otse töölaualt
+Comment[it]=Chat semplici per l'ambiente di lavoro
+Comment[nl]=Eenvoudige chats vanuit uw werkruimte
+Comment[pt]=Conversas simples a partir do seu espaço de trabalho
+Comment[pt_BR]=Conversas simples a partir do seu ambiente de trabalho
+Comment[sk]=Jednoduché rozhovory z vašej plochy
+Comment[sv]=Enkel chatt från arbetsytan
+Comment[uk]=Прості вікна спілкування з вашого робочого простору
+Comment[x-test]=xxSimple chats from your workspacexx
 Icon=telepathy-kde
 
 X-Plasma-API=declarativeappletscript
