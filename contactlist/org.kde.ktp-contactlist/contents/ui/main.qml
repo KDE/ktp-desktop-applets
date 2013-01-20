@@ -22,9 +22,12 @@ import QtQuick 1.1
 Item {
     id: main;
 
+    property int minimumWidth: 200;
+    property int minimumHeight: 300;
+
     width: 200
     height: 300
-    
+
     // contact listview
     ContactList {
         id: contactList;
@@ -34,7 +37,7 @@ Item {
 //         anchors.leftMargin:10
 //         anchors.rightMargin:10
     }
-    
+
     Component.onCompleted: {
         plasmoid.aspectRatioMode = IgnoreAspectRatio;
     }
