@@ -90,8 +90,8 @@ Item {
     }
     
     Component.onCompleted : {
-         contactList.filter.sortMode = KTp.AccountsFilterModel.SortByPresence;
-         contactList.filter.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
+         contactList.model.sortMode = KTp.AccountsFilterModel.SortByPresence;
+         contactList.model.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
     }
 
 }
