@@ -16,6 +16,7 @@ Name[sr@latin]=Brzoglasničko prisustvo
 Name[sv]=Direktmeddelande finns
 Name[uk]=Присутність у обміні повідомленнями
 Name[x-test]=xxInstant Messaging Presencexx
+Name[zh_TW]=即時訊息呈現
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=user-online
