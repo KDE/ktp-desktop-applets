@@ -29,9 +29,10 @@ namespace Ui {
     class Config;
 }
 
-class ContactsModel;
-class AccountsFilterModel;
-class GroupsModel;
+namespace KTp
+{
+    class ContactsModel;
+}
 
 class AppletConfig : public KDialog
 {
@@ -56,9 +57,7 @@ private slots:
 private:
     void setupContactsList();                               /** prepare the contacts to be show in the list */
 
-    ContactsModel *m_model;
-    AccountsFilterModel *m_modelFilter;
-    GroupsModel *m_groupsModel;
+    KTp::ContactsModel *m_model;
     Tp::AccountManagerPtr m_accountManager;
 
     Ui::Config ui;

@@ -20,7 +20,7 @@
 
 #include "abstract-contact-delegate.h"
 
-#include <QApplication>
+#include <QtGui/QApplication>
 #include <QtGui/QStyle>
 #include <QtGui/QPainter>
 #include <QtGui/QToolTip>
@@ -32,26 +32,43 @@
 #include <KDE/KIconLoader>
 #include <KDE/KIcon>
 
-#include <KTp/Models/contacts-model.h>
-#include <KTp/Models/accounts-model-item.h>
-#include <KTp/Models/groups-model.h>
-#include <KTp/Models/contact-model-item.h>
+#include <KTp/types.h>
+#include <KDebug>
 
 const int SPACING = 2;
-const int ACCOUNT_ICON_SIZE = 13;
+const int ACCOUNT_ICON_SIZE = 16;
 
 AbstractContactDelegate::AbstractContactDelegate(QObject* parent)
-    : QStyledItemDelegate(parent), m_palette(0)
+        : QStyledItemDelegate(parent)
 {
-    m_palette = new QPalette(QApplication::palette());
 }
 
 AbstractContactDelegate::~AbstractContactDelegate()
 {
-    delete m_palette;
 }
 
 void AbstractContactDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+    if (index.data(KTp::RowTypeRole).toInt() == KTp::ContactRowType) {
+        paintContact(painter, option, index);
+    } else {
+        paintHeader(painter, option, index);
+    }
+}
+
+QSize AbstractContactDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+    Q_UNUSED(option);
+
+    if (index.data(KTp::RowTypeRole).toInt() == KTp::ContactRowType) {
+        return sizeHintContact(option, index);
+    } else {
+        return sizeHintHeader(option, index);
+    }
+}
+
+
+void AbstractContactDelegate::paintHeader(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItemV4 optV4 = option;
     initStyleOption(&optV4, index);
@@ -74,41 +91,53 @@ void AbstractContactDelegate::paint(QPainter* painter, const QStyleOptionViewIte
     groupLabelRect.setRight(groupLabelRect.right() - SPACING);
 
     QRect expandSignRect = groupLabelRect;
-    expandSignRect.setLeft(ACCOUNT_ICON_SIZE + SPACING + SPACING);
+    expandSignRect.setLeft(ACCOUNT_ICON_SIZE + (SPACING*5));
     expandSignRect.setRight(groupLabelRect.left() + 20); //keep it by the left side
 
     QFont groupFont = KGlobalSettings::smallestReadableFont();
 
-    QString counts = QString(" (%1/%2)").arg(index.data(ContactsModel::OnlineUsersCountRole).toString(),
-                   index.data(ContactsModel::TotalUsersCountRole).toString());
+    QString counts = QString(" (%1/%2)").arg(index.data(KTp::HeaderOnlineUsersRole).toString(),
+                     index.data(KTp::HeaderTotalUsersRole).toString());
 
-    if (index.data(ContactsModel::ItemRole).userType() == qMetaTypeId<AccountsModelItem*>()) {
-        painter->drawPixmap(accountGroupRect, KIcon(index.data(ContactsModel::IconRole).toString())
-        .pixmap(ACCOUNT_ICON_SIZE, ACCOUNT_ICON_SIZE));
+    if (index.data(KTp::RowTypeRole).toInt() == KTp::AccountRowType) {
+        painter->drawPixmap(accountGroupRect, KIcon(index.data(Qt::DecorationRole).value<QIcon>()).pixmap(32));
     } else {
         painter->drawPixmap(accountGroupRect, KIconLoader::global()->loadIcon(QString("system-users"),
-                                                                                      KIconLoader::Desktop));
+                            KIconLoader::Desktop));
     }
 
-    painter->setPen(m_palette->color(QPalette::WindowText));
+    //create an area for text which does not overlap with the icons.
+    QRect textRect = groupLabelRect.adjusted(ACCOUNT_ICON_SIZE + (SPACING*4),0,0,0);
+    QString groupHeaderString =  index.data(Qt::DisplayRole).toString().append(counts);
+
+    if (option.state & QStyle::State_Selected) {
+        painter->setPen(option.palette.color(QPalette::Active, QPalette::HighlightedText));
+    } else {
+        painter->setPen(option.palette.color(QPalette::Active, QPalette::Text));
+    }
+
     painter->setFont(groupFont);
-    painter->drawText(groupLabelRect, Qt::AlignVCenter | Qt::AlignRight,
-                      index.data(GroupsModel::GroupNameRole).toString().append(counts));
+    painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignRight,
+                      optV4.fontMetrics.elidedText(groupHeaderString, Qt::ElideRight, textRect.width()));
+
 
     QPen thinLinePen;
     thinLinePen.setWidth(0);
-    thinLinePen.setColor(m_palette->color(QPalette::Disabled, QPalette::Button));
+    thinLinePen.setColor(option.palette.color(QPalette::Inactive, QPalette::Button));
 
     painter->setPen(thinLinePen);
     painter->setRenderHint(QPainter::Antialiasing, false);
 
     QFontMetrics fm = painter->fontMetrics();
-    int groupNameWidth = fm.width(index.data(GroupsModel::GroupNameRole).toString().append(counts));
+    int groupNameWidth = fm.width(groupHeaderString);
 
-    painter->drawLine(expandSignRect.right() + SPACING * 2,
-                      groupRect.y() + groupRect.height() / 2,
-                      groupRect.width() - groupNameWidth - SPACING * 2,
-                      groupRect.y() + groupRect.height() / 2);
+    //show a horizontal line padding the header if there is any space left.
+    if (groupNameWidth < textRect.width()) {
+        painter->drawLine(expandSignRect.right() + SPACING * 4,
+                          groupRect.y() + groupRect.height() / 2,
+                          groupRect.width() - groupNameWidth - SPACING * 2,
+                          groupRect.y() + groupRect.height() / 2);
+    }
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -124,100 +153,18 @@ void AbstractContactDelegate::paint(QPainter* painter, const QStyleOptionViewIte
     painter->restore();
 }
 
-QSize AbstractContactDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+QSize AbstractContactDelegate::sizeHintHeader(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(option)
     Q_UNUSED(index)
-    return QSize(0, 20);
+    return QSize(0,20);
 }
-
 
 bool AbstractContactDelegate::helpEvent(QHelpEvent *event, QAbstractItemView *view, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-    Q_UNUSED(option);
-
-    // Check and make sure that we only want it to work on contacts and nothing else.
-    if (index.data(ContactsModel::ItemRole).userType() != qMetaTypeId<ContactModelItem*>()) {
-        return false;
-    }
-
-    if (event->type() != QEvent::ToolTip) {
-        return false;
-    }
-
-    const QString contactAvatar = index.data(ContactsModel::AvatarRole).toString();
-    const QString displayName = index.parent().data(ContactsModel::DisplayNameRole).toString();
-    const QString cmIconPath = KIconLoader::global()->iconPath(index.parent().data(ContactsModel::IconRole).toString(), 1);
-    const QString alias = index.data(ContactsModel::AliasRole).toString();
-    const QString id = index.data(ContactsModel::IdRole).toString();
-    const QString presenceStatus = index.data(ContactsModel::PresenceMessageRole).toString();
-    QString presenceIconPath;
-    QString presenceText;
-
-    switch (index.data(ContactsModel::PresenceTypeRole).toUInt()) {
-        case Tp::ConnectionPresenceTypeAvailable:
-            presenceIconPath = KIconLoader::global()->iconPath("user-online", 1);
-            presenceText = i18nc("This is an IM user status", "Online");
-            break;
-        case Tp::ConnectionPresenceTypeAway:
-            presenceIconPath = KIconLoader::global()->iconPath("user-away", 1);
-            presenceText = i18nc("This is an IM user status", "Away");
-            break;
-        case Tp::ConnectionPresenceTypeExtendedAway:
-            presenceIconPath = KIconLoader::global()->iconPath("user-away-extended", 1);
-            presenceText = i18nc("This is an IM user status", "Away");
-            break;
-        case Tp::ConnectionPresenceTypeBusy:
-            presenceIconPath = KIconLoader::global()->iconPath("user-busy", 1);
-            presenceText = i18nc("This is an IM user status", "Busy");
-            break;
-        case Tp::ConnectionPresenceTypeHidden:
-            presenceIconPath = KIconLoader::global()->iconPath("user-invisible", 1);
-            presenceText = i18nc("This is an IM user status", "Invisible");
-            break;
-        case Tp::ConnectionPresenceTypeOffline:
-            presenceIconPath = KIconLoader::global()->iconPath("user-offline", 1);
-            presenceText = i18nc("This is an IM user status", "Offline");
-            break;
-        default:
-            presenceIconPath = KIconLoader::global()->iconPath("task-attention", 1);
-            // What presence Text should be here??
-            break;
-    }
-
-    /* The tooltip is composed of a HTML table to display the items in it of the contact.
-     * ---------------------------
-     * |          | Con's Alias  |
-     * |  Avatar  | (Con's Id)   |
-     * |          ----------------
-     * |          | Con's Status*|
-     * ---------------------------
-     * |  Contact is blocked*    |
-     * ---------------------------
-     * * Display actual status name if contact has no custom status message.
-     * * Contact is blocked will only show if the contact is blocked, else no display.
-     */
-
-    QString table;
-    table += QString("<table><tr><td rowspan='2' width='96'>");
-    if (contactAvatar.isEmpty() || QPixmap(contactAvatar).isNull()) {
-        table += QString("<img src='%1' width='96' />").arg(KIconLoader::global()->iconPath("im-user", -1));
-    } else {
-        table += QString("<img src='%1' width='96' />").arg(contactAvatar);
-    }
-
-    table += QString("</td>");
-    table += QString("<td rowspan='2'><img src='%1' height='16' width='16' />&nbsp;</td>").arg(presenceIconPath);
-    table += QString("<td><b>%1</b><br>(%2)</td></tr>").arg(alias).arg(id);
-    table += QString("<tr><td>");
-    table += QString("%2").arg(presenceStatus.isEmpty() ? presenceText : presenceStatus);
-    table += QString("</td></tr>");
-    if (index.data(ContactsModel::BlockedRole).toBool()) {
-        table += QString("<tr><td colspan='2'>%1</td></tr>").arg(i18n("User is blocked"));
-    }
-    table += QString("</table>");
-
-    QToolTip::showText(QCursor::pos(), table, view);
-
-    return true;
+    Q_UNUSED(event)
+    Q_UNUSED(view)
+    Q_UNUSED(option)
+    Q_UNUSED(index)
+    return false;
 }

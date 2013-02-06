@@ -9,7 +9,7 @@ include_directories(
 set(plasma_applet_ktp_contact_SRCS
     src/abstract-contact-delegate.cpp
     src/applet_config.cpp
-    src/contact-delegate.cpp
+    src/contact-delegate-compact.cpp
     src/contact-wrapper.cpp
     src/telepathy-contact.cpp
 )

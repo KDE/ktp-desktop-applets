@@ -18,12 +18,9 @@
  ***************************************************************************/
 
 #include "applet_config.h"
-#include "contact-delegate.h"
+#include "contact-delegate-compact.h"
 
 #include <KTp/Models/contacts-model.h>
-#include <KTp/Models/contact-model-item.h>
-#include <KTp/Models/groups-model.h>
-#include <KTp/Models/accounts-filter-model.h>
 
 #include <KDebug>
 #include <KPushButton>
@@ -31,8 +28,6 @@
 AppletConfig::AppletConfig(const Tp::AccountManagerPtr &accountManager, QWidget* parent)
     : KDialog(parent)
     , m_model(0)
-    , m_modelFilter(0)
-    , m_groupsModel(0)
     , m_accountManager(accountManager)
 {
     QWidget *widget = new QWidget(this);
@@ -47,53 +42,42 @@ AppletConfig::AppletConfig(const Tp::AccountManagerPtr &accountManager, QWidget*
 
 AppletConfig::~AppletConfig()
 {
-    m_groupsModel->deleteLater();
     m_model->deleteLater();
-    m_modelFilter->deleteLater();
 }
 
 void AppletConfig::enableGroupsView(bool enable)
 {
     if (enable) {
-        m_modelFilter->setSourceModel(m_groupsModel);
+        m_model->setGroupMode(KTp::ContactsModel::GroupGrouping);
     } else {
-        m_modelFilter->setSourceModel(m_model);
+        m_model->setGroupMode(KTp::ContactsModel::AccountGrouping);
     }
 }
 
 void AppletConfig::enableOfflineContacts(bool enable)
 {
-    m_modelFilter->setPresenceTypeFilterFlags(enable ? AccountsFilterModel::DoNotFilterByPresence : AccountsFilterModel::ShowOnlyConnected);
+    m_model->setPresenceTypeFilterFlags(enable ? KTp::ContactsFilterModel::DoNotFilterByPresence : KTp::ContactsFilterModel::ShowOnlyConnected);
 }
 
 void AppletConfig::setupContactsList()
 {
     // prepare models
-    m_model = new ContactsModel(this);
+    m_model = new KTp::ContactsModel(this);
     m_model->setAccountManager(m_accountManager);
-    m_groupsModel = new GroupsModel(m_model, this);
-    m_modelFilter = new AccountsFilterModel(this);
 
-    // setup model visualization type
-    if (ui.showGroups->isChecked()) {
-        m_modelFilter->setSourceModel(m_groupsModel);
-    } else {
-        m_modelFilter->setSourceModel(m_model);
-    }
-
-    m_modelFilter->setDynamicSortFilter(true);
-    m_modelFilter->setPresenceTypeFilterFlags(ui.showOfflineContacts->isChecked() ? AccountsFilterModel::DoNotFilterByPresence : AccountsFilterModel::ShowOnlyConnected);
-    m_modelFilter->setSortMode(AccountsFilterModel::SortByPresence);
+    m_model->setDynamicSortFilter(true);
+    m_model->setPresenceTypeFilterFlags(ui.showOfflineContacts->isChecked() ? KTp::ContactsFilterModel::DoNotFilterByPresence : KTp::ContactsFilterModel::ShowOnlyConnected);
+    m_model->setSortRole(Qt::DisplayRole);
 
     // set model for the contacts tree view
-    ui.contactsList->setModel(m_modelFilter);
+    ui.contactsList->setModel(m_model);
 
     // disable ok button until a list item is selected
     button(Ok)->setEnabled(false);
 
     ui.contactsList->header()->hide();
     ui.contactsList->setRootIsDecorated(false);
-    ui.contactsList->setItemDelegate(new ContactDelegate());
+    ui.contactsList->setItemDelegate(new ContactDelegateCompact());
     ui.contactsList->setSortingEnabled(true);
     ui.contactsList->sortByColumn(0, Qt::AscendingOrder);
     ui.contactsList->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -108,9 +92,9 @@ void AppletConfig::setupContactsList()
 
 void AppletConfig::contactListClicked(const QModelIndex& index)
 {
-    if (index.data(ContactsModel::TypeRole).toUInt() == ContactsModel::ContactRowType) {
+    if (index.data(KTp::RowTypeRole).toInt() == KTp::ContactRowType) {
         button(Ok)->setEnabled(true);
-    } else if (index.data(ContactsModel::TypeRole).toUInt() == ContactsModel::AccountRowType) {
+    } else {
         button(Ok)->setEnabled(false);
 
         if (ui.contactsList->isExpanded(index)) {
@@ -118,14 +102,12 @@ void AppletConfig::contactListClicked(const QModelIndex& index)
         } else {
             ui.contactsList->expand(index);
         }
-    } else {
-        button(Ok)->setEnabled(false);
     }
 }
 
 void AppletConfig::contactListDoubleClicked(const QModelIndex& index)
 {
-    if (index.data(ContactsModel::TypeRole).toUInt() == ContactsModel::ContactRowType) {
+    if (index.data(KTp::RowTypeRole).toUInt() == KTp::ContactRowType) {
         button(Ok)->setEnabled(true);
         slotButtonClicked(Ok);
     }
@@ -136,13 +118,11 @@ void AppletConfig::slotButtonClicked(int button)
     QModelIndex selectedItem = ui.contactsList->currentIndex();
 
     if (button == KDialog::Ok && selectedItem.isValid()) {
-        if (selectedItem.data(ContactsModel::ItemRole).userType() == qMetaTypeId<ContactModelItem*>()) {
-            ContactModelItem *item = selectedItem.data(ContactsModel::ItemRole).value<ContactModelItem*>();
+        if (selectedItem.data(KTp::RowTypeRole).toInt() == KTp::ContactRowType) {
+            KTp::ContactPtr contact = selectedItem.data(KTp::ContactRole).value<KTp::ContactPtr>();
+            Tp::AccountPtr account = selectedItem.data(KTp::AccountRole).value<Tp::AccountPtr>();
 
-            // retrieve account related to the contact
-            Tp::AccountPtr account = m_model->accountForContactItem(item);
-
-            setNewContact(item->contact(), account);
+            setNewContact(contact, account);
             accept();
         }
     } else if (button == KDialog::Cancel) {
