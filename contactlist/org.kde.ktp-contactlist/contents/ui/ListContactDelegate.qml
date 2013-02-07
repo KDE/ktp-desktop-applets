@@ -50,7 +50,7 @@ Item {
             width: 30;
             height: parent.height;
 
-            icon : (avatar ? avatar : "im-user")
+            icon : (model.avatar ? model.avatar : "im-user")
             anchors {
                 left: parent.left;
                 verticalCenter: parent.verticalCenter;
@@ -59,7 +59,7 @@ Item {
 
         PlasmaComponents.Label {
             id: nickLabel;
-            text: aliasName;
+            text: model.display;
             font.bold: true
             elide: Text.ElideRight
 
