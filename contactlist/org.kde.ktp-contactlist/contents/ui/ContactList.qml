@@ -24,55 +24,29 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 
 
 Item {
-    id: contactListContainer;
-    anchors.fill: parent;    
+    id: contactListContainer
+    anchors.fill: parent
     
     KTp.ContactList {
-        id: contactList   
-    }
-    
-    Component {
-        id: highlightBar
-        PlasmaCore.FrameSvgItem {
-                imagePath: "widgets/viewitem"
-                prefix: "hover"
-                width: contactsList.width
-                opacity: 0
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: 250
-                        easing.type: Easing.OutQuad
-                    }
-                }
-            }
+        id: contactList
     }
     
     ListView {
-        id: contactsList;
+        id: contactsList
 
         anchors {
-            top: parent.top;
-            topMargin: 5;
-            left: parent.left;
-            right: viewScrollBar.left;
-            rightMargin: 1
-            bottom: parent.bottom;
+            top: parent.top
+            left: parent.left
+            right: viewScrollBar.left
+            bottom: parent.bottom
         }
 
-        clip: true;
-        model: contactList.model;
+        clip: true
+        model: contactList.model
         boundsBehavior: Flickable.StopAtBounds
 
         delegate: ListContactDelegate {}
-        highlight: highlightBar
-        highlightMoveDuration: 250
-        highlightMoveSpeed: 1
-        highlightFollowsCurrentItem: true
-        
         focus: true
-        
-        
-
     }
     
     PlasmaComponents.ScrollBar {
@@ -84,14 +58,11 @@ Item {
         }
 
         flickableItem: contactsList
-        interactive: true
-        opacity: 1
         orientation: Qt.Vertical
     }
     
-    Component.onCompleted : {
-         contactList.model.sortMode = KTp.AccountsFilterModel.SortByPresence;
-         contactList.model.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
+    Component.onCompleted: {
+        contactList.model.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
+        contactList.model.sortMode = KTp.AccountsFilterModel.SortByPresence
     }
-
 }

@@ -22,83 +22,50 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.components 0.1 as PlasmaComponents
 import org.kde.qtextracomponents 0.1 as ExtraComponents
 
-Item {
-    id: delegate;
+PlasmaComponents.ListItem {
+    id: delegate
     enabled: true
 
-    height: 36;
+    height: Math.ceil(nickLabel.height*1.5)
     width: parent.width
+    
+    onClicked: contactList.startChat(model.account, model.contact)
 
-    PlasmaCore.FrameSvgItem {
-        id: padding
-        imagePath: "widgets/viewitem"
-        prefix: "hover"
-        opacity: 0
-        anchors.fill: parent
-    }
+    ExtraComponents.QIconItem {
+        id: avatarLabel
+        width: height
+        height: parent.height
 
-    Item {
-        anchors.fill: parent
-        anchors.topMargin: padding.margins.top
-        anchors.bottomMargin: padding.margins.bottom
-        anchors.leftMargin: padding.margins.left
-        anchors.rightMargin: padding.margins.right
-
-
-        ExtraComponents.QIconItem {
-            id: avatarLabel;
-            width: 30;
-            height: parent.height;
-
-            icon : (model.avatar ? model.avatar : "im-user")
-            anchors {
-                left: parent.left;
-                verticalCenter: parent.verticalCenter;
-            }
-        }
-
-        PlasmaComponents.Label {
-            id: nickLabel;
-            text: model.display;
-            font.bold: true
-            elide: Text.ElideRight
-
-            anchors {
-                left: avatarLabel.right;
-                right: presenceLabel.left
-                leftMargin: 4;
-                verticalCenter: parent.verticalCenter;
-            }
-        }
-
-        ExtraComponents.QIconItem {
-                id: presenceLabel
-                width: 22
-                height: parent.height
-                icon: presenceIcon
-                anchors {
-                    right:parent.right
-                    leftMargin: 4
-                    verticalCenter: parent.verticalCenter
-                }
+        icon: (model.avatar ? model.avatar : "im-user")
+        anchors {
+            left: parent.left
+            verticalCenter: parent.verticalCenter
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
+    PlasmaComponents.Label {
+        id: nickLabel
+        text: model.display
+        font.bold: true
+        elide: Text.ElideRight
 
-        hoverEnabled: true
-
-        onDoubleClicked: {
-            contactList.startChat(model.account, model.contact);
+        anchors {
+            left: avatarLabel.right
+            right: presenceLabel.left
+            leftMargin: 4
+            verticalCenter: parent.verticalCenter
         }
+    }
 
-        onEntered: {
-            contactsList.currentIndex = index;
-            contactsList.highlightItem.opacity = 1;
-        }
-        onExited: {
-            contactsList.highlightItem.opacity = 0;
+    ExtraComponents.QIconItem {
+        id: presenceLabel
+        width: height
+        height: parent.height
+        icon: presenceIcon
+        anchors {
+            right:parent.right
+            leftMargin: 4
+            verticalCenter: parent.verticalCenter
         }
     }
 }
