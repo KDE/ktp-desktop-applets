@@ -27,7 +27,6 @@ PlasmaComponents.ListItem {
     enabled: true
 
     height: Math.ceil(nickLabel.height*1.5)
-    width: parent.width
     
     onClicked: contactList.startChat(model.account, model.contact)
 
