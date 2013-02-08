@@ -63,6 +63,6 @@ Item {
     
     Component.onCompleted: {
         contactList.model.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
-        contactList.model.sortMode = KTp.AccountsFilterModel.SortByPresence
+        contactList.model.sortRoleString = "presenceType"
     }
 }
