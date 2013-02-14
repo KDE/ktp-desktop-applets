@@ -4,7 +4,7 @@ Name[bs]=Lista za instant poruke
 Name[ca]=Llista de contactes de missatgeria instantània
 Name[cs]=Seznam kontaktů komunikátoru
 Name[da]=Instant messaging-kontaktliste
-Name[de]=Instant-Messaging-Kontaktliste 
+Name[de]=Instant-Messaging-Kontaktliste
 Name[el]=Λίστα επαφών με στιγμιαίο μήνυμα
 Name[es]=Lista de contactos de mensajería instantánea
 Name[et]=Kiirsuhtluskontaktide nimekiri
@@ -77,7 +77,7 @@ X-KDE-PluginInfo-Name=org.kde.ktp.contactlist
 X-KDE-PluginInfo-Category=Online Services
 X-KDE-PluginInfo-Author=David Edmundson
 X-KDE-PluginInfo-Email=kde@davidedmundson.co.uk
-X-KDE-PluginInfo-Version=0.5.2
+X-KDE-PluginInfo-Version=0.5.3
 X-KDE-PluginInfo-Website=http://telepathy.freedesktop.org/
 
 X-KDE-PluginInfo-Depends=
