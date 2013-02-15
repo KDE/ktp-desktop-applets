@@ -43,6 +43,9 @@ Grid {
 
     Component.onCompleted: {
         plasmoid.aspectRatioMode = plasmoid.IgnoreAspectRatio
+        plasmoid.addEventListener('activate', function() {
+            base.currentIndex = handler.conversations.nextActiveConversation(base.currentIndex+1 % handler.conversations)
+        });
     }
 
     Repeater {
