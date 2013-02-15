@@ -3,6 +3,7 @@ include_directories(
         ${CMAKE_CURRENT_BINARY_DIR}
         ${KDE4_INCLUDES}
         ${TELEPATHY_QT4_INCLUDE_DIR}
+        ${KTP_INCLUDE_DIR}
 )
 
 
