@@ -32,7 +32,7 @@ ConversationDelegateButton {
     onClicked: toggleVisibility()
     
     function toggleVisibility() { setVisible(!isCurrentConversation) }
-    function setVisible(v) { base.currentIndex = v ? index : -1 }
+    function setVisible(v) { base.currentIndex = (v ? index : -1) }
     function closeConversation() { base.currentIndex = -1 }
     function openConversation() { base.currentIndex = index }
     
@@ -71,6 +71,8 @@ ConversationDelegateButton {
                 dialog.x = point.x;
                 dialog.y = point.y;
                 dialog.activateWindow()
+            } else if(base.currentIndex != -1) {
+                closeConversation()
             }
         }
     }
