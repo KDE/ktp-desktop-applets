@@ -34,7 +34,7 @@ Grid {
 
     clip: true
     spacing: 2
-    flow: (plasmoid.formFactor === Vertical || width<=height) ? Flow.TopToBottom : Flow.LeftToRight
+    flow: (plasmoid.formFactor === Vertical || width<height) ? Flow.TopToBottom : Flow.LeftToRight
     rows:    flow===Flow.LeftToRight ?  1 : -1
     columns: flow===Flow.LeftToRight ? -1 :  1
 
