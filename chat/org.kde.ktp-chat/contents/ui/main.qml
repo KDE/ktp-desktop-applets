@@ -84,6 +84,7 @@ Grid {
         delegate: ConversationDelegate {
             width: base.itemSize
             height: width
+            popupBelow: base.flow === Flow.LeftToRight
         }
         model: handler.conversations
     }

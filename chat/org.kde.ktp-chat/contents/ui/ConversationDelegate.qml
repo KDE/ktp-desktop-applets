@@ -25,6 +25,7 @@ import org.kde.telepathy 0.1
 ConversationDelegateButton {
     id: convButton
     property alias isCurrentConversation: dialog.visible
+    property bool popupBelow: true
     
     avatar: model.conversation.target.avatar
     nick: model.conversation.target.nick
@@ -65,7 +66,7 @@ ConversationDelegateButton {
         onVisibleChanged: {
             if(visible) {
                 windowHide.hideWindowFromTaskbar(dialog.windowId)
-                var point = dialog.popupPosition(convButton, Qt.AlignBottom);
+                var point = dialog.popupPosition(convButton, convButton.popupBelow ? Qt.AlignBottom : Qt.AlignRight);
                 console.log("Showing dialog at (" + point.x + "," + point.y + ")");
 
                 dialog.x = point.x;
