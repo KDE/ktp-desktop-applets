@@ -42,7 +42,7 @@ PlasmaComponents.ToolButton
     
     PlasmaCore.ToolTip {
       id: tooltip
-      target: icon
+      target: parent
     }
     
     Loader {
