@@ -20,6 +20,7 @@
 import QtQuick 1.1
 import org.kde.telepathy 0.1 as KTp
 import org.kde.plasma.components 0.1 as PlasmaComponents
+import org.kde.plasma.extras 0.1 as PlasmaExtras
 import org.kde.plasma.core 0.1 as PlasmaCore
 
 
@@ -31,34 +32,19 @@ Item {
         id: contactList
     }
     
-    ListView {
-        id: contactsList
+    PlasmaExtras.ScrollArea {
+        anchors.fill: parent
 
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: viewScrollBar.left
-            bottom: parent.bottom
+        flickableItem: ListView {
+            id: contactsList
+
+            clip: true
+            model: contactList.model
+            boundsBehavior: Flickable.StopAtBounds
+
+            delegate: ListContactDelegate {}
+            focus: true
         }
-
-        clip: true
-        model: contactList.model
-        boundsBehavior: Flickable.StopAtBounds
-
-        delegate: ListContactDelegate {}
-        focus: true
-    }
-    
-    PlasmaComponents.ScrollBar {
-        id: viewScrollBar
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            right: parent.right
-        }
-
-        flickableItem: contactsList
-        orientation: Qt.Vertical
     }
     
     Component.onCompleted: {
