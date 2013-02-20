@@ -71,9 +71,10 @@ ConversationDelegateButton {
 
                 dialog.x = point.x;
                 dialog.y = point.y;
-                dialog.activateWindow()
+                dialog.activateWindow();
+                dialog.mainItem.focus = true;
             } else if(base.currentIndex != -1) {
-                closeConversation()
+                closeConversation();
             }
         }
     }

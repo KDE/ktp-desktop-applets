@@ -24,7 +24,7 @@ import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 import org.kde.qtextracomponents 0.1 as ExtraComponents
 import org.kde.plasma.components 0.1 as PlasmaComponents
 
-Item {
+FocusScope {
     id: chatWidget
     property Conversation conv
     property alias pinned: pinButton.checked
