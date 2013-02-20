@@ -157,6 +157,10 @@ FocusScope {
         section.property: "user"
         section.delegate: PlasmaComponents.Label { text: section; font.bold: true; anchors.right: parent.right}
         clip: true
+        
+        //we need this so that scrolling down to the last element works properly
+        //this means that all the list is in memory
+        cacheBuffer: contentHeight
 
         delegate: Loader {
             Component.onCompleted: {
@@ -181,7 +185,7 @@ FocusScope {
 
         onCountChanged: {
             if(!moving && followConversation && contentHeight>height) {
-                view.positionViewAtEnd(); view.positionViewAtEnd() //see https://bugreports.qt-project.org/browse/QTBUG-27529
+                view.positionViewAtEnd()
             }
         }
     }
