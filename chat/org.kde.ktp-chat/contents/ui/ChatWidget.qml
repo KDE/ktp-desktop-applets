@@ -106,10 +106,7 @@ FocusScope {
 
             iconSource: "view-conversation-balloon"
 
-            onClicked: {
-                conv.delegateToProperClient();
-                closeRequested();
-            }
+            onClicked: conv.delegateToProperClient()
         }
 
         PlasmaComponents.ToolButton {
@@ -123,10 +120,7 @@ FocusScope {
 
             iconSource: "dialog-close"
 
-            onClicked: {
-                conv.requestClose()
-                closeRequested()
-            }
+            onClicked: conv.requestClose()
         }
     }
 
