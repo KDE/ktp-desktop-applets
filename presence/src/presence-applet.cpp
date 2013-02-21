@@ -141,10 +141,10 @@ KIcon TelepathyPresenceApplet::getThemedIcon(const QString &iconBaseName) const
     QString iconPlasmaName = iconBaseName + "-plasma";
 
     if (svgIcon.hasElement(iconPlasmaName)) {
-	svgIcon.resize(150, 150);
-	return KIcon(svgIcon.pixmap(iconPlasmaName));
+        svgIcon.resize(150, 150);
+        return KIcon(svgIcon.pixmap(iconPlasmaName));
     } else {
-	return KIcon(iconBaseName);
+        return KIcon(iconBaseName);
     }
 }
 
