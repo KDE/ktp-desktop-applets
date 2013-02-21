@@ -39,13 +39,6 @@ ConversationDelegateButton {
     
     Component.onCompleted: setVisible(model.conversation.messages.shouldStartOpened)
     
-    ContactPin {
-        id: pin
-        model: pinnedModel
-        contact: conversation.target.contact
-        account: conversation.target.account
-    }
-
     //FIXME: put in a loader to not slow down the model
     PlasmaCore.Dialog {
         id: dialog
@@ -59,8 +52,6 @@ ConversationDelegateButton {
             conv: model.conversation
 
             onCloseRequested: closeConversation()
-            onPinnedClicked: pin.toggle()
-            pinned: pin.pinned
         }
 
         onVisibleChanged: {

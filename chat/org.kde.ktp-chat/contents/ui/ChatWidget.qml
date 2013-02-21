@@ -27,7 +27,6 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 FocusScope {
     id: chatWidget
     property Conversation conv
-    property alias pinned: pinButton.checked
 
     signal closeRequested
     signal pinnedClicked
@@ -77,9 +76,16 @@ FocusScope {
                 bottom: parent.bottom
             }
             checkable: true
+            checked: pin.pinned
 
             iconSource: "rating"
-            onClicked: chatWidget.pinnedClicked()
+            onClicked: pin.toggle()
+            ContactPin {
+                id: pin
+                model: pinnedModel
+                contact: chatWidget.conv.target.contact
+                account: chatWidget.conv.target.account
+            }
         }
 
         PlasmaComponents.ToolButton {
