@@ -41,6 +41,21 @@ Grid {
     TelepathyTextObserver { id: handler }
     HideWindowComponent { id: windowHide }
 
+    function reconsiderStatus() {
+        if(handler.conversations.totalUnreadCount>0) {
+            plasmoid.state = NeedsAttentionStatus;
+        } else if(conversationsView.count>0) {
+            plasmoid.state = ActiveStatus;
+        } else {
+            plasmoid.state = PassiveStatus;
+        }
+    }
+
+    Connections {
+        target: handler.conversations
+        onTotalUnreadCountChanged: reconsiderStatus()
+    }
+
     Component.onCompleted: {
         plasmoid.aspectRatioMode = plasmoid.IgnoreAspectRatio
         plasmoid.addEventListener('activate', function() {
@@ -81,11 +96,13 @@ Grid {
     }
 
     Repeater {
+        id: conversationsView
         delegate: ConversationDelegate {
             width: base.itemSize
             height: width
             popupBelow: base.flow === Flow.LeftToRight
         }
         model: handler.conversations
+        onCountChanged: reconsiderStatus()
     }
 }
