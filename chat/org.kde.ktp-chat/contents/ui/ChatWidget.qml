@@ -29,7 +29,6 @@ FocusScope {
     property Conversation conv
 
     signal closeRequested
-    signal pinnedClicked
 
     Item {
         id: titleArea
