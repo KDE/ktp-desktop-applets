@@ -27,10 +27,15 @@ import org.kde.qtextracomponents 0.1 as ExtraComponents
 Grid {
     id: base
     property real minimumItemSize: 4
-    property real minimumHeight: 1+(flow===Flow.LeftToRight ? minimumItemSize : base.childrenRect.height)
-    property real minimumWidth: 1+(flow===Flow.LeftToRight ? base.childrenRect.width : minimumItemSize)
-    property real itemSize: Math.min(base.width, base.height)
+    property real preferredItemSize: Math.max(0, Math.min(width, height))
+    property real preferredHeight: flow===Flow.TopToBottom ? itemsCount*preferredItemSize : preferredItemSize
+    property real preferredWidth: flow===Flow.LeftToRight ? itemsCount*preferredItemSize : preferredItemSize
+    property real minimumHeight: flow===Flow.TopToBottom ? itemsCount*minimumItemSize : minimumItemSize
+    property real minimumWidth: flow===Flow.LeftToRight ? itemsCount*minimumItemSize : minimumItemSize
     property int currentIndex: -1
+    property int itemsCount: pinnedModel.count + handler.conversations.count
+    property real itemWidth: Math.max(0, flow===Flow.LeftToRight ? Math.min(height, width/itemsCount) : width)
+    property real itemHeight:Math.max(0, flow===Flow.TopToBottom ? Math.min(width, height/itemsCount) : height)
 
     clip: true
     spacing: 2
@@ -62,11 +67,12 @@ Grid {
             base.currentIndex = handler.conversations.nextActiveConversation(base.currentIndex+1 % handler.conversations)
         });
     }
+    onItemsCountChanged: reconsiderStatus()
 
     Repeater {
         delegate: ConversationDelegateButton {
-            width: base.itemSize
-            height: width
+            width: base.itemWidth
+            height: base.itemHeight
             visible: available && !alreadyChatting
             onClicked: handler.conversations.startChat(account, contact)
             avatar: decoration
@@ -98,11 +104,10 @@ Grid {
     Repeater {
         id: conversationsView
         delegate: ConversationDelegate {
-            width: base.itemSize
-            height: width
+            width: base.itemWidth
+            height: base.itemHeight
             popupBelow: base.flow === Flow.LeftToRight
         }
         model: handler.conversations
-        onCountChanged: reconsiderStatus()
     }
 }
