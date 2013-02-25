@@ -33,7 +33,7 @@ Grid {
     property real minimumHeight: flow===Flow.TopToBottom ? itemsCount*minimumItemSize : minimumItemSize
     property real minimumWidth: flow===Flow.LeftToRight ? itemsCount*minimumItemSize : minimumItemSize
     property int currentIndex: -1
-    property int itemsCount: pinnedModel.count + handler.conversations.count
+    property int itemsCount: pinnedModel.count + conversationsView.count
     property real itemWidth: Math.max(0, flow===Flow.LeftToRight ? Math.min(height, width/itemsCount) : width)
     property real itemHeight:Math.max(0, flow===Flow.TopToBottom ? Math.min(width, height/itemsCount) : height)
 
