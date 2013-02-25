@@ -33,7 +33,7 @@ Grid {
     property real minimumHeight: flow===Flow.TopToBottom ? itemsCount*minimumItemSize : minimumItemSize
     property real minimumWidth: flow===Flow.LeftToRight ? itemsCount*minimumItemSize : minimumItemSize
     property int currentIndex: -1
-    property int itemsCount: pinnedModel.count + conversationsView.count
+    property int itemsCount: pinnedView.count + conversationsView.count
     property real itemWidth: Math.max(0, flow===Flow.LeftToRight ? Math.min(height, width/itemsCount) : width)
     property real itemHeight:Math.max(0, flow===Flow.TopToBottom ? Math.min(width, height/itemsCount) : height)
 
@@ -70,10 +70,10 @@ Grid {
     onItemsCountChanged: reconsiderStatus()
 
     Repeater {
+        id: pinnedView
         delegate: ConversationDelegateButton {
             width: base.itemWidth
             height: base.itemHeight
-            visible: available && !alreadyChatting
             onClicked: handler.conversations.startChat(account, contact)
             avatar: decoration
             overlay: ExtraComponents.QIconItem {
@@ -82,21 +82,23 @@ Grid {
                     icon: presenceIcon
                 }
         }
-        model: PinnedContactsModel {
-            id: pinnedModel
-            conversations: handler.conversations
-            accountManager: handler.accountManager
+        model: FilteredPinnedContactsProxyModel {
+            sourceModel: PinnedContactsModel {
+                id: pinnedModel
+                conversations: handler.conversations
+                accountManager: handler.accountManager
 
-            Component.onCompleted: plasmoid.addEventListener('ConfigChanged', 
-                                    function() {
-                                        var v = plasmoid.readConfig("pinnedContacts");
-                                        console.log("loading state", v)
-                                        if(v!="")
-                                            pinnedModel.state = v
-                                    });
-            onCountChanged: {
-                plasmoid.writeConfig("pinnedContacts", pinnedModel.state)
-                console.log("saving state", pinnedModel.state)
+                Component.onCompleted: plasmoid.addEventListener('ConfigChanged', 
+                                        function() {
+                                            var v = plasmoid.readConfig("pinnedContacts");
+                                            console.log("loading state", v)
+                                            if(v!="")
+                                                pinnedModel.state = v
+                                        });
+                onCountChanged: {
+                    plasmoid.writeConfig("pinnedContacts", pinnedModel.state)
+                    console.log("saving state", pinnedModel.state)
+                }
             }
         }
     }
