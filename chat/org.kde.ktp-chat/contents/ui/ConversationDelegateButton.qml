@@ -25,7 +25,6 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 
 PlasmaComponents.ToolButton
 {
-    id: base
     property alias avatar: icon.icon
     property alias nick: tooltip.mainText
     property alias presenceIconName: tooltip.image
