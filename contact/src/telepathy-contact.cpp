@@ -36,6 +36,7 @@
 #include <TelepathyQt/PendingReady>
 #include <TelepathyQt/Types>
 
+#include <KTp/contact-factory.h>
 
 TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     : Plasma::Applet(parent, args)
@@ -191,7 +192,7 @@ void TelepathyContact::setupAccountManager()
                                                                                << Tp::Connection::FeatureRosterGroups
                                                                                << Tp::Connection::FeatureRoster);
 
-    Tp::ContactFactoryPtr contactFactory = Tp::ContactFactory::create(Tp::Features()
+    Tp::ContactFactoryPtr contactFactory = KTp::ContactFactory::create(Tp::Features()
                                                                       << Tp::Contact::FeatureAlias
                                                                       << Tp::Contact::FeatureAvatarData
                                                                       << Tp::Contact::FeatureSimplePresence
