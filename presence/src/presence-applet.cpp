@@ -77,8 +77,8 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
         setMinimumSize(QSize(iconSize, iconSize));
     }
 
-    connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), SLOT(onPresenceChanged(KTp::Presence)));
-    onPresenceChanged(m_globalPresence->currentPresence());
+    connect(m_globalPresence, SIGNAL(requestedPresenceChanged(KTp::Presence)), SLOT(onPresenceChanged(KTp::Presence)));
+    onPresenceChanged(m_globalPresence->requestedPresence());
 
     connect(m_globalPresence, SIGNAL(connectionStatusChanged(Tp::ConnectionStatus)), SLOT(onConnectionStatusChanged(Tp::ConnectionStatus)));
     onConnectionStatusChanged(m_globalPresence->connectionStatus());
@@ -310,7 +310,7 @@ void TelepathyPresenceApplet::onConnectionStatusChanged(Tp::ConnectionStatus con
 void TelepathyPresenceApplet::onPresenceActionClicked()
 {
     KTp::Presence p = qobject_cast<KAction*>(sender())->data().value<KTp::Presence>();
-    p.setStatus(p.type(), p.status(), m_globalPresence->currentPresence().statusMessage());
+    p.setStatus(p.type(), p.status(), m_globalPresence->requestedPresence().statusMessage());
 
     m_globalPresence->setPresence(p);
 }
