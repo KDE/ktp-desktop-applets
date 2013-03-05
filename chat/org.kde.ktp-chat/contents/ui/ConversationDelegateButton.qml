@@ -22,9 +22,13 @@ import QtQuick 1.1
 import org.kde.plasma.components 0.1 as PlasmaComponents
 import org.kde.qtextracomponents 0.1 as ExtraComponents
 import org.kde.plasma.core 0.1 as PlasmaCore
+import org.kde.draganddrop 1.0 as DnD
+import org.kde.telepathy 0.1
 
 PlasmaComponents.ToolButton
 {
+    property variant account
+    property variant contact
     property alias avatar: icon.icon
     property alias nick: tooltip.mainText
     property alias presenceIconName: tooltip.image
@@ -42,6 +46,14 @@ PlasmaComponents.ToolButton
     PlasmaCore.ToolTip {
       id: tooltip
       target: parent
+    }
+    
+    DnD.DropArea {
+        anchors.fill: parent
+        DeclarativeKTpActions { id: actions }
+        onDrop: if (event.mimeData.url!="") {
+            actions.startFileTransfer(parent.account, parent.contact, event.mimeData.url)
+        }
     }
     
     Loader {

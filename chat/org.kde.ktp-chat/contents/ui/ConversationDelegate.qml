@@ -30,6 +30,8 @@ ConversationDelegateButton {
     avatar: model.conversation.target.avatar
     nick: model.conversation.target.nick
     presenceIconName: model.conversation.target.presenceIconName
+    account: model.conversation.target.account
+    contact: model.conversation.target.contact
     onClicked: toggleVisibility()
     
     function toggleVisibility() { setVisible(!isCurrentConversation) }

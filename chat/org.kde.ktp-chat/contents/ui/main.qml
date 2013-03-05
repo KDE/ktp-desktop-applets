@@ -81,6 +81,8 @@ Grid {
                     anchors.margins: parent.width/3
                     icon: presenceIcon
                 }
+            account: model.account
+            contact: model.contact
         }
         model: FilteredPinnedContactsProxyModel {
             sourceModel: PinnedContactsModel {
