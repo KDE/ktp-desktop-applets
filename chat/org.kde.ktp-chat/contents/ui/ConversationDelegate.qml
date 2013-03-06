@@ -59,7 +59,12 @@ ConversationDelegateButton {
         onVisibleChanged: {
             if(visible) {
                 windowHide.hideWindowFromTaskbar(dialog.windowId)
-                var point = dialog.popupPosition(convButton, convButton.popupBelow ? Qt.AlignBottom : Qt.AlignRight);
+                var pos = convButton.popupBelow ? Qt.AlignBottom : Qt.AlignRight;
+                //if we are opening the dialog right away (e.g. started chat from pinned)
+                //when we open the dialog by the button plasma will collapse because the
+                //item is not positioned yet. Use the plasmoid root instead, in those cases
+                var item = convButton.state==Component.Ready ? convButton : base;
+                var point = dialog.popupPosition(convButton, pos);
                 console.log("Showing dialog at (" + point.x + "," + point.y + ")");
 
                 dialog.x = point.x;
