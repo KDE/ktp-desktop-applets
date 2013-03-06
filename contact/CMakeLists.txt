@@ -5,6 +5,9 @@ include_directories(
         ${TELEPATHY_QT4_INCLUDE_DIR}
 )
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/plasma-applet-ktp-contact.desktop.cmake
+               ${CMAKE_CURRENT_BINARY_DIR}/plasma-applet-ktp-contact.desktop
+               @ONLY)
 
 set(plasma_applet_ktp_contact_SRCS
     src/abstract-contact-delegate.cpp
@@ -29,4 +32,4 @@ target_link_libraries(plasma_applet_ktp_contact
 
 install(DIRECTORY src/declarative/ DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/org.kde.ktp-contact)
 install(TARGETS plasma_applet_ktp_contact DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES plasma-applet-ktp-contact.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/plasma-applet-ktp-contact.desktop DESTINATION ${SERVICES_INSTALL_DIR})

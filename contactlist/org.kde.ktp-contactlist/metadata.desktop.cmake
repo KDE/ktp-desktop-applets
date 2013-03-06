@@ -89,7 +89,7 @@ X-KDE-PluginInfo-Name=org.kde.ktp-contactlist
 X-KDE-PluginInfo-Category=Online Services
 X-KDE-PluginInfo-Author=David Edmundson
 X-KDE-PluginInfo-Email=kde@davidedmundson.co.uk
-X-KDE-PluginInfo-Version=0.5
+X-KDE-PluginInfo-Version=@KTP_DESKTOP_APPLETS_VERSION@
 X-KDE-PluginInfo-Website=http://telepathy.freedesktop.org/
 
 X-KDE-PluginInfo-Depends=

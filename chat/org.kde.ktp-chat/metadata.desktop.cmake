@@ -64,7 +64,7 @@ X-KDE-PluginInfo-Email=kde@lasath.org
 # X-KDE-PluginInfo-Website=http://plasma.kde.org/
 X-KDE-PluginInfo-Category=Online Services
 X-KDE-PluginInfo-Name=org.kde.ktp-chat
-X-KDE-PluginInfo-Version=0.5.2
+X-KDE-PluginInfo-Version=@KTP_DESKTOP_APPLETS_VERSION@
 
 # X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
