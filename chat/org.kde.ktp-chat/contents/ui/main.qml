@@ -30,8 +30,8 @@ Grid {
     property real preferredItemSize: Math.max(0, Math.min(width, height))
     property real preferredHeight: flow===Flow.TopToBottom ? itemsCount*preferredItemSize : preferredItemSize
     property real preferredWidth: flow===Flow.LeftToRight ? itemsCount*preferredItemSize : preferredItemSize
-    property real minimumHeight: flow===Flow.TopToBottom ? itemsCount*minimumItemSize : minimumItemSize
-    property real minimumWidth: flow===Flow.LeftToRight ? itemsCount*minimumItemSize : minimumItemSize
+    property real minimumHeight: flow===Flow.TopToBottom ? itemsCount*minimumItemSize : itemsCount==0 ? 0 : minimumItemSize
+    property real minimumWidth: flow===Flow.LeftToRight ? itemsCount*minimumItemSize : itemsCount==0 ? 0 : minimumItemSize
     property int currentIndex: -1
     property int itemsCount: pinnedView.count + conversationsView.count
     property real itemWidth: Math.max(0, flow===Flow.LeftToRight ? Math.min(height, width/itemsCount) : width)
@@ -39,7 +39,9 @@ Grid {
 
     clip: true
     spacing: 2
-    flow: (plasmoid.formFactor === Vertical || width<height) ? Flow.TopToBottom : Flow.LeftToRight
+    flow: (plasmoid.formFactor === Vertical   ? Flow.TopToBottom :
+           plasmoid.formFactor === Horizontal ? Flow.LeftToRight :
+                                 width<height ? Flow.TopToBottom : Flow.LeftToRight)
     rows:    flow===Flow.LeftToRight ?  1 : -1
     columns: flow===Flow.LeftToRight ? -1 :  1
 
