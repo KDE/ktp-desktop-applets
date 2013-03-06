@@ -1,5 +1,5 @@
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/org.kde.ktp-chat/metada.desktop.cmake
-               ${CMAKE_CURRENT_BINARY_DIR}/org.kde.ktp-chat/metada.desktop
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/org.kde.ktp-chat/metadata.desktop.cmake
+               ${CMAKE_CURRENT_BINARY_DIR}/org.kde.ktp-chat/metadata.desktop
                @ONLY)
 
 install(DIRECTORY org.kde.ktp-chat DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/ PATTERN metadata.desktop.cmake EXCLUDE)
