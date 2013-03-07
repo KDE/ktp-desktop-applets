@@ -9,6 +9,7 @@ Name[et]=Kiirsuhtluse olek
 Name[fi]=Pikaviestinnän läsnäolo
 Name[fr]=Présence pour votre messagerie instantanée
 Name[gl]=Presenza da mensaxería instantánea
+Name[ia]=Presentia de Messageria instantanee
 Name[it]=Presenza di messaggistica istantanea
 Name[nb]=Tilstede for lynmeldingssystemet
 Name[nl]=Aanwezigheid van Instant Messaging
