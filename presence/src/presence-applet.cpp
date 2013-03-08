@@ -57,7 +57,6 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
     setupContextMenuActions();
 
     setAspectRatioMode(Plasma::ConstrainedSquare);
-    setMinimumSize(16, 16);
     setBackgroundHints(NoBackground);
     resize(150, 150);
 
@@ -65,7 +64,7 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
     connect(m_icon, SIGNAL(clicked()), this, SLOT(startContactList()));
 
     QGraphicsLinearLayout *layout = new QGraphicsLinearLayout();
-    layout->setContentsMargins(2, 2, 2, 2);
+    layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(0);
     layout->setOrientation(Qt::Horizontal);
     layout->addItem(m_icon);
