@@ -130,6 +130,7 @@ void TelepathyPresenceApplet::init()
 
     connect(m_accountManager.data(), SIGNAL(newAccount(Tp::AccountPtr)), SLOT(onAccountsChanged()));
     connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
+    connect(this, SIGNAL(activate()), SLOT(startContactList()));
 }
 
 KIcon TelepathyPresenceApplet::getThemedIcon(const QString &iconBaseName) const
