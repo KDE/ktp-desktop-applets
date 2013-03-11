@@ -159,7 +159,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     KAction *goExtendedAwayAction = new KAction(getThemedIcon("user-away-extended"), i18n("Not Available"), this);
     KAction *goHiddenAction = new KAction(getThemedIcon("user-invisible"), i18n("Invisible"), this);
     KAction *goOfflineAction = new KAction(getThemedIcon("user-offline"), i18n("Offline"), this);
-    KAction *joinChatroomAction = new KAction(KIcon("user-group-new"), i18n("Join Chat Room"), this);
+    KAction *joinChatroomAction = new KAction(KIcon("user-group-new"), i18n("Join Chat Room..."), this);
 
     goOnlineAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::available())));
     goBusyAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::busy())));
