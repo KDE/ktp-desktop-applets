@@ -61,6 +61,7 @@ private Q_SLOTS:
     void onConnectionStatusChanged(Tp::ConnectionStatus connectionStatus);
     void onPresenceActionClicked();
     void onJoinChatRoomRequest();
+    void onJoinChatRoomSelected();
     void toolTipAboutToShow();
     void toolTipHidden();
 

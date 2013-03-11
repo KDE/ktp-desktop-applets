@@ -256,27 +256,33 @@ void TelepathyPresenceApplet::onAddContactRequest()
 
 void TelepathyPresenceApplet::onJoinChatRoomRequest()
 {
-    QWeakPointer<KTp::JoinChatRoomDialog> dialog = new KTp::JoinChatRoomDialog(m_accountManager);
+    KTp::JoinChatRoomDialog *dialog = new KTp::JoinChatRoomDialog(m_accountManager);
+    connect(dialog, SIGNAL(accepted()), this, SLOT(onJoinChatRoomSelected()));
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->show();
+}
 
-    if (dialog.data()->exec() == QDialog::Accepted) {
-        Tp::AccountPtr account = dialog.data()->selectedAccount();
-
-        // check account validity. Should NEVER be invalid
-        if (!account.isNull()) {
-            // ensure chat room
-            Tp::ChannelRequestHints hints;
-            hints.setHint("org.kde.telepathy","forceRaiseWindow", QVariant(true));
-
-            Tp::PendingChannelRequest *channelRequest = account->ensureTextChatroom(dialog.data()->selectedChatRoom(),
-                                                                                    QDateTime::currentDateTime(),
-                                                                                    PREFERRED_TEXTCHAT_HANDLER,
-                                                                                    hints);
-
-            connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), SLOT(onGenericOperationFinished(Tp::PendingOperation*)));
-        }
+void TelepathyPresenceApplet::onJoinChatRoomSelected()
+{
+    KTp::JoinChatRoomDialog *dialog = qobject_cast<KTp::JoinChatRoomDialog*>(sender());
+    if (!dialog) {
+        return;
     }
 
-    delete dialog.data();
+    Tp::AccountPtr account = dialog->selectedAccount();
+    // check account validity. Should NEVER be invalid
+    if (!account.isNull()) {
+        // ensure chat room
+        Tp::ChannelRequestHints hints;
+        hints.setHint("org.kde.telepathy","forceRaiseWindow", QVariant(true));
+
+        Tp::PendingChannelRequest *channelRequest = account->ensureTextChatroom(dialog->selectedChatRoom(),
+                                                                                QDateTime::currentDateTime(),
+                                                                                PREFERRED_TEXTCHAT_HANDLER,
+                                                                                hints);
+
+        connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), SLOT(onGenericOperationFinished(Tp::PendingOperation*)));
+    }
 }
 
 void TelepathyPresenceApplet::onMakeCallRequest()
