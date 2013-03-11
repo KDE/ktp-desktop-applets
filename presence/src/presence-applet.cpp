@@ -114,7 +114,8 @@ void TelepathyPresenceApplet::init()
     Tp::AccountFactoryPtr  accountFactory = Tp::AccountFactory::create(QDBusConnection::sessionBus(),
                                                                        Tp::Features() << Tp::Account::FeatureCore
                                                                        << Tp::Account::FeatureProtocolInfo
-                                                                       << Tp::Account::FeatureProfile);
+                                                                       << Tp::Account::FeatureProfile
+                                                                       << Tp::Account::FeatureCapabilities);
 
     Tp::ConnectionFactoryPtr connectionFactory = Tp::ConnectionFactory::create(QDBusConnection::sessionBus(),
                                                                                Tp::Features() << Tp::Connection::FeatureCore
