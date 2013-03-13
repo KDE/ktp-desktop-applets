@@ -32,6 +32,7 @@
 #include <KMessageBox>
 #include <KStandardDirs>
 
+#include <KTp/actions.h>
 #include <KTp/global-presence.h>
 #include <KTp/Widgets/add-contact-dialog.h>
 #include <KTp/Widgets/join-chat-room-dialog.h>
@@ -44,8 +45,6 @@
 #include <TelepathyQt/PendingReady>
 #include <TelepathyQt/PendingChannelRequest>
 #include <TelepathyQt/Account>
-
-#define PREFERRED_TEXTCHAT_HANDLER "org.freedesktop.Telepathy.Client.KDE.TextUi"
 
 int TelepathyPresenceApplet::s_instanceCount = 0;
 
@@ -272,14 +271,7 @@ void TelepathyPresenceApplet::onJoinChatRoomSelected()
     Tp::AccountPtr account = dialog->selectedAccount();
     // check account validity. Should NEVER be invalid
     if (!account.isNull()) {
-        // ensure chat room
-        Tp::ChannelRequestHints hints;
-        hints.setHint("org.kde.telepathy","forceRaiseWindow", QVariant(true));
-
-        Tp::PendingChannelRequest *channelRequest = account->ensureTextChatroom(dialog->selectedChatRoom(),
-                                                                                QDateTime::currentDateTime(),
-                                                                                PREFERRED_TEXTCHAT_HANDLER,
-                                                                                hints);
+        Tp::PendingChannelRequest *channelRequest = KTp::Actions::startGroupChat(account, dialog->selectedChatRoom());
 
         connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), SLOT(onGenericOperationFinished(Tp::PendingOperation*)));
     }
