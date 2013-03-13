@@ -71,7 +71,7 @@ ConversationDelegateButton {
                 dialog.y = point.y;
                 dialog.activateWindow();
                 dialog.mainItem.focus = true;
-            } else if(base.currentIndex != -1) {
+            } else if(base.currentIndex == index) {
                 closeConversation();
             }
         }
