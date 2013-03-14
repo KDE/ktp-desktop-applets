@@ -11,6 +11,7 @@ Name[fr]=Présence pour votre messagerie instantanée
 Name[gl]=Presenza da mensaxería instantánea
 Name[ia]=Presentia de Messageria instantanee
 Name[it]=Presenza di messaggistica istantanea
+Name[mr]=त्वरित संदेश उपस्थिती
 Name[nb]=Tilstede for lynmeldingssystemet
 Name[nl]=Aanwezigheid van Instant Messaging
 Name[pt]=Presença nas Mensagens Instantâneas
