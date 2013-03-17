@@ -16,6 +16,7 @@ Name[nb]=Tilstede for lynmeldingssystemet
 Name[nl]=Aanwezigheid van Instant Messaging
 Name[pt]=Presença nas Mensagens Instantâneas
 Name[pt_BR]=Presença nas mensagens instantâneas
+Name[ro]=Prezență în mesageria instantanee
 Name[ru]=Управление статусом системы обмена сообщениями
 Name[sk]=Prítomnosť instant messagingu
 Name[sl]=Prisotnost hipnega sporočanja
