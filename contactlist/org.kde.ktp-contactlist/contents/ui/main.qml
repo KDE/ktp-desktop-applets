@@ -25,9 +25,6 @@ Item {
     property int minimumWidth: 200
     property int minimumHeight: 300
 
-    width: 200
-    height: 300
-
     ContactList {
         id: contactList
         anchors.fill: parent
