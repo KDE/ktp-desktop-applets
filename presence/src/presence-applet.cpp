@@ -186,6 +186,10 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     if (!KStandardDirs::findExe(QLatin1String("ktp-dialout-ui")).isEmpty()) {
         makeCallAction = new KAction(KIcon("internet-telephony"), i18n("Make a Call..."), this);
     }
+    KAction *sendFileAction = 0;
+    if (!KStandardDirs::findExe(QLatin1String("ktp-send-file")).isEmpty()) {
+        sendFileAction = new KAction(KIcon("mail-attachment"), i18n("Send a File..."), this);
+    }
 
     // connect actions
     connect(goOnlineAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
@@ -201,6 +205,9 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     connect(joinChatroomAction, SIGNAL(triggered()), this, SLOT(onJoinChatRoomRequest()));
     if (makeCallAction) {
         connect(makeCallAction, SIGNAL(triggered()), this, SLOT(onMakeCallRequest()));
+    }
+    if (sendFileAction) {
+        connect(sendFileAction, SIGNAL(triggered()), this, SLOT(onSendFileRequest()));
     }
 
     m_contextActions.append(goOnlineAction);
@@ -220,7 +227,9 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     if (makeCallAction) {
         m_contextActions.append(makeCallAction);
     }
-
+    if (sendFileAction) {
+        m_contextActions.append(sendFileAction);
+    }
     m_contextActions.append(moreMenu->addSeparator());
 }
 
@@ -301,6 +310,11 @@ void TelepathyPresenceApplet::onJoinChatRoomSelected()
 void TelepathyPresenceApplet::onMakeCallRequest()
 {
     KToolInvocation::kdeinitExec(QLatin1String("ktp-dialout-ui"));
+}
+
+void TelepathyPresenceApplet::onSendFileRequest()
+{
+    KToolInvocation::kdeinitExec(QLatin1String("ktp-send-file"));
 }
 
 void TelepathyPresenceApplet::onPresenceChanged(KTp::Presence presence)

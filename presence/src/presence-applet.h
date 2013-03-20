@@ -69,6 +69,7 @@ private Q_SLOTS:
     void toggleContactList();
     void onAddContactRequest();
     void onMakeCallRequest();
+    void onSendFileRequest();
 
     void contactListServiceRegistered();
     void contactListServiceUnregistered();
