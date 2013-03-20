@@ -1,2 +1,2 @@
 REVIEWBOARD_URL = "https://git.reviewboard.kde.org"
-REPOSITORY = 'git://anongit.kde.org/ktp-contact-applet'
+REPOSITORY = 'git://anongit.kde.org/ktp-desktop-applets'
