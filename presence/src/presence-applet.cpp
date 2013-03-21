@@ -59,8 +59,18 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
     setBackgroundHints(NoBackground);
     resize(150, 150);
 
+    m_contactListRunning = false;
+
+    //find out if contact list is already running
+    QDBusPendingCall async = QDBusConnection::sessionBus().interface()->asyncCall(QLatin1String("NameHasOwner"),
+                                                                                  QLatin1String("org.kde.ktp-contactlist"));
+
+    QDBusPendingCallWatcher *callWatcher = new QDBusPendingCallWatcher(async, this);
+    connect(callWatcher, SIGNAL(finished(QDBusPendingCallWatcher*)),
+            this, SLOT(serviceNameFetchFinished(QDBusPendingCallWatcher*)));
+
     m_icon = new Plasma::IconWidget(this);
-    connect(m_icon, SIGNAL(clicked()), this, SLOT(startContactList()));
+    connect(m_icon, SIGNAL(clicked()), this, SLOT(toggleContactList()));
 
     QGraphicsLinearLayout *layout = new QGraphicsLinearLayout();
     layout->setContentsMargins(0,0,0,0);
@@ -130,7 +140,8 @@ void TelepathyPresenceApplet::init()
 
     connect(m_accountManager.data(), SIGNAL(newAccount(Tp::AccountPtr)), SLOT(onAccountsChanged()));
     connect(m_accountManager->becomeReady(), SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(onAccountManagerReady(Tp::PendingOperation*)));
-    connect(this, SIGNAL(activate()), SLOT(startContactList()));
+    connect(this, SIGNAL(activate()), this, SLOT(toggleContactList()));
+
 }
 
 KIcon TelepathyPresenceApplet::getThemedIcon(const QString &iconBaseName) const
@@ -185,7 +196,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     connect(goOfflineAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
 
     connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
-    connect(showContactListAction, SIGNAL(triggered()), this, SLOT(startContactList()));
+    connect(showContactListAction, SIGNAL(triggered()), this, SLOT(toggleContactList()));
     connect(addContactAction, SIGNAL(triggered()), this, SLOT(onAddContactRequest()));
     connect(joinChatroomAction, SIGNAL(triggered()), this, SLOT(onJoinChatRoomRequest()));
     if (makeCallAction) {
@@ -241,9 +252,19 @@ void TelepathyPresenceApplet::startAccountManager()
     KToolInvocation::startServiceByDesktopName("kcm_ktp_accounts");
 }
 
-void TelepathyPresenceApplet::startContactList()
+void TelepathyPresenceApplet::toggleContactList()
 {
-    KToolInvocation::startServiceByDesktopName("ktp-contactlist");
+    if (!m_contactListRunning) {
+        KToolInvocation::startServiceByDesktopName(QLatin1String("ktp-contactlist"));
+    } else {
+        //contact list is registered, call toggleWindowVisibility in contact list
+        QDBusMessage methodCall = QDBusMessage::createMethodCall(QLatin1String("org.kde.ktp-contactlist"),
+                                                                 QLatin1String("/ktp_contactlist/MainWindow"),
+                                                                 QLatin1String("org.kde.KTp.ContactList"),
+                                                                 QLatin1String("toggleWindowVisibility"));
+
+        QDBusConnection::sessionBus().asyncCall(methodCall);
+    }
 }
 
 void TelepathyPresenceApplet::onAddContactRequest()
@@ -338,6 +359,42 @@ void TelepathyPresenceApplet::toolTipAboutToShow()
 void TelepathyPresenceApplet::toolTipHidden()
 {
     Plasma::ToolTipManager::self()->clearContent(this);
+}
+
+void TelepathyPresenceApplet::serviceNameFetchFinished(QDBusPendingCallWatcher *callWatcher)
+{
+    QDBusPendingReply<bool> reply = *callWatcher;
+    if (reply.isError()) {
+        kWarning() << reply.error();
+        return;
+    }
+
+    m_contactListRunning = reply.value();
+
+    callWatcher->deleteLater();
+
+    //start watching for contact list appearing on the bus
+    m_contactListWatcher = new QDBusServiceWatcher(QLatin1String("org.kde.ktp-contactlist"),
+                                                   QDBusConnection::sessionBus(),
+                                                   QDBusServiceWatcher::WatchForRegistration
+                                                       | QDBusServiceWatcher::WatchForUnregistration,
+                                                   this);
+
+    connect(m_contactListWatcher, SIGNAL(serviceRegistered(QString)),
+            this, SLOT(contactListServiceRegistered()));
+
+    connect(m_contactListWatcher, SIGNAL(serviceUnregistered(QString)),
+            this, SLOT(contactListServiceUnregistered()));
+}
+
+void TelepathyPresenceApplet::contactListServiceRegistered()
+{
+    m_contactListRunning = true;
+}
+
+void TelepathyPresenceApplet::contactListServiceUnregistered()
+{
+    m_contactListRunning = false;
 }
 
 #include "presence-applet.moc"

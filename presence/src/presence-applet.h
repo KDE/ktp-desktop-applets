@@ -66,9 +66,13 @@ private Q_SLOTS:
     void toolTipHidden();
 
     void startAccountManager();
-    void startContactList();
+    void toggleContactList();
     void onAddContactRequest();
     void onMakeCallRequest();
+
+    void contactListServiceRegistered();
+    void contactListServiceUnregistered();
+    void serviceNameFetchFinished(QDBusPendingCallWatcher *callWatcher);
 
 private:
 
@@ -86,6 +90,9 @@ private:
 
     Tp::AccountManagerPtr m_accountManager;
     KTp::GlobalPresence  *m_globalPresence;
+
+    QDBusServiceWatcher  *m_contactListWatcher;
+    bool                  m_contactListRunning;
 };
 
 #endif  // KTP_PRESENCE_APPLET_H
