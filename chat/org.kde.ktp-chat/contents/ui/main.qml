@@ -2,7 +2,7 @@
     Copyright (C) 2012 Lasath Fernando <kde@lasath.org>
     Copyright (C) 2012 David Edmundson <kde@davidedmundson.co.uk>
     Copyright (C) 2012 Aleix Pol <aleixpol@kde.org>
-    
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -50,11 +50,11 @@ Grid {
 
     function reconsiderStatus() {
         if(handler.conversations.totalUnreadCount>0) {
-            plasmoid.state = NeedsAttentionStatus;
+            plasmoid.status = NeedsAttentionStatus;
         } else if(conversationsView.count>0) {
-            plasmoid.state = ActiveStatus;
+            plasmoid.status = ActiveStatus;
         } else {
-            plasmoid.state = PassiveStatus;
+            plasmoid.status = PassiveStatus;
         }
     }
 
@@ -92,7 +92,7 @@ Grid {
                 conversations: handler.conversations
                 accountManager: handler.accountManager
 
-                Component.onCompleted: plasmoid.addEventListener('ConfigChanged', 
+                Component.onCompleted: plasmoid.addEventListener('ConfigChanged',
                                         function() {
                                             var v = plasmoid.readConfig("pinnedContacts");
                                             console.log("loading state", v)
