@@ -21,19 +21,46 @@ import QtQuick 1.1
 import org.kde.telepathy 0.1 as KTp
 import org.kde.plasma.components 0.1 as PlasmaComponents
 import org.kde.plasma.extras 0.1 as PlasmaExtras
-import org.kde.plasma.core 0.1 as PlasmaCore
 
 
 Item {
     id: contactListContainer
     anchors.fill: parent
-    
+
     KTp.ContactList {
         id: contactList
     }
-    
+
+    PlasmaComponents.TextField {
+        id: filterLineEdit
+        anchors {
+            left:parent.left
+            right:parent.right
+            top:parent.top
+        }
+
+        focus: true
+
+        placeholderText: i18n("Search contacts...")
+
+        Keys.onDownPressed: contactsList.incrementCurrentIndex();
+        Keys.onUpPressed: contactsList.decrementCurrentIndex();
+        Keys.onReturnPressed: contactsList.currentItem.clicked();
+
+        Binding {
+            target: contactList.model
+            property: "globalFilterString"
+            value: filterLineEdit.text
+        }
+    }
+
     PlasmaExtras.ScrollArea {
-        anchors.fill: parent
+        anchors {
+            top:filterLineEdit.bottom
+            left:parent.left
+            right:parent.right
+            bottom:parent.bottom
+        }
 
         flickableItem: ListView {
             id: contactsList
@@ -43,12 +70,22 @@ Item {
             boundsBehavior: Flickable.StopAtBounds
 
             delegate: ListContactDelegate {}
-            focus: true
+
+            highlight: PlasmaComponents.Highlight {
+                hover: contactList.focus
+            }
         }
     }
-    
+
+    function popupEventSlot(shown) {
+        if (shown)
+            filterLineEdit.forceActiveFocus();
+    }
+
     Component.onCompleted: {
         contactList.model.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
         contactList.model.sortRoleString = "presenceType"
+
+        plasmoid.popupEvent.connect(popupEventSlot);
     }
 }
