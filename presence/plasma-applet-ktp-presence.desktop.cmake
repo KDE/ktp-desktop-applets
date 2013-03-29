@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Instant Messaging Presence
+Name[ca]=Presència de missatgeria instantània
 Name[cs]=Stav na IM
 Name[da]=Instant messaging-tilstedeværelse
 Name[de]=Instant-Messenger-Anwesenheit
