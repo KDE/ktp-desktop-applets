@@ -200,7 +200,6 @@ FocusScope {
         }
 
         flickableItem: view
-        width: 16
         orientation: Qt.Vertical
         opacity: view.atYEnd ? 0.3 : 1
         stepSize: 0
