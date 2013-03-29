@@ -30,9 +30,7 @@ FocusScope {
 
     signal closeRequested
 
-    onFocusChanged: if(focus) {
-        input.focus = true
-    }
+    onFocusChanged: input.focus = true
 
     Item {
         id: titleArea
