@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Instant Messaging Presence
+Name[bs]=Prisutnost za instant poruke
 Name[ca]=Presència de missatgeria instantània
 Name[cs]=Stav na IM
 Name[da]=Instant messaging-tilstedeværelse
