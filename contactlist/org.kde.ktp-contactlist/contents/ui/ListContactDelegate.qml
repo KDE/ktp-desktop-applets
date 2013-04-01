@@ -27,15 +27,17 @@ PlasmaComponents.ListItem {
     enabled: true
 
     height: Math.ceil(nickLabel.height*1.5)
-    
+
     onClicked: contactList.startChat(model.account, model.contact)
 
-    ExtraComponents.QIconItem {
+    ExtraComponents.QPixmapItem {
         id: avatarLabel
         width: height
         height: parent.height
+        pixmap: model.avatarPixmap
+        fillMode: ExtraComponents.QPixmapItem.PreserveAspectFit
+        smooth: true
 
-        icon: (model.avatar ? model.avatar : "im-user")
         anchors {
             left: parent.left
             verticalCenter: parent.verticalCenter
