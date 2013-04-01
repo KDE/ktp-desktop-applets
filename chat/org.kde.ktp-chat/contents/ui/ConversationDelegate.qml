@@ -64,7 +64,7 @@ ConversationDelegateButton {
                 //when we open the dialog by the button plasma will collapse because the
                 //item is not positioned yet. Use the plasmoid root instead, in those cases
                 var item = convButton.state==Component.Ready ? convButton : base;
-                var point = dialog.popupPosition(convButton, pos);
+                var point = dialog.popupPosition(item, pos);
                 console.log("Showing dialog at (" + point.x + "," + point.y + ")");
 
                 dialog.x = point.x;

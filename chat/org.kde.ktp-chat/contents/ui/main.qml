@@ -26,10 +26,10 @@ import org.kde.qtextracomponents 0.1 as ExtraComponents
 
 Grid {
     id: base
-    property real minimumItemSize: 4
-    property real preferredItemSize: Math.max(0, Math.min(width, height))
-    property real preferredHeight: flow===Flow.TopToBottom ? itemsCount*preferredItemSize : preferredItemSize
-    property real preferredWidth: flow===Flow.LeftToRight ? itemsCount*preferredItemSize : preferredItemSize
+    property real minimumItemSize: 12
+    property real implicitItemSize: Math.max(0, Math.min(width, height))
+    property real implicitHeight: flow===Flow.TopToBottom ? itemsCount*implicitItemSize : itemsCount==0 ? 0 : implicitItemSize
+    property real implicitWidth: flow===Flow.LeftToRight ? itemsCount*implicitItemSize : itemsCount==0 ? 0 : implicitItemSize
     property real minimumHeight: flow===Flow.TopToBottom ? itemsCount*minimumItemSize : itemsCount==0 ? 0 : minimumItemSize
     property real minimumWidth: flow===Flow.LeftToRight ? itemsCount*minimumItemSize : itemsCount==0 ? 0 : minimumItemSize
     property int currentIndex: -1

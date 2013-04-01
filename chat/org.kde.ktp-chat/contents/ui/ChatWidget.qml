@@ -30,6 +30,8 @@ FocusScope {
 
     signal closeRequested
 
+    onFocusChanged: input.focus = true
+
     Item {
         id: titleArea
         anchors {
@@ -198,9 +200,9 @@ FocusScope {
         }
 
         flickableItem: view
-        width: 16
         orientation: Qt.Vertical
         opacity: view.atYEnd ? 0.3 : 1
+        stepSize: 0
 
         Behavior on width { NumberAnimation { duration: 250 } }
         Behavior on opacity { NumberAnimation { duration: 250 } }
