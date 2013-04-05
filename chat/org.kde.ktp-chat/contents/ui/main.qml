@@ -106,13 +106,18 @@ Grid {
             }
         }
     }
+    property variant popupSide:   plasmoid.location === TopEdge ?Qt.AlignBottom
+                                : plasmoid.location === BottomEdge ? Qt.AlignTop
+                                : plasmoid.location === LeftEdge ? Qt.AlignRight
+                                : plasmoid.location === RightEdge ? Qt.AlignLeft
+                                : base.flow === Flow.LeftToRight ? Qt.AlignBottom : Qt.AlignRight
 
     Repeater {
         id: conversationsView
         delegate: ConversationDelegate {
             width: base.itemWidth
             height: base.itemHeight
-            popupBelow: base.flow === Flow.LeftToRight
+            popupSide: base.popupSide
         }
         model: handler.conversations
     }
