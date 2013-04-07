@@ -32,6 +32,7 @@ Name[sv]=Snabbchatt
 Name[tr]=Hızlı Sohbet
 Name[uk]=Швидке спілкування
 Name[x-test]=xxQuick Chatxx
+Name[zh_CN]=快捷聊天
 Name[zh_TW]=快速聊天
 Comment=Simple chats from your workspace
 Comment[bs]=Prosta ćaskanja iz radnog prostora
@@ -66,6 +67,7 @@ Comment[sv]=Enkel chatt från arbetsytan
 Comment[tr]=Çalışma alanınızdan basit sohbetler
 Comment[uk]=Прості вікна спілкування з вашого робочого простору
 Comment[x-test]=xxSimple chats from your workspacexx
+Comment[zh_CN]=从您的工作区方便进行聊天
 Comment[zh_TW]=從您的工作空間發起聊天
 Icon=telepathy-kde
 

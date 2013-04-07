@@ -32,6 +32,7 @@ Name[sv]=Direktmeddelande finns
 Name[tr]=Anında Mesajlaşma Varlığı
 Name[uk]=Присутність у обміні повідомленнями
 Name[x-test]=xxInstant Messaging Presencexx
+Name[zh_CN]=即时通讯状态
 Name[zh_TW]=即時訊息呈現
 Type=Service
 ServiceTypes=Plasma/Applet
