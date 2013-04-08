@@ -18,6 +18,7 @@ Name[kk]=Лезде хабарласу бар ма
 Name[mr]=त्वरित संदेश उपस्थिती
 Name[nb]=Tilstede for lynmeldingssystemet
 Name[nl]=Aanwezigheid van Instant Messaging
+Name[pl]=Obecność w komunikatorze internetowym
 Name[pt]=Presença nas Mensagens Instantâneas
 Name[pt_BR]=Presença nas mensagens instantâneas
 Name[ro]=Prezență în mesageria instantanee
