@@ -52,7 +52,7 @@ Grid {
         property: "status"
         value: (base.currentIndex >= 0                     ? AcceptingInputStatus
                 : handler.conversations.totalUnreadCount>0 ? NeedsAttentionStatus
-                : handler.conversations.count>0            ? ActiveStatus
+                : conversationsView.count>0                ? ActiveStatus
                                                            : PassiveStatus)
     }
 
@@ -105,6 +105,7 @@ Grid {
                                 : base.flow === Flow.LeftToRight ? Qt.AlignBottom : Qt.AlignRight
 
     Repeater {
+        id: conversationsView
         delegate: ConversationDelegate {
             width: base.itemWidth
             height: base.itemHeight
