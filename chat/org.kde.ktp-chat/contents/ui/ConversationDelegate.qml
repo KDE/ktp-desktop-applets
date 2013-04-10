@@ -35,9 +35,13 @@ ConversationDelegateButton {
     onClicked: toggleVisibility()
     
     function toggleVisibility() { setVisible(!isCurrentConversation) }
-    function setVisible(v) { base.currentIndex = (v ? index : -1) }
-    function closeConversation() { base.currentIndex = -1 }
     function openConversation() { base.currentIndex = index }
+    function setVisible(v) { v ? openConversation() : closeConversation(); }
+    function closeConversation() {
+        if(base.currentIndex == index) {
+            base.currentIndex = -1
+        }
+    }
     
     Component.onCompleted: setVisible(model.conversation.messages.shouldStartOpened)
     
