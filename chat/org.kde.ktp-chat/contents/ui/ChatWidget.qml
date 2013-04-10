@@ -31,6 +31,10 @@ FocusScope {
     signal closeRequested
 
     onFocusChanged: input.focus = true
+    Connections {
+        target: chatWidget.conv
+        onValidChanged: chatWidget.closeRequested()
+    }
 
     Item {
         id: titleArea
