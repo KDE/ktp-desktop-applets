@@ -47,20 +47,13 @@ Grid {
 
     TelepathyTextObserver { id: handler }
     HideWindowComponent { id: windowHide }
-
-    function reconsiderStatus() {
-        if(handler.conversations.totalUnreadCount>0) {
-            plasmoid.status = NeedsAttentionStatus;
-        } else if(conversationsView.count>0) {
-            plasmoid.status = ActiveStatus;
-        } else {
-            plasmoid.status = PassiveStatus;
-        }
-    }
-
-    Connections {
-        target: handler.conversations
-        onTotalUnreadCountChanged: reconsiderStatus()
+    Binding {
+        target: plasmoid
+        property: "status"
+        value: (base.currentIndex >= 0                     ? AcceptingInputStatus
+                : handler.conversations.totalUnreadCount>0 ? NeedsAttentionStatus
+                : handler.conversations.count>0            ? ActiveStatus
+                                                           : PassiveStatus)
     }
 
     Component.onCompleted: {
@@ -69,7 +62,6 @@ Grid {
             base.currentIndex = handler.conversations.nextActiveConversation(base.currentIndex+1 % handler.conversations)
         });
     }
-    onItemsCountChanged: reconsiderStatus()
 
     Repeater {
         id: pinnedView
@@ -113,7 +105,6 @@ Grid {
                                 : base.flow === Flow.LeftToRight ? Qt.AlignBottom : Qt.AlignRight
 
     Repeater {
-        id: conversationsView
         delegate: ConversationDelegate {
             width: base.itemWidth
             height: base.itemHeight
