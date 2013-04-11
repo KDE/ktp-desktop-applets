@@ -330,7 +330,7 @@ void TelepathyPresenceApplet::onConnectionStatusChanged(Tp::ConnectionStatus con
 void TelepathyPresenceApplet::onPresenceActionClicked()
 {
     KTp::Presence p = qobject_cast<KAction*>(sender())->data().value<KTp::Presence>();
-    p.setStatus(p.type(), p.status(), m_globalPresence->requestedPresence().statusMessage());
+    p.setStatus(p.type(), p.status(), p.statusMessage());
 
     m_globalPresence->setPresence(p);
 }
