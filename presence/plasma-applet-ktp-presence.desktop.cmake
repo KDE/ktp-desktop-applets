@@ -15,6 +15,7 @@ Name[hu]=Azonnali üzenetküldési állapot
 Name[ia]=Presentia de Messageria instantanee
 Name[it]=Presenza di messaggistica istantanea
 Name[kk]=Лезде хабарласу бар ма
+Name[lt]=TP matomumas
 Name[mr]=त्वरित संदेश उपस्थिती
 Name[nb]=Tilstede for lynmeldingssystemet
 Name[nl]=Aanwezigheid van Instant Messaging
