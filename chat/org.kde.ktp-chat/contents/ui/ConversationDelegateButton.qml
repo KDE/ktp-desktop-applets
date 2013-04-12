@@ -34,13 +34,16 @@ PlasmaComponents.ToolButton
     property alias presenceIconName: tooltip.image
     property alias overlay: overlayLoader.sourceComponent
     checked: base.currentIndex==index
-    
+
     ExtraComponents.QIconItem {
         id: icon
+        opacity: dropArea.dragging ? 0.5 : 1
         anchors {
             fill: parent
             margins: 5
         }
+
+        Behavior on opacity { SmoothedAnimation { duration: 250; velocity: 0.01 } }
     }
     
     PlasmaCore.ToolTip {
@@ -49,11 +52,17 @@ PlasmaComponents.ToolButton
     }
     
     DnD.DropArea {
+        id: dropArea
+        property bool dragging: false
+
         anchors.fill: parent
         DeclarativeKTpActions { id: actions }
         onDrop: if (event.mimeData.url!="") {
             actions.startFileTransfer(parent.account, parent.contact, event.mimeData.url)
+            dragging=false
         }
+        onDragEnter: dragging=true
+        onDragLeave: dragging=false
     }
     
     Loader {
