@@ -45,7 +45,7 @@ PlasmaComponents.ToolButton
     
     PlasmaCore.ToolTip {
       id: tooltip
-      target: parent
+      target: icon
     }
     
     DnD.DropArea {
