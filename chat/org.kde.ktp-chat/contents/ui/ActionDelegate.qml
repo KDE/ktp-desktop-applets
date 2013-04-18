@@ -23,5 +23,5 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.telepathy 0.1
 
 PlasmaComponents.Label {
-    text: "<i>* " + model.user + " " + model.text + "</i>"
+    text: "<i>* " + model.senderAlias + " " + model.text + "</i>"
 }
