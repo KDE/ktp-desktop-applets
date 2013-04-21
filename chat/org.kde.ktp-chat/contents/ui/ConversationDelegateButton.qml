@@ -56,9 +56,8 @@ PlasmaComponents.ToolButton
         property bool dragging: false
 
         anchors.fill: parent
-        DeclarativeKTpActions { id: actions }
         onDrop: if (event.mimeData.url!="") {
-            actions.startFileTransfer(parent.account, parent.contact, event.mimeData.url)
+            telepathyManager.startFileTransfer(parent.account, parent.contact, event.mimeData.url);
             dragging=false
         }
         onDragEnter: dragging=true
