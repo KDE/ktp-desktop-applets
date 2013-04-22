@@ -2,7 +2,7 @@
 Name=Instant Messaging Presence
 Name[bs]=Prisutnost za instant poruke
 Name[ca]=Presència de missatgeria instantània
-Name[cs]=Stav na IM
+Name[cs]=Widget stavu komunikátoru
 Name[da]=Instant messaging-tilstedeværelse
 Name[de]=Instant-Messenger-Anwesenheit
 Name[el]=Παρουσία με στιγμιαίο μήνυμα
