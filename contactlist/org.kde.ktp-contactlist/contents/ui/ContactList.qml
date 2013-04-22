@@ -27,10 +27,6 @@ Item {
     id: contactListContainer
     anchors.fill: parent
 
-    KTp.ContactList {
-        id: contactList
-    }
-
     PlasmaComponents.TextField {
         id: filterLineEdit
         anchors {
@@ -48,7 +44,7 @@ Item {
         Keys.onReturnPressed: contactsList.currentItem.clicked();
 
         Binding {
-            target: contactList.model
+            target: contactsModel
             property: "globalFilterString"
             value: filterLineEdit.text
         }
@@ -66,7 +62,14 @@ Item {
             id: contactsList
 
             clip: true
-            model: contactList.model
+            model: KTp.ContactsModel {
+                id: contactsModel
+                accountManager: telepathyManager.accountManager;
+                presenceTypeFilterFlags: KTp.ContactsModel.HideAllOffline;
+                sortRoleString: sortRoleString = "presenceType";
+            }
+
+
             boundsBehavior: Flickable.StopAtBounds
 
             delegate: ListContactDelegate {}
@@ -83,9 +86,6 @@ Item {
     }
 
     Component.onCompleted: {
-        contactList.model.presenceTypeFilterFlags = KTp.AccountsFilterModel.HideAllOffline
-        contactList.model.sortRoleString = "presenceType"
-
         plasmoid.popupEvent.connect(popupEventSlot);
     }
 }

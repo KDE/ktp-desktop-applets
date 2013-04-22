@@ -18,6 +18,8 @@
  ***************************************************************************/
 
 import QtQuick 1.1
+import org.kde.telepathy 0.1 as KTp
+
 
 Item {
     id: main;
@@ -32,5 +34,8 @@ Item {
 
     Component.onCompleted: {
         plasmoid.aspectRatioMode = IgnoreAspectRatio;
+
+        telepathyManager.addContactListFeatures();
+        telepathyManager.becomeReady();
     }
 }

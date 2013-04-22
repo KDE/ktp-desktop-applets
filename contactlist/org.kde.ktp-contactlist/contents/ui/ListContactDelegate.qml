@@ -28,7 +28,7 @@ PlasmaComponents.ListItem {
 
     height: Math.ceil(nickLabel.height*1.5)
 
-    onClicked: contactList.startChat(model.account, model.contact)
+    onClicked: telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid")
 
     ExtraComponents.QPixmapItem {
         id: avatarLabel
