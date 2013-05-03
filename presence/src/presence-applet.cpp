@@ -63,7 +63,7 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
 
     //find out if contact list is already running
     QDBusPendingCall async = QDBusConnection::sessionBus().interface()->asyncCall(QLatin1String("NameHasOwner"),
-                                                                                  QLatin1String("org.kde.ktp-contactlist"));
+                                                                                  QLatin1String("org.kde.ktp-contactlist-kpeople"));
 
     QDBusPendingCallWatcher *callWatcher = new QDBusPendingCallWatcher(async, this);
     connect(callWatcher, SIGNAL(finished(QDBusPendingCallWatcher*)),
@@ -255,11 +255,11 @@ void TelepathyPresenceApplet::startAccountManager()
 void TelepathyPresenceApplet::toggleContactList()
 {
     if (!m_contactListRunning) {
-        KToolInvocation::startServiceByDesktopName(QLatin1String("ktp-contactlist"));
+        KToolInvocation::startServiceByDesktopName(QLatin1String("ktp-contactlist-kpeople"));
     } else {
         //contact list is registered, call toggleWindowVisibility in contact list
-        QDBusMessage methodCall = QDBusMessage::createMethodCall(QLatin1String("org.kde.ktp-contactlist"),
-                                                                 QLatin1String("/ktp_contactlist/MainWindow"),
+        QDBusMessage methodCall = QDBusMessage::createMethodCall(QLatin1String("org.kde.ktp-contactlist-kpeople"),
+                                                                 QLatin1String("/ktp_contactlist_kpeople/MainWindow"),
                                                                  QLatin1String("org.kde.KTp.ContactList"),
                                                                  QLatin1String("toggleWindowVisibility"));
 
@@ -374,7 +374,7 @@ void TelepathyPresenceApplet::serviceNameFetchFinished(QDBusPendingCallWatcher *
     callWatcher->deleteLater();
 
     //start watching for contact list appearing on the bus
-    m_contactListWatcher = new QDBusServiceWatcher(QLatin1String("org.kde.ktp-contactlist"),
+    m_contactListWatcher = new QDBusServiceWatcher(QLatin1String("org.kde.ktp-contactlist-kpeople"),
                                                    QDBusConnection::sessionBus(),
                                                    QDBusServiceWatcher::WatchForRegistration
                                                        | QDBusServiceWatcher::WatchForUnregistration,
