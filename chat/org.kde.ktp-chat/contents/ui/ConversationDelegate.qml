@@ -81,11 +81,6 @@ ConversationDelegateButton {
         }
     }
 
-    Connections {
-        target: model.conversation.messages
-        onPopoutRequested: closeConversation()
-    }
-
     // needed to let MessageModel know when messages are visible
     // so that it can acknowledge them properly
     Binding {
