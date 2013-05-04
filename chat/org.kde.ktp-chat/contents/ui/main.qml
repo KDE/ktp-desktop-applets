@@ -77,7 +77,7 @@ Grid {
         delegate: ConversationDelegateButton {
             width: base.itemWidth
             height: base.itemHeight
-            onClicked: handler.conversations.startChat(account, contact)
+            onClicked: telepathyManager.startChat(account, contact)
             avatar: decoration
             overlay: ExtraComponents.QIconItem {
                     anchors.fill: parent
