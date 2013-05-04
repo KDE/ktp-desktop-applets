@@ -68,7 +68,7 @@ Grid {
         telepathyManager.registerClient(conversationsModel, "KTp.ChatPlasmoid");
         plasmoid.aspectRatioMode = plasmoid.IgnoreAspectRatio
         plasmoid.addEventListener('activate', function() {
-            base.currentIndex = handler.conversations.nextActiveConversation(base.currentIndex+1 % handler.conversations)
+            base.currentIndex = conversationsModel.nextActiveConversation(base.currentIndex+1 % conversationsModel.count)
         });
     }
 
