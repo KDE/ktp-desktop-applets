@@ -159,7 +159,7 @@ FocusScope {
             leftMargin: 5
         }
         boundsBehavior: Flickable.StopAtBounds
-        section.property: "senderId"
+        section.property: "senderAlias"
         section.delegate: PlasmaComponents.Label { text: section; font.bold: true; anchors.right: parent.right}
         clip: true
         
