@@ -71,6 +71,9 @@ Grid {
             base.currentIndex = conversationsModel.nextActiveConversation(base.currentIndex+1 % conversationsModel.count)
         });
     }
+    Component.onDestruction: {
+        telepathyManager.unregisterClient(conversationsModel);
+    }
 
     Repeater {
         id: pinnedView
