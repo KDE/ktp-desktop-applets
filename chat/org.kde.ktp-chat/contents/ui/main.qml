@@ -112,5 +112,8 @@ Grid {
             popupSide: base.popupSide
         }
         model: handler.conversations
+        onCountChanged: if(base.currentIndex>=conversationsView.count) {
+            base.currentIndex = -1;
+        }
     }
 }
