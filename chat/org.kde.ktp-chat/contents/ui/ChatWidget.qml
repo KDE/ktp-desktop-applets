@@ -187,7 +187,7 @@ FocusScope {
         model: conv.messages
         onMovementEnded: followConversation = atYEnd //we only follow the conversation if moved to the end
 
-        onCountChanged: {
+        onContentHeightChanged: {
             if(followConversation && contentHeight>height) {
                 view.positionViewAtEnd()
             }
