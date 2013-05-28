@@ -149,7 +149,7 @@ FocusScope {
             top: space.bottom
             left: parent.left
             right: parent.right
-            bottom: input.top
+            bottom: disconnectedLabel.top
             topMargin: 3
             rightMargin: viewScrollBar.width+5
             leftMargin: 5
@@ -208,9 +208,25 @@ FocusScope {
         Behavior on opacity { NumberAnimation { duration: 250 } }
     }
 
+
+    PlasmaComponents.Label {
+        id: disconnectedLabel
+        visible: !conv.valid
+
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: input.top
+        }
+
+        text: i18n("Chat is not connected. You cannot send messages at this time")
+        wrapMode: Text.Wrap
+    }
+
     PlasmaComponents.TextField {
         id: input
         focus: true
+        enabled: conv.valid
 
         anchors {
             left: parent.left
