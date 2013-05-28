@@ -2,7 +2,7 @@
     Copyright (C) 2012  Lasath Fernando <kde@lasath.org>
     Copyright (C) 2012 David Edmundson <kde@davidedmundson.co.uk>
     Copyright (C) 2012 Aleix Pol <aleixpol@kde.org>
-    
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -30,10 +30,7 @@ FocusScope {
 
     signal closeRequested
 
-    Connections {
-        target: chatWidget.conv
-        onValidChanged: chatWidget.closeRequested()
-    }
+    onFocusChanged: input.focus = true
 
     Item {
         id: titleArea
@@ -161,7 +158,7 @@ FocusScope {
         section.property: "senderAlias"
         section.delegate: PlasmaComponents.Label { text: section; font.bold: true; anchors.right: parent.right}
         clip: true
-        
+
         //we need this so that scrolling down to the last element works properly
         //this means that all the list is in memory
         cacheBuffer: contentHeight
