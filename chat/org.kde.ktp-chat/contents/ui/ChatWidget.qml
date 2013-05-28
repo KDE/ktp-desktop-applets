@@ -30,8 +30,6 @@ FocusScope {
 
     signal closeRequested
 
-    onFocusChanged: input.focus = true
-
     Item {
         id: titleArea
         anchors {
