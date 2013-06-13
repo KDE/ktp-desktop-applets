@@ -148,7 +148,6 @@ FocusScope {
             left: parent.left
             right: parent.right
             bottom: disconnectedLabel.top
-            topMargin: 3
             rightMargin: viewScrollBar.width+5
             leftMargin: 5
         }
