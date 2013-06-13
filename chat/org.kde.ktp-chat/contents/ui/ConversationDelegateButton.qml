@@ -45,10 +45,14 @@ PlasmaComponents.ToolButton
 
         Behavior on opacity { SmoothedAnimation { duration: 250; velocity: 0.01 } }
     }
-    
-    PlasmaCore.ToolTip {
-      id: tooltip
-      target: icon
+    //The MouseArea is just a workaround because otherwise the ToolTip steals the mouse hover events
+    //and the button doesn't get painted properly
+    MouseArea {
+        PlasmaCore.ToolTip {
+            id: tooltip
+            target: parent
+        }
+        acceptedButtons: null
     }
     
     DnD.DropArea {
