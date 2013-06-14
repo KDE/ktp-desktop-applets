@@ -36,12 +36,15 @@ Item {
         }
 
         focus: true
+        clearButtonShown: true
 
         placeholderText: i18n("Search contacts...")
 
         Keys.onDownPressed: contactsList.incrementCurrentIndex();
         Keys.onUpPressed: contactsList.decrementCurrentIndex();
         Keys.onReturnPressed: contactsList.currentItem.clicked();
+
+        onActiveFocusChanged: filterLineEdit.selectAll()
 
         Binding {
             target: contactsModel
