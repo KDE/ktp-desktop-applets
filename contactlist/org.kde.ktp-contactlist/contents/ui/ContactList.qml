@@ -44,13 +44,7 @@ Item {
         Keys.onUpPressed: contactsList.decrementCurrentIndex();
         Keys.onReturnPressed: contactsList.currentItem.clicked();
 
-        onActiveFocusChanged: filterLineEdit.selectAll()
-
-        Binding {
-            target: contactsModel
-            property: "globalFilterString"
-            value: filterLineEdit.text
-        }
+        onActiveFocusChanged: filterLineEdit.selectAll();
     }
 
     PlasmaExtras.ScrollArea {
@@ -67,9 +61,10 @@ Item {
             clip: true
             model: KTp.ContactsModel {
                 id: contactsModel
-                accountManager: telepathyManager.accountManager;
-                presenceTypeFilterFlags: KTp.ContactsModel.HideAllOffline;
-                sortRoleString: sortRoleString = "presenceType";
+                accountManager: telepathyManager.accountManager
+                presenceTypeFilterFlags: KTp.ContactsModel.HideAllOffline
+                globalFilterString: filterLineEdit.text
+                sortRoleString: "presenceType"
             }
 
 
