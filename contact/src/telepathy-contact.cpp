@@ -18,7 +18,6 @@
  ***************************************************************************/
 
 #include "telepathy-contact.h"
-#include "applet_config.h"
 #include "contact-wrapper.h"
 
 #include <KConfig>
@@ -37,6 +36,8 @@
 #include <TelepathyQt/Types>
 
 #include <KTp/contact-factory.h>
+#include <KTp/Widgets/contact-grid-dialog.h>
+#include <KTp/Models/contacts-filter-model.h>
 
 TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     : Plasma::Applet(parent, args)
@@ -226,11 +227,25 @@ void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::Ac
 void TelepathyContact::showConfigurationInterface()
 {
     if (!isUserConfiguring()) {
-        AppletConfig *config = new AppletConfig(m_accountManager, 0);
-        connect(config, SIGNAL(setNewContact(Tp::ContactPtr,Tp::AccountPtr)), this, SLOT(setContact(Tp::ContactPtr,Tp::AccountPtr)));
-        config->show();
+        KTp::ContactGridDialog *dlg = new KTp::ContactGridDialog(0);
+        dlg->filter()->setPresenceTypeFilterFlags(KTp::ContactsFilterModel::ShowAll);
+
+        connect(dlg, SIGNAL(accepted()), this, SLOT(configurationAccepted()));
+        connect(dlg, SIGNAL(rejected()), dlg, SLOT(deleteLater()));
+        dlg->show();
     }
 }
+
+void TelepathyContact::configurationAccepted()
+{
+    KTp::ContactGridDialog *dlg = qobject_cast<KTp::ContactGridDialog*>(sender());
+    Q_ASSERT(dlg);
+
+    setContact(dlg->contact(), dlg->account());
+
+    dlg->deleteLater();
+}
+
 
 // This is the command that links your applet to the .desktop file
 K_EXPORT_PLASMA_APPLET(org.kde.ktp-contact, TelepathyContact)

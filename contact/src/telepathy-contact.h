@@ -53,6 +53,7 @@ public slots:
 
 private slots:
     void loadConfig();
+    void configurationAccepted();
     void onAccountManagerReady(Tp::PendingOperation *op);
 
 private:
