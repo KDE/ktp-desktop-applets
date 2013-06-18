@@ -24,6 +24,8 @@ Item {
     id: container;
     state: "hidden";
 
+    property string presenceStatus;
+
     Row {
         spacing: 2;
         anchors.centerIn: parent;
@@ -33,6 +35,8 @@ Item {
             icon: QIcon("audio-headset");
             width: 22;
             height: 22
+
+            enabled: presenceStatus != "offline";
 
             onClicked: {
                 TelepathyContact.startAudioCall();
@@ -46,6 +50,8 @@ Item {
             width: 22;
             height: 22
 
+            // mail button should be enabled even when the contact is offline
+
             onClicked: {
                 TelepathyContact.sendMail();
                 toggleMenu();
@@ -57,6 +63,8 @@ Item {
             icon: QIcon("text-x-generic");
             width: 22;
             height: 22;
+
+            enabled: presenceStatus != "offline";
 
             onClicked: {
                 TelepathyContact.startTextChat();
@@ -70,6 +78,8 @@ Item {
             width: 22;
             height: 22;
 
+            enabled: presenceStatus != "offline";
+
             onClicked: {
                 TelepathyContact.startVideoCall();
                 toggleMenu();
@@ -81,6 +91,8 @@ Item {
             icon: QIcon("mail-attachment");
             width: 22;
             height: 22;
+
+            enabled: presenceStatus != "offline";
 
             onClicked: {
                 TelepathyContact.startFileTransfer();

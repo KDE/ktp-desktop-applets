@@ -46,6 +46,8 @@ Item {
         id: dropDownMenu;
         width: wrapper.width;
 
+        presenceStatus: wrapper.status;
+
         anchors {
             top: avatar.bottom;
             left: avatar.left;
