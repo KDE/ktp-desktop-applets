@@ -116,6 +116,7 @@ QList<QAction*> TelepathyPresenceApplet::contextualActions()
 void TelepathyPresenceApplet::init()
 {
     QDBusConnection::sessionBus().registerService("org.kde.Telepathy.PresenceAppletActive");
+    QDBusConnection::sessionBus().registerObject("/", this, QDBusConnection::ExportAllSlots);
 
     Tp::registerTypes();
 
@@ -159,24 +160,102 @@ KIcon TelepathyPresenceApplet::getThemedIcon(const QString &iconBaseName) const
     }
 }
 
+int TelepathyPresenceApplet::handleCustomPresenceChange() {
+    setupContextMenuActions();
+    return 0;
+}
+
+void TelepathyPresenceApplet::addPresence(const KTp::Presence &presence)
+{
+    if(m_presences.contains(presence)) {
+        return;
+    }
+
+    //Add presence to correct place in list, sorted by presence type
+    QList<KTp::Presence>::iterator i = qLowerBound(m_presences.begin(), m_presences.end(), KTp::Presence(presence));
+    m_presences.insert(i, presence);
+}
+
 void TelepathyPresenceApplet::setupContextMenuActions()
 {
+    m_contextActions.clear();
+    m_presences.clear();
+
     KActionMenu *moreMenu = new KActionMenu(i18n("More"), this);
 
-    KAction *goOnlineAction = new KAction(getThemedIcon("user-online"), i18n("Online"), this);
-    KAction *goBusyAction = new KAction(getThemedIcon("user-busy"), i18n("Busy"), this);
-    KAction *goAwayAction = new KAction(getThemedIcon("user-away"), i18n("Away"), this);
-    KAction *goExtendedAwayAction = new KAction(getThemedIcon("user-away-extended"), i18n("Not Available"), this);
-    KAction *goHiddenAction = new KAction(getThemedIcon("user-invisible"), i18n("Invisible"), this);
-    KAction *goOfflineAction = new KAction(getThemedIcon("user-offline"), i18n("Offline"), this);
-    KAction *joinChatroomAction = new KAction(KIcon("user-group-new"), i18n("Join Chat Room..."), this);
+    KSharedConfigPtr config = KSharedConfig::openConfig("ktelepathyrc");
+    KConfigGroup m_presenceGroup = config->group("Custom Presence List");
 
-    goOnlineAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::available())));
-    goBusyAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::busy())));
-    goAwayAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::away())));
-    goExtendedAwayAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::xa())));
-    goHiddenAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::hidden())));
-    goOfflineAction->setData(QVariant::fromValue(KTp::Presence(Tp::Presence::offline())));
+    //add default presences
+    addPresence(Tp::Presence::available());
+    addPresence(Tp::Presence::busy());
+    addPresence(Tp::Presence::away());
+    addPresence(Tp::Presence::xa());
+    addPresence(Tp::Presence::hidden());
+    addPresence(Tp::Presence::offline());
+
+    //add custom presences
+    Q_FOREACH(const QString &key, m_presenceGroup.keyList()) {
+        QVariantList entry = m_presenceGroup.readEntry(key, QVariantList());
+
+        if(entry.size()!=2)
+          continue;
+
+        QString statusMessage = entry.last().toString();
+
+        switch (entry.first().toInt()) {
+            case Tp::ConnectionPresenceTypeAvailable:
+                addPresence(Tp::Presence::available(statusMessage));
+                break;
+            case Tp::ConnectionPresenceTypeAway:
+                addPresence(Tp::Presence::away(statusMessage));
+                break;
+            case Tp::ConnectionPresenceTypeBusy:
+                addPresence(Tp::Presence::busy(statusMessage));
+                break;
+            case Tp::ConnectionPresenceTypeExtendedAway:
+                addPresence(Tp::Presence::xa(statusMessage));
+        }
+    }
+
+    //This loops through the all presences and creates a menu, connects to slot and appends it to the context menu
+    Q_FOREACH(const KTp::Presence &presence, m_presences) {
+        KAction *action;
+        QString menuentry, icon;
+        switch (presence.type()) {
+            case Tp::ConnectionPresenceTypeAvailable:
+                menuentry = (presence.statusMessage()=="") ? i18n("Online") : presence.statusMessage();
+                icon = "user-online";
+                break;
+            case Tp::ConnectionPresenceTypeBusy:
+                menuentry = (presence.statusMessage()=="") ? i18n("Busy") : presence.statusMessage();
+                icon = "user-busy";
+                break;
+            case Tp::ConnectionPresenceTypeAway:
+                menuentry = (presence.statusMessage()=="") ? i18n("Away") : presence.statusMessage();
+                icon = "user-away";
+                break;
+            case Tp::ConnectionPresenceTypeExtendedAway:
+                menuentry = (presence.statusMessage()=="") ? i18n("Not Available") : presence.statusMessage();
+                icon = "user-away-extended";
+                break;
+            case Tp::ConnectionPresenceTypeHidden:
+                menuentry = (presence.statusMessage()=="") ? i18n("Invisible") : presence.statusMessage();
+                icon = "user-invisible";
+                break;
+            case Tp::ConnectionPresenceTypeOffline:
+                menuentry = (presence.statusMessage()=="") ? i18n("Offline") : presence.statusMessage();
+                icon = "user-offline";
+                break;
+            default: continue;
+        }
+        action = new KAction(getThemedIcon(icon), menuentry, this);
+        action->setData(QVariant::fromValue(presence));
+        connect(action, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
+        m_contextActions.append(action);
+    }
+
+    KAction *joinChatroomAction = new KAction(KIcon("user-group-new"), i18n("Join Chat Room..."), this);
 
     // application actions
     KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager..."), this);
@@ -192,13 +271,6 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     }
 
     // connect actions
-    connect(goOnlineAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
-    connect(goBusyAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
-    connect(goAwayAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
-    connect(goExtendedAwayAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
-    connect(goHiddenAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
-    connect(goOfflineAction, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
-
     connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
     connect(showContactListAction, SIGNAL(triggered()), this, SLOT(toggleContactList()));
     connect(addContactAction, SIGNAL(triggered()), this, SLOT(onAddContactRequest()));
@@ -209,13 +281,6 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     if (sendFileAction) {
         connect(sendFileAction, SIGNAL(triggered()), this, SLOT(onSendFileRequest()));
     }
-
-    m_contextActions.append(goOnlineAction);
-    m_contextActions.append(goBusyAction);
-    m_contextActions.append(goAwayAction);
-    m_contextActions.append(goExtendedAwayAction);
-    m_contextActions.append(goHiddenAction);
-    m_contextActions.append(goOfflineAction);
 
     m_contextActions.append(moreMenu->addSeparator());
     m_contextActions.append(showAccountManagerAction);
@@ -415,3 +480,5 @@ void TelepathyPresenceApplet::contactListServiceUnregistered()
 
 // This is the command that links your applet to the .desktop file
 K_EXPORT_PLASMA_APPLET(org.kde.ktp-presence, TelepathyPresenceApplet)
+
+
