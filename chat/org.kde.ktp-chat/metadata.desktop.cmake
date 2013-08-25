@@ -33,6 +33,7 @@ Name[sr@ijekavianlatin]=Brzo ćaskanje
 Name[sr@latin]=Brzo ćaskanje
 Name[sv]=Snabbchatt
 Name[tr]=Hızlı Sohbet
+Name[ug]=تېز پاراڭ
 Name[uk]=Швидке спілкування
 Name[x-test]=xxQuick Chatxx
 Name[zh_CN]=快捷聊天

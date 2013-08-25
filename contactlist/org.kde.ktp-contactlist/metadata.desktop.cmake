@@ -35,6 +35,7 @@ Name[sr@ijekavianlatin]=Lista brzoglasničkih kontakata
 Name[sr@latin]=Lista brzoglasničkih kontakata
 Name[sv]=Lista över direktmeddelandekontakter
 Name[tr]=Anında Mesajlaşma Kişi Listesi
+Name[ug]=مۇڭداشقۇ ئالاقەداش تىزىمى
 Name[uk]=Список контактів миттєвого обміну повідомленнями
 Name[wa]=Djivêye des soçons del messaedjreye sol moumint
 Name[x-test]=xxInstant Messaging Contact Listxx
