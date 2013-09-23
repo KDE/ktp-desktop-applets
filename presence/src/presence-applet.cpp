@@ -85,8 +85,8 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
         setMinimumSize(QSize(iconSize, iconSize));
     }
 
-    connect(m_globalPresence, SIGNAL(requestedPresenceChanged(KTp::Presence)), SLOT(onPresenceChanged(KTp::Presence)));
-    onPresenceChanged(m_globalPresence->requestedPresence());
+    connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), SLOT(onPresenceChanged(KTp::Presence)));
+    onPresenceChanged(m_globalPresence->currentPresence());
 
     connect(m_globalPresence, SIGNAL(connectionStatusChanged(Tp::ConnectionStatus)), SLOT(onConnectionStatusChanged(Tp::ConnectionStatus)));
     onConnectionStatusChanged(m_globalPresence->connectionStatus());
