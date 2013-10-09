@@ -2,6 +2,7 @@
 Name=Quick Chat
 Name[bs]=Brzo ćaskanje
 Name[ca]=Xat ràpid
+Name[ca@valencia]=Xat ràpid
 Name[cs]=Rychlý rozhovor
 Name[da]=Kvikchat
 Name[de]=Schnell-Chat
@@ -39,6 +40,7 @@ Name[zh_TW]=快速聊天
 Comment=Simple chats from your workspace
 Comment[bs]=Prosta ćaskanja iz radnog prostora
 Comment[ca]=Xats normals des de l'espai de treball
+Comment[ca@valencia]=Xats normals des de l'espai de treball
 Comment[cs]=Jednoduché rozhovory z vaší pracovní plochy
 Comment[da]=Simple chats fra dit arbejdsområde
 Comment[de]=Einfache Chats von Ihrer Arbeitsfläche
