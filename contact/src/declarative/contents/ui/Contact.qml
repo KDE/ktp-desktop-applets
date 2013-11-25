@@ -22,20 +22,9 @@ import QtQuick 1.1
 Item {
     id: wrapper;
 
-    // contact/person presence status
-    property string status: "offline";
-
-    anchors.fill: parent;
-
     Avatar {
         id: avatar;
-        avatarPresenceStatus: wrapper.status;
-
-        anchors {
-            top: parent.top;
-            left: parent.left;
-            right: parent.right;
-        }
+        anchors.fill: parent
 
         onClicked: {
             dropDownMenu.toggleMenu();
@@ -44,31 +33,7 @@ Item {
 
     DropDownMenu {
         id: dropDownMenu;
-        width: wrapper.width;
-
-        presenceStatus: wrapper.status;
-
-        anchors {
-            top: avatar.bottom;
-            left: avatar.left;
-            right: avatar.right;
-        }
-    }
-
-    function update()
-    {
-        if (wrapper.status != TelepathyContact.presenceStatus) {
-            wrapper.status = TelepathyContact.presenceStatus;
-            avatar.setAvatarPresenceStatus(wrapper.status);
-        }
-
-        // update avatar
-        avatar.update();
-        dropDownMenu.update();
-    }
-
-    function accountPresenceChanged()
-    {
-        avatar.accountPresenceChanged();
+        width: avatar.width
+        anchors.top: parent.bottom
     }
 }

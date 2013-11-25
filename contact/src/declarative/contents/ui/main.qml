@@ -28,21 +28,6 @@ Item {
 
     Contact {
         id: contact;
-        anchors.centerIn: parent;
-    }
-
-    function updateContact()
-    {
-        contact.update();
-    }
-
-    function toggleDropDownMenu()
-    {
-        contact.toggleMenu();
-    }
-
-    function accountPresenceChanged()
-    {
-        contact.accountPresenceChanged();
+        anchors.fill: parent
     }
 }

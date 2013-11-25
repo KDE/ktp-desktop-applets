@@ -84,7 +84,7 @@ bool ContactWrapper::canStartAudioCall() const
     }
 }
 
-bool ContactWrapper::canStartVideo() const
+bool ContactWrapper::canStartVideoCall() const
 {
     if (m_contact && m_account) {
         return (m_contact->capabilities().streamedMediaVideoCalls() && m_account->capabilities().streamedMediaVideoCalls());
@@ -125,10 +125,13 @@ void ContactWrapper::genericOperationFinished(Tp::PendingOperation* op)
 
 bool ContactWrapper::isAccountOnline() const
 {
-    if (m_account) {
-        if (m_account->currentPresence().type() != Tp::Presence::offline().type()) {
-            return true;
-        }
+    return m_account && m_account->currentPresence().type() != Tp::Presence::offline().type();
+}
+
+bool ContactWrapper::isContactOnline() const
+{
+    if (m_contact && isAccountOnline()) {
+        return m_contact->presence().type() != Tp::Presence::offline().type();
     }
 
     return false;
@@ -156,26 +159,58 @@ void ContactWrapper::onContactManagerStateChanged(Tp::ContactListState newState)
     }
 }
 
+void ContactWrapper::updateProperties()
+{
+    emit accountOnlineChanged();
+
+    emit presenceStatusChanged();
+    emit contactOnlineChanged();
+
+    emit avatarChanged();
+
+    emit canSendFileChanged();
+    emit canStartAudioCallChanged();
+    emit canStartVideoCallChanged();
+
+    emit displayNameChanged();
+}
+
 QString ContactWrapper::presenceStatus() const
 {
-    if (m_contact) {
+    if (m_contact && isAccountOnline()) {
         return m_contact->presence().status();
     } else {
         return QString();
     }
 }
 
-void ContactWrapper::setupAccountConnects()
+void ContactWrapper::connectAccountSignals()
 {
     // keep track of presence (online/offline is all we need)
     connect(m_account.data(), SIGNAL(connectionChanged(Tp::ConnectionPtr)), this, SLOT(onConnectionChanged(Tp::ConnectionPtr)));
-    connect(m_account.data(), SIGNAL(currentPresenceChanged(Tp::Presence)), this, SIGNAL(accountPresenceChanged()));
+    connect(m_account.data(), SIGNAL(currentPresenceChanged(Tp::Presence)), this, SLOT(updateProperties()));
 }
 
-void ContactWrapper::setupContactConnects()
+void ContactWrapper::connectContactSignals()
 {
     connect(m_contact.data(), SIGNAL(avatarDataChanged(Tp::AvatarData)), this, SIGNAL(avatarChanged()));
-    connect(m_contact.data(), SIGNAL(presenceChanged(Tp::Presence)), this, SIGNAL(presenceChanged()));
+    connect(m_contact.data(), SIGNAL(presenceChanged(Tp::Presence)), this, SLOT(updateProperties()));
+}
+
+void ContactWrapper::disconnectAccountSignals()
+{
+    if (m_account) {
+        disconnect(m_account.data(), SIGNAL(connectionChanged(Tp::ConnectionPtr)), this, SLOT(onConnectionChanged(Tp::ConnectionPtr)));
+        disconnect(m_account.data(), SIGNAL(currentPresenceChanged(Tp::Presence)), this, SLOT(updateProperties()));
+    }
+}
+
+void ContactWrapper::disconnectContactSignals()
+{
+    if (m_contact) {
+        disconnect(m_contact.data(), SIGNAL(avatarDataChanged(Tp::AvatarData)), this, SIGNAL(avatarChanged()));
+        disconnect(m_contact.data(), SIGNAL(presenceChanged(Tp::Presence)), this, SLOT(updateProperties()));
+    }
 }
 
 void ContactWrapper::sendMail()
@@ -187,7 +222,22 @@ void ContactWrapper::sendMail()
     KToolInvocation::invokeMailer(KUrl(m_contact->id()));
 }
 
+void ContactWrapper::startTextChat()
+{
+    if (!m_account || !m_contact) {
+        return;
+    }
+
+    Tp::PendingChannelRequest *channelRequest = KTp::Actions::startChat(m_account, m_contact);
+    connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
+}
+
 void ContactWrapper::startAudioCall()
+{
+    kDebug();
+}
+
+void ContactWrapper::startVideoCall()
 {
     kDebug();
 }
@@ -197,27 +247,13 @@ void ContactWrapper::startFileTransfer()
     kDebug();
 }
 
-void ContactWrapper::startTextChat()
-{
-    if (!m_account || !m_contact) {
-        return;
-    }
-
-    Tp::PendingChannelRequest* channelRequest = KTp::Actions::startChat(m_account, m_contact);
-    connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
-}
-
-void ContactWrapper::startVideoCall()
-{
-    kDebug();
-}
-
 void ContactWrapper::setAccount(const Tp::AccountPtr& relatedAccount)
 {
-    kDebug() << "setting account to: " << relatedAccount->displayName();
-    undoAccountConnects();
+    disconnectAccountSignals();
     m_account = relatedAccount;
-    setupAccountConnects();
+    connectAccountSignals();
+
+    updateProperties();
 }
 
 void ContactWrapper::setContact(const Tp::ContactPtr& newContact)
@@ -225,14 +261,16 @@ void ContactWrapper::setContact(const Tp::ContactPtr& newContact)
     kDebug() << "setting new contact to: " << newContact->id();
 
     // disconnect signals
-    undoContactConnects();
+    disconnectContactSignals();
     m_contact = newContact;
 
     // establish new signals
-    setupContactConnects();
+    connectContactSignals();
 
     // tell QML we have a new contact
-    emit(newContactSet());
+    emit contactChanged();
+
+    updateProperties();
 }
 
 void ContactWrapper::setTempAvatar(const QString& path)
@@ -247,18 +285,3 @@ void ContactWrapper::setTempContactId(const QString& tempId)
 {
     m_tempContactId = tempId;
 }
-
-void ContactWrapper::undoAccountConnects()
-{
-    if (m_account) {
-        disconnect(m_account.data(), 0, 0, 0);
-    }
-}
-
-void ContactWrapper::undoContactConnects()
-{
-    if (m_contact) {
-        disconnect(m_contact.data(), 0, 0, 0);
-    }
-}
-

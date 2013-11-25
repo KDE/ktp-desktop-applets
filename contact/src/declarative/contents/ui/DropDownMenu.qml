@@ -24,11 +24,23 @@ Item {
     id: container;
     state: "hidden";
 
-    property string presenceStatus;
-
     Row {
         spacing: 2;
         anchors.centerIn: parent;
+
+        PlasmaWidgets.IconWidget {
+            id: chatButton;
+            icon: QIcon("text-x-generic");
+            width: 22;
+            height: 22;
+
+            enabled: TelepathyContact.isContactOnline && TelepathyContact.presenceStatus !== "offline";
+
+            onClicked: {
+                TelepathyContact.startTextChat();
+                state = "hidden";
+            }
+        }
 
         PlasmaWidgets.IconWidget {
             id: callButton;
@@ -36,11 +48,39 @@ Item {
             width: 22;
             height: 22
 
-            enabled: presenceStatus != "offline";
+            enabled: TelepathyContact.isContactOnline && TelepathyContact.canStartAudioCall && TelepathyContact.presenceStatus !== "offline";
 
             onClicked: {
                 TelepathyContact.startAudioCall();
-                toggleMenu();
+                state = "hidden";
+            }
+        }
+
+        PlasmaWidgets.IconWidget {
+            id: videoButton;
+            icon: QIcon("camera-web");
+            width: 22;
+            height: 22;
+
+            enabled: TelepathyContact.isContactOnline && TelepathyContact.canStartVideoCall;
+
+            onClicked: {
+                TelepathyContact.startVideoCall();
+                state = "hidden";
+            }
+        }
+
+        PlasmaWidgets.IconWidget {
+            id: fileTransferButton;
+            icon: QIcon("mail-attachment");
+            width: 22;
+            height: 22;
+
+            enabled: TelepathyContact.isContactOnline && TelepathyContact.canSendFile;
+
+            onClicked: {
+                TelepathyContact.startFileTransfer();
+                state = "hidden";
             }
         }
 
@@ -51,52 +91,11 @@ Item {
             height: 22
 
             // mail button should be enabled even when the contact is offline
+            enabled: TelepathyContact.isContactOnline;
 
             onClicked: {
                 TelepathyContact.sendMail();
-                toggleMenu();
-            }
-        }
-
-        PlasmaWidgets.IconWidget {
-            id: chatButton;
-            icon: QIcon("text-x-generic");
-            width: 22;
-            height: 22;
-
-            enabled: presenceStatus != "offline";
-
-            onClicked: {
-                TelepathyContact.startTextChat();
-                toggleMenu();
-            }
-        }
-
-        PlasmaWidgets.IconWidget {
-            id: videoButton;
-            icon: QIcon("camera-web");
-            width: 22;
-            height: 22;
-
-            enabled: presenceStatus != "offline";
-
-            onClicked: {
-                TelepathyContact.startVideoCall();
-                toggleMenu();
-            }
-        }
-
-        PlasmaWidgets.IconWidget {
-            id: fileTransferButton;
-            icon: QIcon("mail-attachment");
-            width: 22;
-            height: 22;
-
-            enabled: presenceStatus != "offline";
-
-            onClicked: {
-                TelepathyContact.startFileTransfer();
-                toggleMenu();
+                state = "hidden";
             }
         }
     }
@@ -135,13 +134,5 @@ Item {
         } else {
             state = "hidden";
         }
-    }
-
-    function update()
-    {
-        // update icon "enables"
-        callButton.enabled = TelepathyContact.canStartAudioCall;
-        videoButton.enabled = TelepathyContact.canStartVideo;
-        fileTransferButton.enabled = TelepathyContact.canSendFile;
     }
 }

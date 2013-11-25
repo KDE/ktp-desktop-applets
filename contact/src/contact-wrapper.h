@@ -28,17 +28,20 @@
 class ContactWrapper : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool isAccountOnline READ isAccountOnline NOTIFY accountOnlineChanged)
+    Q_PROPERTY(bool isContactOnline READ isContactOnline NOTIFY contactOnlineChanged)
+    Q_PROPERTY(QString avatar READ avatar NOTIFY avatarChanged)
+
+    Q_PROPERTY(bool canSendFile READ canSendFile NOTIFY canSendFileChanged)
+    Q_PROPERTY(bool canStartAudioCall READ canStartAudioCall NOTIFY canStartAudioCallChanged)
+    Q_PROPERTY(bool canStartVideoCall READ canStartVideoCall NOTIFY canStartVideoCallChanged)
+
+    Q_PROPERTY(QString displayName READ displayName NOTIFY displayNameChanged)
+    Q_PROPERTY(QString presenceStatus READ presenceStatus NOTIFY presenceStatusChanged)
+
 public:
     ContactWrapper(QObject *parent = 0);
     virtual ~ContactWrapper();
-
-    Q_PROPERTY(bool accountOnline READ isAccountOnline);
-    Q_PROPERTY(QString avatar READ avatar);
-    Q_PROPERTY(bool canSendFile READ canSendFile);
-    Q_PROPERTY(bool canStartAudioCall READ canStartAudioCall);
-    Q_PROPERTY(bool canStartVideo READ canStartVideo);
-    Q_PROPERTY(QString displayName READ displayName);
-    Q_PROPERTY(QString presenceStatus READ presenceStatus);
 
     /** returns the account id related to the contact chosen */
     QString accountId() const;
@@ -53,7 +56,7 @@ public:
     bool canStartAudioCall() const;
 
     /** returns whether the contact can start/receive video */
-    bool canStartVideo() const;
+    bool canStartVideoCall() const;
 
     /** returns current contact being represented */
     Tp::ContactPtr contact() const;
@@ -63,6 +66,9 @@ public:
 
     /** returns whether the account is online/offline */
     bool isAccountOnline() const;
+
+    /** returns whether the contact is online/offline */
+    bool isContactOnline() const;
 
     /** returns the contact presence status (online, offlince ... ) */
     QString presenceStatus() const;
@@ -87,27 +93,36 @@ public:
 
 public slots:
     void sendMail();
-    void startAudioCall();
-    void startFileTransfer();
     void startTextChat();
+    void startAudioCall();
     void startVideoCall();
+    void startFileTransfer();
 
 signals:
-    void accountPresenceChanged();
+    void accountOnlineChanged();
     void avatarChanged();
-    void newContactSet();
-    void presenceChanged();
+
+    void canSendFileChanged();
+    void canStartAudioCallChanged();
+    void canStartVideoCallChanged();
+
+    void displayNameChanged();
+    void presenceStatusChanged();
+    void contactOnlineChanged();
+
+    void contactChanged();
 
 private slots:
     void genericOperationFinished(Tp::PendingOperation *op);
     void onConnectionChanged(const Tp::ConnectionPtr &newConn);
     void onContactManagerStateChanged(Tp::ContactListState state);
+    void updateProperties();
 
 private:
-    void setupAccountConnects();
-    void setupContactConnects();
-    void undoAccountConnects();
-    void undoContactConnects();
+    void connectAccountSignals();
+    void connectContactSignals();
+    void disconnectAccountSignals();
+    void disconnectContactSignals();
 
     Tp::AccountPtr m_account;
     Tp::ContactPtr m_contact;

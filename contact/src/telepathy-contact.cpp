@@ -23,7 +23,6 @@
 #include <KConfig>
 #include <KStandardDirs>
 
-#include <QObject>
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
 
@@ -42,8 +41,7 @@
 TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     : Plasma::Applet(parent, args)
     , m_declarative(new Plasma::DeclarativeWidget(this))
-    , m_contact(new ContactWrapper(parent))
-    , m_qmlObject(0)
+    , m_contactWrapper(new ContactWrapper(parent))
 {
     // setup plasmoid
     resize(128, 128);
@@ -58,7 +56,6 @@ TelepathyContact::TelepathyContact(QObject* parent, const QVariantList& args)
     if (args.length() == 1) {
         m_fileToLoad = args.first().toString();
     }
-
 }
 
 TelepathyContact::~TelepathyContact()
@@ -77,17 +74,8 @@ void TelepathyContact::init()
     if (m_declarative) {
         QString qmlFile = KGlobal::dirs()->findResource("data", "plasma/plasmoids/org.kde.ktp-contact/contents/ui/main.qml");
         kDebug() << "LOADING: " << qmlFile;
+        m_declarative->engine()->rootContext()->setContextProperty("TelepathyContact", m_contactWrapper);
         m_declarative->setQmlPath(qmlFile);
-        m_declarative->engine()->rootContext()->setContextProperty("TelepathyContact", m_contact);
-
-        // setup qml object so that we can talk to the declarative part
-        m_qmlObject = dynamic_cast<QObject*>(m_declarative->rootObject());
-
-        // connect the qml object to receive signals from C++ end
-        connect(m_contact, SIGNAL(newContactSet()), m_qmlObject, SLOT(updateContact()));
-        connect(m_contact, SIGNAL(avatarChanged()), m_qmlObject, SLOT(updateContact()));
-        connect(m_contact, SIGNAL(presenceChanged()), m_qmlObject, SLOT(updateContact()));
-        connect(m_contact, SIGNAL(accountPresenceChanged()), m_qmlObject, SLOT(accountPresenceChanged()));
     }
 }
 
@@ -110,7 +98,7 @@ void TelepathyContact::loadConfig()
         if (file.open(QFile::ReadOnly)) {
             QDataStream ds(&file);
             ds >> contactId;
-            ds >> relatedAcc ;
+            ds >> relatedAcc;
             file.close();
         }
     }
@@ -132,18 +120,18 @@ void TelepathyContact::loadConfig()
             for (int i = 0; i < contactList.count(); ++i) {
                 if (contactList.at(i)->id() == contactId) {
                     contact = contactList.at(i);
-                    m_contact->setContact(contact);
-                    m_contact->setAccount(account);
+                    m_contactWrapper->setContact(contact);
+                    m_contactWrapper->setAccount(account);
                 }
             }
         } else {
             // just load cached avatar image
-            m_contact->setTempAvatar(tempAvatar);
-            m_contact->setTempContactId(contactId);
+            m_contactWrapper->setTempAvatar(tempAvatar);
+            m_contactWrapper->setTempContactId(contactId);
 
             // just set account. When this will go online it will automatically load the contact pointer
             // shown in the plasmoid
-            m_contact->setAccount(account);
+            m_contactWrapper->setAccount(account);
         }
     }
 }
@@ -167,13 +155,13 @@ void TelepathyContact::paintInterface(QPainter* p, const QStyleOptionGraphicsIte
 void TelepathyContact::saveConfig()
 {
     KConfigGroup group = Plasma::Applet::config();
-    group.writeEntry("id", m_contact->contact()->id());
-    group.writeEntry("tempAvatar", m_contact->contact()->avatarData().fileName);
+    group.writeEntry("id", m_contactWrapper->contact()->id());
+    group.writeEntry("tempAvatar", m_contactWrapper->contact()->avatarData().fileName);
     group.writeEntry("relatedAccount", m_accountPath);
     group.sync();
 
     // update contactWrapper temp id
-    m_contact->setTempContactId(m_contact->contact()->id());
+    m_contactWrapper->setTempContactId(m_contactWrapper->contact()->id());
 
     // tell plasmoid to save config
     configNeedsSaving();
@@ -215,9 +203,9 @@ void TelepathyContact::setContact(const Tp::ContactPtr& newContact, const Tp::Ac
     Q_ASSERT(newContact);
     Q_ASSERT(relatedAccount);
 
-    if (!m_contact->contact() || m_contact->contact()->id() != newContact->id()) {
-        m_contact->setContact(newContact);
-        m_contact->setAccount(relatedAccount);
+    if (!m_contactWrapper->contact() || m_contactWrapper->contact()->id() != newContact->id()) {
+        m_contactWrapper->setContact(newContact);
+        m_contactWrapper->setAccount(relatedAccount);
         m_accountPath = relatedAccount->objectPath();
     }
 

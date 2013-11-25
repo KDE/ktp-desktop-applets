@@ -63,8 +63,7 @@ private:
     QString m_fileToLoad;
     QString m_accountPath;
     Plasma::DeclarativeWidget *m_declarative;
-    ContactWrapper *m_contact;
-    QObject *m_qmlObject;
+    ContactWrapper *m_contactWrapper;
     Tp::AccountManagerPtr m_accountManager;
 };
 

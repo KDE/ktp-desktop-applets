@@ -23,35 +23,18 @@ import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
 Item {
     id: container;
 
-    // eliminate once finished. This is only a test image
-    property string avatarPath: "";
-    property string avatarPresenceStatus;
-
     signal clicked();
-
-    anchors.fill: parent;
-
-    Component.onCompleted: {
-        setAvatarPresenceStatus(avatarPresenceStatus);
-    }
 
     // TODO: use image instead of iconwidget?
     PlasmaWidgets.IconWidget {
         id: avatar;
         anchors.fill: parent;
         anchors.margins: 10;
+        icon: QIcon(TelepathyContact.avatar);
 
         onClicked: {
             // toggleMenu
             container.clicked();
-        }
-
-        Component.onCompleted: {
-            if (avatarPath == "") {
-                avatar.icon = QIcon("im-user");
-            } else {
-                avatar.icon = QIcon(avatarPath);
-            }
         }
     }
 
@@ -59,50 +42,21 @@ Item {
         id: avatarFrame;
         width: 128;
         height: 128;
+        source: getFrameForAvatarPresence(TelepathyContact.presenceStatus)
     }
 
-    // show drop-down action menu
-    function showMenu()
-    {
-        console.log("SHOW MENU");
-    }
-
-    function setAvatarPresenceStatus(presenceStatus)
+    function getFrameForAvatarPresence(presenceStatus)
     {
         switch (presenceStatus) {
             case "available":
-                avatarFrame.source = "../frames/online.png";
-                break;
+                return "../frames/online.png";
             case "dnd":
-                avatarFrame.source = "../frames/busy.png";
-                break;
+                return "../frames/busy.png";
             case "away":
-                avatarFrame.source = "../frames/away.png";
-                break;
-            case "offline":
-                avatarFrame.source = "../frames/offline.png";
-                break;
+                return "../frames/away.png";
             default:
-                avatarFrame.source = "../frames/offline.png";
-                break;
-        }
-    }
-
-    // updates avatar info with info from contact currently set
-    function update()
-    {
-        avatar.icon = QIcon(TelepathyContact.avatar);
-    }
-
-    function accountPresenceChanged()
-    {
-        // check if user account is online
-        if (!TelepathyContact.accountOnline && avatar.enabled) {
-            setAvatarPresenceStatus("offline");
-        } else if (TelepathyContact.accountOnline && !avatar.enabled) {
-            // set back to normal
-            avatarPresenceStatus = TelepathyContact.presenceStatus;
-            setAvatarPresenceStatus(avatarPresenceStatus);
+            case "offline":
+                return "../frames/offline.png";
         }
     }
 }
