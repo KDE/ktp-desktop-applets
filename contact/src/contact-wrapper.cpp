@@ -234,12 +234,22 @@ void ContactWrapper::startTextChat()
 
 void ContactWrapper::startAudioCall()
 {
-    kDebug();
+    if (!m_account || !m_contact) {
+        return;
+    }
+
+    Tp::PendingChannelRequest *channelRequest = KTp::Actions::startAudioCall(m_account, m_contact);
+    connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
 }
 
 void ContactWrapper::startVideoCall()
 {
-    kDebug();
+    if (!m_account || !m_contact) {
+        return;
+    }
+
+    Tp::PendingChannelRequest *channelRequest = KTp::Actions::startAudioVideoCall(m_account, m_contact);
+    connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
 }
 
 void ContactWrapper::startFileTransfer()
