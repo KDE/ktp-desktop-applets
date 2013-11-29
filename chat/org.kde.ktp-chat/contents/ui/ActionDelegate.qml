@@ -23,5 +23,7 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.telepathy 0.1
 
 PlasmaComponents.Label {
+    wrapMode: Text.Wrap
+    width: view.width
     text: "<i>* " + model.senderAlias + " " + model.text + "</i>"
 }
