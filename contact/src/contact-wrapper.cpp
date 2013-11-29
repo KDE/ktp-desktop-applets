@@ -272,6 +272,20 @@ void ContactWrapper::startFileTransfer()
     }
 }
 
+void ContactWrapper::startFileTransfer(const QVariantList &urls)
+{
+    if (!canSendFile()) {
+        return;
+    }
+
+    Q_FOREACH (const QVariant &urlVariant, urls) {
+        if (urlVariant.toUrl().isLocalFile()) {
+            Tp::PendingOperation *channelRequest = KTp::Actions::startFileTransfer(m_account, m_contact, urlVariant.toUrl());
+            connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
+        }
+    }
+}
+
 void ContactWrapper::setAccount(const Tp::AccountPtr& relatedAccount)
 {
     disconnectAccountSignals();

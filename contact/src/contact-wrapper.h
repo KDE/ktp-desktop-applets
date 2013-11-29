@@ -97,6 +97,7 @@ public slots:
     void startAudioCall();
     void startVideoCall();
     void startFileTransfer();
+    void startFileTransfer(const QVariantList &urls);
 
 signals:
     void accountOnlineChanged();

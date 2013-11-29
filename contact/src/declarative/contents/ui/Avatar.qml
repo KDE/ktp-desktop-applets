@@ -19,6 +19,7 @@
 
 import QtQuick 1.1
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+import org.kde.draganddrop 1.0 as DnD
 
 Item {
     id: container;
@@ -43,6 +44,17 @@ Item {
         width: 128;
         height: 128;
         source: getFrameForAvatarPresence(TelepathyContact.presenceStatus)
+    }
+
+    DnD.DropArea {
+        id: dropArea
+        anchors.fill: parent
+        enabled: TelepathyContact.canSendFile
+        onDrop: {
+            if (event.mimeData.url!="") {
+                TelepathyContact.startFileTransfer(event.mimeData.urls)
+            }
+        }
     }
 
     function getFrameForAvatarPresence(presenceStatus)
