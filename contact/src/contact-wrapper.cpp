@@ -19,9 +19,12 @@
 
 #include "contact-wrapper.h"
 
+#include <KFileDialog>
+#include <KLocalizedString>
 #include <KToolInvocation>
 #include <KUrl>
 #include <KDebug>
+
 #include <KTp/actions.h>
 
 #include <TelepathyQt/AvatarData>
@@ -254,7 +257,19 @@ void ContactWrapper::startVideoCall()
 
 void ContactWrapper::startFileTransfer()
 {
-    kDebug();
+    if (!canSendFile()) {
+        return;
+    }
+
+    QStringList filenames = KFileDialog::getOpenFileNames(KUrl("kfiledialog:///FileTransferLastDirectory"),
+                                                          QString(),
+                                                          0,
+                                                          i18n("Choose files to send to %1", m_contact->alias()));
+
+    Q_FOREACH (const QString &filename, filenames) {
+        Tp::PendingOperation *channelRequest = KTp::Actions::startFileTransfer(m_account, m_contact, filename);
+        connect(channelRequest, SIGNAL(finished(Tp::PendingOperation*)), this, SLOT(genericOperationFinished(Tp::PendingOperation*)));
+    }
 }
 
 void ContactWrapper::setAccount(const Tp::AccountPtr& relatedAccount)

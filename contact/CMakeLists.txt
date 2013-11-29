@@ -18,6 +18,7 @@ kde4_add_plugin(plasma_applet_ktp_contact ${plasma_applet_ktp_contact_SRCS})
 target_link_libraries(plasma_applet_ktp_contact
                         ${KDE4_PLASMA_LIBS}
                         ${KDE4_KDEUI_LIBS}
+                        ${KDE4_KIO_LIBS}
                         ${TELEPATHY_QT4_LIBRARIES}
                         ${KTP_LIBRARIES}
                         ${KTP_MODELS_LIBRARIES}
