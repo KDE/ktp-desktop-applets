@@ -23,7 +23,7 @@
 #include <QtCore/QObject>
 
 #include <TelepathyQt/Account>
-#include <TelepathyQt/Contact>
+#include <KTp/contact.h>
 
 class ContactWrapper : public QObject
 {
@@ -33,6 +33,7 @@ class ContactWrapper : public QObject
     Q_PROPERTY(QString avatar READ avatar NOTIFY avatarChanged)
 
     Q_PROPERTY(bool canSendFile READ canSendFile NOTIFY canSendFileChanged)
+    Q_PROPERTY(bool canStartTextChat READ canStartTextChat NOTIFY canStartTextChatChanged)
     Q_PROPERTY(bool canStartAudioCall READ canStartAudioCall NOTIFY canStartAudioCallChanged)
     Q_PROPERTY(bool canStartVideoCall READ canStartVideoCall NOTIFY canStartVideoCallChanged)
 
@@ -52,6 +53,9 @@ public:
     /** returns whether the contact can send files */
     bool canSendFile() const;
 
+    /** returns whether the contact support textual chat */
+    bool canStartTextChat() const;
+
     /** returns whether the contact can start/receive audio calls */
     bool canStartAudioCall() const;
 
@@ -59,7 +63,7 @@ public:
     bool canStartVideoCall() const;
 
     /** returns current contact being represented */
-    Tp::ContactPtr contact() const;
+    KTp::ContactPtr contact() const;
 
     /** returns the display name of the contact */
     QString displayName() const;
@@ -104,6 +108,7 @@ signals:
     void avatarChanged();
 
     void canSendFileChanged();
+    void canStartTextChatChanged();
     void canStartAudioCallChanged();
     void canStartVideoCallChanged();
 
@@ -126,7 +131,7 @@ private:
     void disconnectContactSignals();
 
     Tp::AccountPtr m_account;
-    Tp::ContactPtr m_contact;
+    KTp::ContactPtr m_contact;
     QString m_tempAvatar;           /** this is the path to the cached avatar for when kde-telepathy is offline */
     QString m_tempContactId;
 };

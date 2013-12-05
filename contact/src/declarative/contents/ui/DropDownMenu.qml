@@ -34,7 +34,7 @@ Item {
             width: 22;
             height: 22;
 
-            enabled: TelepathyContact.isContactOnline && TelepathyContact.presenceStatus !== "offline";
+            enabled: TelepathyContact.isContactOnline && TelepathyContact.canStartTextChat;
 
             onClicked: {
                 TelepathyContact.startTextChat();
@@ -48,7 +48,7 @@ Item {
             width: 22;
             height: 22
 
-            enabled: TelepathyContact.isContactOnline && TelepathyContact.canStartAudioCall && TelepathyContact.presenceStatus !== "offline";
+            enabled: TelepathyContact.isContactOnline && TelepathyContact.canStartAudioCall;
 
             onClicked: {
                 TelepathyContact.startAudioCall();

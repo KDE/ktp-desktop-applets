@@ -71,32 +71,25 @@ QString ContactWrapper::avatar() const
 
 bool ContactWrapper::canSendFile() const
 {
-    if (m_contact && m_account) {
-        return (m_contact->capabilities().fileTransfers() && m_account->capabilities().fileTransfers());
-    } else {
-        return false;
-    }
+    return m_contact && m_contact->fileTransferCapability();
+}
+
+bool ContactWrapper::canStartTextChat() const
+{
+    return m_contact && m_contact->textChatCapability();
 }
 
 bool ContactWrapper::canStartAudioCall() const
 {
-    if (m_contact && m_account) {
-        return (m_contact->capabilities().streamedMediaAudioCalls() && m_account->capabilities().streamedMediaAudioCalls());
-    } else {
-        return false;
-    }
+    return m_contact && m_contact->audioCallCapability();
 }
 
 bool ContactWrapper::canStartVideoCall() const
 {
-    if (m_contact && m_account) {
-        return (m_contact->capabilities().streamedMediaVideoCalls() && m_account->capabilities().streamedMediaVideoCalls());
-    } else {
-        return false;
-    }
+    return m_contact && m_contact->videoCallCapability();
 }
 
-Tp::ContactPtr ContactWrapper::contact() const
+KTp::ContactPtr ContactWrapper::contact() const
 {
     return m_contact;
 }
@@ -172,6 +165,7 @@ void ContactWrapper::updateProperties()
     emit avatarChanged();
 
     emit canSendFileChanged();
+    emit canStartTextChatChanged();
     emit canStartAudioCallChanged();
     emit canStartVideoCallChanged();
 
@@ -301,7 +295,7 @@ void ContactWrapper::setContact(const Tp::ContactPtr& newContact)
 
     // disconnect signals
     disconnectContactSignals();
-    m_contact = newContact;
+    m_contact = KTp::ContactPtr::qObjectCast(newContact);
 
     // establish new signals
     connectContactSignals();

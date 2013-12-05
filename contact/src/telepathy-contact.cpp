@@ -104,7 +104,7 @@ void TelepathyContact::loadConfig()
     }
 
     if (!contactId.isEmpty() && !relatedAcc.isEmpty()) {
-        Tp::AccountPtr account = m_accountManager->accountForPath(relatedAcc);
+        Tp::AccountPtr account = m_accountManager->accountForObjectPath(relatedAcc);
         Tp::ContactPtr contact;
 
         // check on account. Shouldn't ever be invalid
