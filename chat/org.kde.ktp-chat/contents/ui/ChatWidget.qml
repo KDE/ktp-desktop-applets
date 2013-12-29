@@ -50,7 +50,7 @@ FocusScope {
             }
             width: height
 
-            icon: conv.target.presenceIcon
+            icon: conv.presenceIcon
         }
 
         PlasmaComponents.Label {
@@ -62,7 +62,7 @@ FocusScope {
                 bottom: parent.bottom
                 leftMargin: 5
             }
-            text: conv.target.nick
+            text: conv.title
             elide: Text.ElideRight
         }
 
@@ -82,8 +82,8 @@ FocusScope {
             ContactPin {
                 id: pin
                 model: pinnedModel
-                contact: chatWidget.conv.target.contact
-                account: chatWidget.conv.target.account
+                contact: chatWidget.conv.targetContact
+                account: chatWidget.conv.account
             }
         }
 

@@ -30,7 +30,7 @@ PlasmaComponents.ToolButton
     property variant account
     property variant contact
     property alias avatar: icon.icon
-    property alias nick: tooltip.mainText
+    property alias title: tooltip.mainText
     property alias presenceIconName: tooltip.image
     property alias overlay: overlayLoader.sourceComponent
     checked: base.currentIndex==index

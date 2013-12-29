@@ -27,11 +27,11 @@ ConversationDelegateButton {
     property alias isCurrentConversation: dialog.visible
     property variant popupSide
     
-    avatar: model.conversation.target.avatar
-    nick: model.conversation.target.nick
-    presenceIconName: model.conversation.target.presenceIconName
-    account: model.conversation.target.account
-    contact: model.conversation.target.contact
+    avatar: model.conversation.avatar
+    title: model.conversation.title
+    presenceIconName: model.conversation.presenceIcon.name
+    account: model.conversation.account
+    contact: model.conversation.targetContact
     onClicked: toggleVisibility()
     
     function toggleVisibility() { setVisible(!isCurrentConversation) }
