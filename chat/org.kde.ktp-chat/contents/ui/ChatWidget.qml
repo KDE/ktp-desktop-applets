@@ -148,7 +148,7 @@ FocusScope {
             left: parent.left
             right: parent.right
             bottom: disconnectedLabel.top
-            rightMargin: viewScrollBar.width+5
+            rightMargin: 5
             leftMargin: 5
         }
         boundsBehavior: Flickable.StopAtBounds
@@ -187,24 +187,6 @@ FocusScope {
             }
         }
     }
-
-    PlasmaComponents.ScrollBar {
-        id: viewScrollBar
-        anchors {
-            top: view.top
-            bottom: view.bottom
-            right: parent.right
-        }
-
-        flickableItem: view
-        orientation: Qt.Vertical
-        opacity: view.atYEnd ? 0.3 : 1
-        stepSize: 0
-
-        Behavior on width { NumberAnimation { duration: 250 } }
-        Behavior on opacity { NumberAnimation { duration: 250 } }
-    }
-
 
     PlasmaComponents.Label {
         id: disconnectedLabel
