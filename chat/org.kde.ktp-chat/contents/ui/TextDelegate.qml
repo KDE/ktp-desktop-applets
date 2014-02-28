@@ -31,7 +31,7 @@ PlasmaComponents.Label {
 
     onLinkActivated: {
         console.log("opening link: " + link);
-        plasmoid.openUrl(link);
+        Qt.openUrlExternally(link);
     }
 
     //Hover to display the time when hovering a message
