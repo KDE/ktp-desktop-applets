@@ -89,6 +89,15 @@ ConversationDelegateButton {
         value: dialog.visible
     }
     
+    Connections {
+        target: model.conversation.messages
+        onVisibleToUserChanged: {
+            if(!dialog.visible && model.conversation.messages.visibleToUser) {
+                openConversation();
+            }
+        }
+    }
+    
     overlay: Rectangle {
         color: "red"
         radius: 3
