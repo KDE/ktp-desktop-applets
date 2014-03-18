@@ -22,6 +22,7 @@ Name[ko]=인스턴트 메시지 대화 상대
 Name[lt]=Pokalbių kontaktas
 Name[mr]=त्वरित संदेश संपर्क
 Name[nb]=Lynmeldingskontakt
+Name[nds]=Kortnarichtenkontakten
 Name[nl]=Contactpersoon van Instant Messaging
 Name[pl]=Kontakt komunikatora internetowego
 Name[pt]=Contacto de Mensagens Instantâneas
