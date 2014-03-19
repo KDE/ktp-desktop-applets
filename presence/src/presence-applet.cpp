@@ -34,6 +34,7 @@
 
 #include <KTp/actions.h>
 #include <KTp/global-presence.h>
+#include <KTp/Models/presence-model.h>
 #include <KTp/Widgets/add-contact-dialog.h>
 #include <KTp/Widgets/join-chat-room-dialog.h>
 
@@ -50,7 +51,8 @@ int TelepathyPresenceApplet::s_instanceCount = 0;
 
 TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariantList &args)
     : Plasma::Applet(parent, args),
-      m_globalPresence(new KTp::GlobalPresence(this))
+      m_globalPresence(new KTp::GlobalPresence(this)),
+      m_presences(new KTp::PresenceModel(this))
 {
     s_instanceCount ++;
     setupContextMenuActions();
@@ -161,67 +163,22 @@ KIcon TelepathyPresenceApplet::getThemedIcon(const QString &iconBaseName) const
 }
 
 int TelepathyPresenceApplet::handleCustomPresenceChange() {
+    m_presences->loadPresences();
     setupContextMenuActions();
     return 0;
-}
-
-void TelepathyPresenceApplet::addPresence(const KTp::Presence &presence)
-{
-    if(m_presences.contains(presence)) {
-        return;
-    }
-
-    //Add presence to correct place in list, sorted by presence type
-    QList<KTp::Presence>::iterator i = qLowerBound(m_presences.begin(), m_presences.end(), KTp::Presence(presence));
-    m_presences.insert(i, presence);
 }
 
 void TelepathyPresenceApplet::setupContextMenuActions()
 {
     m_contextActions.clear();
-    m_presences.clear();
 
     KActionMenu *moreMenu = new KActionMenu(i18n("More"), this);
 
-    KSharedConfigPtr config = KSharedConfig::openConfig("ktelepathyrc");
-    KConfigGroup m_presenceGroup = config->group("Custom Presence List");
-
-    //add default presences
-    addPresence(Tp::Presence::available());
-    addPresence(Tp::Presence::busy());
-    addPresence(Tp::Presence::away());
-    addPresence(Tp::Presence::xa());
-    addPresence(Tp::Presence::hidden());
-    addPresence(Tp::Presence::offline());
-
-    //add custom presences
-    Q_FOREACH(const QString &key, m_presenceGroup.keyList()) {
-        QVariantList entry = m_presenceGroup.readEntry(key, QVariantList());
-
-        if(entry.size()!=2)
-          continue;
-
-        QString statusMessage = entry.last().toString();
-
-        switch (entry.first().toInt()) {
-            case Tp::ConnectionPresenceTypeAvailable:
-                addPresence(Tp::Presence::available(statusMessage));
-                break;
-            case Tp::ConnectionPresenceTypeAway:
-                addPresence(Tp::Presence::away(statusMessage));
-                break;
-            case Tp::ConnectionPresenceTypeBusy:
-                addPresence(Tp::Presence::busy(statusMessage));
-                break;
-            case Tp::ConnectionPresenceTypeExtendedAway:
-                addPresence(Tp::Presence::xa(statusMessage));
-        }
-    }
-
     //This loops through the all presences and creates a menu, connects to slot and appends it to the context menu
-    Q_FOREACH(const KTp::Presence &presence, m_presences) {
+    for (int i = 0; i < m_presences->rowCount(); i++) {
         KAction *action;
         QString menuentry, icon;
+        KTp::Presence presence = m_presences->data(i).value<KTp::Presence>();
         switch (presence.type()) {
             case Tp::ConnectionPresenceTypeAvailable:
                 menuentry = (presence.statusMessage()=="") ? i18n("Online") : presence.statusMessage();
