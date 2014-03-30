@@ -37,6 +37,7 @@
 #include <KTp/Models/presence-model.h>
 #include <KTp/Widgets/add-contact-dialog.h>
 #include <KTp/Widgets/join-chat-room-dialog.h>
+#include <KTp/Widgets/settings-kcm-dialog.h>
 
 #include <Plasma/ToolTipManager>
 #include <Plasma/Svg>
@@ -215,7 +216,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     KAction *joinChatroomAction = new KAction(KIcon("user-group-new"), i18n("Join Chat Room..."), this);
 
     // application actions
-    KAction *showAccountManagerAction = new KAction(KIcon("telepathy-kde"), i18n("Account Manager..."), this);
+    KAction *showSettingsKCMAction = new KAction(KIcon("telepathy-kde"), i18n("Instant Messaging Settings..."), this);
     KAction *showContactListAction = new KAction(KIcon("meeting-attending"), i18n("Contact List..."), this);
     KAction *addContactAction = new KAction(KIcon("list-add-user"), i18n("Add New Contacts..."), this);
     KAction *makeCallAction = 0;
@@ -228,7 +229,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     }
 
     // connect actions
-    connect(showAccountManagerAction, SIGNAL(triggered()), this, SLOT(startAccountManager()));
+    connect(showSettingsKCMAction, SIGNAL(triggered()), this, SLOT(showSettingsKCM()));
     connect(showContactListAction, SIGNAL(triggered()), this, SLOT(toggleContactList()));
     connect(addContactAction, SIGNAL(triggered()), this, SLOT(onAddContactRequest()));
     connect(joinChatroomAction, SIGNAL(triggered()), this, SLOT(onJoinChatRoomRequest()));
@@ -240,7 +241,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     }
 
     m_contextActions.append(moreMenu->addSeparator());
-    m_contextActions.append(showAccountManagerAction);
+    m_contextActions.append(showSettingsKCMAction);
     m_contextActions.append(showContactListAction);
 
     m_contextActions.append(moreMenu->addSeparator());
@@ -278,9 +279,12 @@ void TelepathyPresenceApplet::onAccountsChanged()
     }
 }
 
-void TelepathyPresenceApplet::startAccountManager()
+void TelepathyPresenceApplet::showSettingsKCM()
 {
-    KToolInvocation::startServiceByDesktopName("kcm_ktp_accounts");
+    KTp::SettingsKcmDialog *dialog = new KTp::SettingsKcmDialog();
+    dialog->addGeneralSettingsModule();
+    dialog->addNotificationsModule();
+    dialog->show();
 }
 
 void TelepathyPresenceApplet::toggleContactList()

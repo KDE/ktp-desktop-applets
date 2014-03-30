@@ -69,7 +69,7 @@ private Q_SLOTS:
     void toolTipAboutToShow();
     void toolTipHidden();
 
-    void startAccountManager();
+    void showSettingsKCM();
     void toggleContactList();
     void onAddContactRequest();
     void onMakeCallRequest();
