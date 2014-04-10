@@ -178,6 +178,7 @@ void TelepathyContact::setupAccountManager()
 
     Tp::ConnectionFactoryPtr connectionFactory = Tp::ConnectionFactory::create(QDBusConnection::sessionBus(),
                                                                                Tp::Features() << Tp::Connection::FeatureCore
+                                                                               << Tp::Connection::FeatureSelfContact
                                                                                << Tp::Connection::FeatureRosterGroups
                                                                                << Tp::Connection::FeatureRoster);
 
