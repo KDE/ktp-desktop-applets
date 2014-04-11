@@ -213,7 +213,7 @@ void TelepathyPresenceApplet::setupContextMenuActions()
         m_contextActions.append(action);
     }
 
-    KAction *joinChatroomAction = new KAction(KIcon("user-group-new"), i18n("Join Chat Room..."), this);
+    KAction *joinChatroomAction = new KAction(KIcon("im-irc"), i18n("Join Chat Room..."), this);
 
     // application actions
     KAction *showSettingsKCMAction = new KAction(KIcon("telepathy-kde"), i18n("Instant Messaging Settings..."), this);
