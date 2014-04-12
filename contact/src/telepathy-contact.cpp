@@ -23,8 +23,8 @@
 #include <KConfig>
 #include <KStandardDirs>
 
-#include <QDeclarativeEngine>
-#include <QDeclarativeContext>
+#include <QQmlEngine>
+#include <QQmlContext>
 
 #include <QtGui/QPainter>
 

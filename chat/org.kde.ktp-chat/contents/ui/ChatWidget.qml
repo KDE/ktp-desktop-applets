@@ -18,11 +18,10 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import QtQuick 1.1
+import QtQuick 2.1
 import org.kde.telepathy 0.1
-import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
-import org.kde.qtextracomponents 0.1 as ExtraComponents
-import org.kde.plasma.components 0.1 as PlasmaComponents
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
 
 FocusScope {
     id: chatWidget
@@ -40,7 +39,7 @@ FocusScope {
         }
         height: 24
 
-        ExtraComponents.QIconItem {
+        PlasmaCore.IconItem {
             id: contactIcon
             anchors {
                 top: parent.top
@@ -50,7 +49,7 @@ FocusScope {
             }
             width: height
 
-            icon: conv.presenceIcon
+            source: conv.presenceIcon
         }
 
         PlasmaComponents.Label {
@@ -129,22 +128,12 @@ FocusScope {
         }
     }
 
-    PlasmaWidgets.Separator {
-        id: space
-        anchors {
-            top: titleArea.bottom
-            left: parent.left
-            right: parent.right
-        }
-        orientation: Qt.Horizontal
-    }
-
     ListView {
         id: view
         property bool followConversation: true
 
         anchors {
-            top: space.bottom
+            top: titleArea.bottom
             left: parent.left
             right: parent.right
             bottom: disconnectedLabel.top

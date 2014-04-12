@@ -18,8 +18,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import QtQuick 1.1
-import org.kde.plasma.core 0.1 as PlasmaCore
+import QtQuick 2.1
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.telepathy 0.1
 
 ConversationDelegateButton {
@@ -48,7 +48,7 @@ ConversationDelegateButton {
     //FIXME: put in a loader to not slow down the model
     PlasmaCore.Dialog {
         id: dialog
-        windowFlags: Qt.WindowStaysOnTopHint
+//         windowFlags: Qt.WindowStaysOnTopHint
         visible: base.currentIndex==index
 
         mainItem: ChatWidget {

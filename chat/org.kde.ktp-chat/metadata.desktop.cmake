@@ -96,7 +96,6 @@ X-KDE-PluginInfo-Version=@KTP_DESKTOP_APPLETS_VERSION@
 # X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
-#X-KDE-ServiceTypes=Plasma/PopupApplet
 X-KDE-ServiceTypes=Plasma/Applet
 
 #not entirely sure why this is there, I just know everything implodes without it

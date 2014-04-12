@@ -18,11 +18,11 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import QtQuick 1.1
-import org.kde.plasma.components 0.1 as PlasmaComponents
-import org.kde.qtextracomponents 0.1 as ExtraComponents
-import org.kde.plasma.core 0.1 as PlasmaCore
-import org.kde.draganddrop 1.0 as DnD
+import QtQuick 2.1
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.draganddrop 2.0 as DnD
 import org.kde.telepathy 0.1
 
 PlasmaComponents.ToolButton
@@ -30,8 +30,8 @@ PlasmaComponents.ToolButton
     property variant account
     property variant contact
     property alias avatar: icon.icon
-    property alias title: tooltip.mainText
-    property alias presenceIconName: tooltip.image
+    property string title
+    property var presenceIconName
     property alias overlay: overlayLoader.sourceComponent
     checked: base.currentIndex==index
 
@@ -45,15 +45,15 @@ PlasmaComponents.ToolButton
 
         Behavior on opacity { SmoothedAnimation { duration: 250; velocity: 0.01 } }
     }
-    //The MouseArea is just a workaround because otherwise the ToolTip steals the mouse hover events
-    //and the button doesn't get painted properly
-    MouseArea {
-        PlasmaCore.ToolTip {
-            id: tooltip
-            target: parent
-        }
-        acceptedButtons: null
-    }
+//     //The MouseArea is just a workaround because otherwise the ToolTip steals the mouse hover events
+//     //and the button doesn't get painted properly
+//     MouseArea {
+//         PlasmaCore.ToolTip {
+//             id: tooltip
+//             target: parent
+//         }
+//         acceptedButtons: null
+//     }
     
     DnD.DropArea {
         id: dropArea

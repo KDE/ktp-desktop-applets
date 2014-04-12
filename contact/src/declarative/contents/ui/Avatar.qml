@@ -17,9 +17,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-import QtQuick 1.1
+import QtQuick 2.1
 import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
-import org.kde.draganddrop 1.0 as DnD
+import org.kde.draganddrop 2.0 as DnD
 
 Item {
     id: container;
