@@ -7,5 +7,5 @@ QtObject
     Plasmoid.switchHeight: 0
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.fullRepresentation: FullChatList {}
-    Plasmoid.onExpandedChanged: Plasmoid.fullRepresentationItem.activate()
+    Plasmoid.onActivated: Plasmoid.fullRepresentationItem.activate()
 }
