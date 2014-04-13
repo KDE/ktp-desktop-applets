@@ -62,5 +62,28 @@ Item
             plasmoid.action(actionName).triggered.connect(f);
         }
         plasmoid.setActionSeparator("statuses");
+
+        // application actions
+        plasmoid.setAction("openIMSettings", i18n("Instant Messaging Settings..."), "telepathy-kde");
+        plasmoid.setAction("openContactList", i18n("Contact List..."), "meeting-attending");
+        plasmoid.setActionSeparator("applications");
+
+        plasmoid.setAction("addContact", i18n("Add New Contacts..."), "list-add-user");
+        plasmoid.setAction("joinChatRoom", i18n("Join Chat Room..."), "im-irc");
+
+        if (telepathyManager.canDial) {
+            plasmoid.setAction("dial", i18n("Make a Call..."), "internet-telephony");
+        }
+        if (telepathyManager.canSendFile) {
+            plasmoid.setAction("sendFile", i18n("Send a File..."), "mail-attachment");
+        }
+        plasmoid.setActionSeparator("actions");
     }
+
+    function action_dial() { telepathyManager.openDialUi(); }
+    function action_sendFile() { telepathyManager.openDialUi(); }
+    function action_addContact() { telepathyManager.addContact(); }
+    function action_joinChatRoom() { telepathyManager.joinChatRoom(); }
+    function action_openContactList() { telepathyManager.toggleContactList(); }
+    function action_openIMSettings() {telepathyManager.showSettingsKCM(); }
 }
