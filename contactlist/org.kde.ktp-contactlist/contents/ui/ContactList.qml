@@ -18,14 +18,24 @@
  ***************************************************************************/
 
 import QtQuick 2.1
+import QtQuick.Layouts 1.1
 import org.kde.telepathy 0.1 as KTp
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
-
+import org.kde.plasma.plasmoid 2.0
 
 Item {
-    id: contactListContainer
-    anchors.fill: parent
+    id: root
+    Layout.minimumHeight: delegateHeight*3
+    Layout.minimumWidth: 100
+    height: delegateHeight*10
+    width: 300
+    property real delegateHeight: Math.ceil(theme.mSize(theme.defaultFont).height*2)
+
+    onVisibleChanged: {
+        if (visible)
+            filterLineEdit.forceActiveFocus();
+    }
 
     PlasmaComponents.TextField {
         id: filterLineEdit
@@ -70,20 +80,13 @@ Item {
 
             boundsBehavior: Flickable.StopAtBounds
 
-            delegate: ListContactDelegate {}
+            delegate: ListContactDelegate {
+                height: root.delegateHeight
+            }
 
             highlight: PlasmaComponents.Highlight {
-                hover: contactList.focus
+                hover: contactsList.focus
             }
         }
-    }
-
-    function popupEventSlot(shown) {
-        if (shown)
-            filterLineEdit.forceActiveFocus();
-    }
-
-    Component.onCompleted: {
-        plasmoid.popupEvent.connect(popupEventSlot);
     }
 }

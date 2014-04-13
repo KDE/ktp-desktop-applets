@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2011 by Francesco Nwokeka <francesco.nwokeka@gmail.com> *
+ *   Copyright (C) 2014 by Aleix Pol Gonzalez <aleixpol@kde.org>           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,22 +20,16 @@
 
 import QtQuick 2.1
 import org.kde.telepathy 0.1 as KTp
+import org.kde.plasma.plasmoid 2.0
 
+QtObject
+{
+    Plasmoid.switchWidth: 200
+    Plasmoid.switchHeight: 300
 
-Item {
-    id: main;
-
-    property int minimumWidth: 200
-    property int minimumHeight: 300
-
-    ContactList {
-        id: contactList
-        anchors.fill: parent
-    }
+    Plasmoid.fullRepresentation: ContactList {}
 
     Component.onCompleted: {
-        plasmoid.aspectRatioMode = IgnoreAspectRatio;
-
         telepathyManager.addContactListFeatures();
         telepathyManager.becomeReady();
     }
