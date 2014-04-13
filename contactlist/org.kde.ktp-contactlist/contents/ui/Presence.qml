@@ -1,5 +1,4 @@
 /***************************************************************************
- *   Copyright (C) 2011 by Francesco Nwokeka <francesco.nwokeka@gmail.com> *
  *   Copyright (C) 2014 by Aleix Pol Gonzalez <aleixpol@kde.org>           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,29 +17,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-import QtQuick 2.1
-import org.kde.telepathy 0.1 as KTp
-import org.kde.plasma.plasmoid 2.0
+import QtQuick 2.0
+import org.kde.kquickcontrolsaddons 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.telepathy 0.1
 
-Item
+PlasmaCore.IconItem
 {
-    id: root
+    id: panelIconWidget
 
-    Plasmoid.switchWidth: 200
-    Plasmoid.switchHeight: 300
-
-    Plasmoid.fullRepresentation: ContactList {}
-    Plasmoid.compactRepresentation: Presence {
-        source: ktpPresence.currentPresenceIcon
-    }
-
-
-    KTp.GlobalPresence {
-        id: ktpPresence
-        accountManager: telepathyManager.accountManager
-    }
-    Component.onCompleted: {
-        telepathyManager.addContactListFeatures();
-        telepathyManager.becomeReady();
+    MouseArea {
+        anchors.fill: parent
+        onClicked: plasmoid.expanded = !plasmoid.expanded
     }
 }

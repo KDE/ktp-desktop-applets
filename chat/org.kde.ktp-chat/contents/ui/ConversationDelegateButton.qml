@@ -29,13 +29,13 @@ PlasmaComponents.ToolButton
 {
     property variant account
     property variant contact
-    property alias avatar: icon.icon
+    property alias avatar: icon.source
     property string title
     property var presenceIconName
     property alias overlay: overlayLoader.sourceComponent
     checked: base.currentIndex==index
 
-    ExtraComponents.QIconItem {
+    PlasmaCore.IconItem {
         id: icon
         opacity: dropArea.dragging ? 0.5 : 1
         anchors {
