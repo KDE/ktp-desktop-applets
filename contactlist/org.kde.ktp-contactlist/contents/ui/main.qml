@@ -34,13 +34,33 @@ Item
         source: ktpPresence.currentPresenceIcon
     }
 
+    KTp.PresenceModel {
+        id: presenceModel
+    }
 
     KTp.GlobalPresence {
         id: ktpPresence
         accountManager: telepathyManager.accountManager
     }
+
+    function setPresence(row) {
+        ktpPresence.requestedPresence = presenceModel.get(row, "presence");
+    }
+
     Component.onCompleted: {
         telepathyManager.addContactListFeatures();
         telepathyManager.becomeReady();
+
+        //TODO: The PresenceModel might change, this will never react to such changes
+        for(var i=0; i<presenceModel.count; ++i) {
+            var disp = presenceModel.get(i, "display");
+            var actionName = "setStatus"+disp;
+            plasmoid.setAction(actionName, disp, presenceModel.get(i, "iconName"));
+
+            //NOTE: This is done like this only because we don't know better
+            var f = eval("function() { root.setPresence("+i+"); }");
+            plasmoid.action(actionName).triggered.connect(f);
+        }
+        plasmoid.setActionSeparator("statuses");
     }
 }
