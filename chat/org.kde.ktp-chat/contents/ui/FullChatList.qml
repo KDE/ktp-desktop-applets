@@ -19,6 +19,7 @@
 */
 
 import QtQuick 2.1
+import QtQuick.Layouts 1.1
 import org.kde.telepathy 0.1 as KTp
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -27,11 +28,17 @@ import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
 Grid {
     id: base
     property real minimumItemSize: 12
-    property real implicitItemSize: Math.max(0, Math.min(width, height))
-    property real implicitHeight: flow===Flow.TopToBottom ? itemsCount*implicitItemSize : itemsCount==0 ? 0 : implicitItemSize
-    property real implicitWidth: flow===Flow.LeftToRight ? itemsCount*implicitItemSize : itemsCount==0 ? 0 : implicitItemSize
-    property real minimumHeight: flow===Flow.TopToBottom ? itemsCount*minimumItemSize : itemsCount==0 ? 0 : minimumItemSize
-    property real minimumWidth: flow===Flow.LeftToRight ? itemsCount*minimumItemSize : itemsCount==0 ? 0 : minimumItemSize
+    property real preferredItemSize: Math.max(0, Math.min(width, height))
+    property real preferredLength: itemsCount*preferredItemSize+(spacing*itemsCount-1)
+    property real preferredThickness: itemsCount==0 ? 0 : preferredItemSize
+    property real minimumLength: itemsCount*minimumItemSize+(spacing*itemsCount-1)
+    property real minimumThickness: itemsCount==0 ? 0 : minimumItemSize
+
+    Layout.preferredHeight: flow===Flow.TopToBottom ? preferredLength : preferredThickness
+    Layout.preferredWidth: flow===Flow.LeftToRight ? preferredLength : preferredThickness
+    Layout.minimumHeight: flow===Flow.TopToBottom ? minimumLength : minimumThickness
+    Layout.minimumWidth: flow===Flow.LeftToRight ? minimumLength : minimumThickness
+
     property int currentIndex: -1
     property int itemsCount: pinnedView.count + conversationsView.count
     property real itemWidth: Math.max(0, flow===Flow.LeftToRight ? Math.min(height, width/itemsCount) : width)
