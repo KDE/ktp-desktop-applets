@@ -102,8 +102,7 @@ Grid {
                 conversations: conversationsModel
                 accountManager: telepathyManager.accountManager
 
-                //TODO: port to p2
-                Component.onCompleted: plasmoid.addEventListener('ConfigChanged',
+                Component.onCompleted: plasmoid.configuration.valueChanged.connect(
                                         function() {
                                             var v = plasmoid.readConfig("pinnedContacts");
                                             console.log("loading state", v)
