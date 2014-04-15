@@ -69,8 +69,6 @@ ConversationDelegateButton {
         onVisibleChanged: {
             if(visible) {
                 windowHide.hideWindowFromTaskbar(dialog.windowId)
-
-                dialog.visualParent = item;
             } else if(base.currentIndex == index) {
                 closeConversation();
             }
