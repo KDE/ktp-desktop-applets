@@ -50,6 +50,7 @@ ConversationDelegateButton {
         id: dialog
 //         windowFlags: Qt.WindowStaysOnTopHint
         visible: base.currentIndex==index
+        location: plasmoid.location
 
         mainItem: ChatWidget {
             id: chatWidget
@@ -60,14 +61,14 @@ ConversationDelegateButton {
             onCloseRequested: closeConversation()
         }
 
+        //if we are opening the dialog right away (e.g. started chat from pinned)
+        //when we open the dialog by the button plasma will collapse because the
+        //item is not positioned yet. Use the plasmoid root instead, in those cases
+        visualParent: convButton.state==Component.Ready ? convButton : base
+
         onVisibleChanged: {
             if(visible) {
                 windowHide.hideWindowFromTaskbar(dialog.windowId)
-
-                //if we are opening the dialog right away (e.g. started chat from pinned)
-                //when we open the dialog by the button plasma will collapse because the
-                //item is not positioned yet. Use the plasmoid root instead, in those cases
-                var item = convButton.state==Component.Ready ? convButton : base;
 
                 dialog.visualParent = item;
             } else if(base.currentIndex == index) {
