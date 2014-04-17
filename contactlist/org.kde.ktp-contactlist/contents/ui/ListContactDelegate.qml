@@ -25,6 +25,7 @@ import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
 PlasmaComponents.ListItem {
     id: delegate
     enabled: true
+    property bool isCurrent: delegate.ListView.view.currentIndex==index
 
     onClicked: telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid")
 
@@ -45,8 +46,12 @@ PlasmaComponents.ListItem {
     PlasmaComponents.Label {
         id: nickLabel
         text: model.display
-        font.bold: true
         elide: Text.ElideRight
+
+        //consider this a workaround, because the breeze's listitem doesn't
+        //display very clearly what's the current item
+        styleColor: theme.viewFocusColor
+        style: delegate.isCurrent ? Text.Raised : Text.Normal
 
         anchors {
             left: avatarLabel.right
