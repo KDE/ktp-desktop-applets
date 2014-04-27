@@ -14,4 +14,3 @@ add_subdirectory(chat)
 add_subdirectory(contactlist)
 # add_subdirectory(presence)
 
-install(FILES 50-renameKTpApplets.js DESTINATION ${DATA_INSTALL_DIR}/plasma-desktop/updates)
