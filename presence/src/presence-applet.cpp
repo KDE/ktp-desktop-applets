@@ -88,8 +88,8 @@ TelepathyPresenceApplet::TelepathyPresenceApplet(QObject *parent, const QVariant
         setMinimumSize(QSize(iconSize, iconSize));
     }
 
-    connect(m_globalPresence, SIGNAL(currentPresenceChanged(KTp::Presence)), SLOT(onPresenceChanged(KTp::Presence)));
-    onPresenceChanged(m_globalPresence->currentPresence());
+    connect(m_globalPresence, SIGNAL(requestedPresenceChanged(KTp::Presence)), SLOT(onPresenceChanged(KTp::Presence)));
+    onPresenceChanged(m_globalPresence->requestedPresence());
 
     connect(m_globalPresence, SIGNAL(connectionStatusChanged(Tp::ConnectionStatus)), SLOT(onConnectionStatusChanged(Tp::ConnectionStatus)));
     onConnectionStatusChanged(m_globalPresence->connectionStatus());
@@ -352,7 +352,7 @@ void TelepathyPresenceApplet::toolTipAboutToShow()
     Plasma::ToolTipContent content;
     KUser user;
 
-    QString presenceMsg(m_globalPresence->currentPresence().statusMessage());
+    QString presenceMsg(m_globalPresence->requestedPresence().statusMessage());
 
     content.setImage(KIcon("telepathy-kde"));
     content.setMainText(user.loginName());
@@ -362,7 +362,7 @@ void TelepathyPresenceApplet::toolTipAboutToShow()
     } else if (!presenceMsg.isEmpty()) {
         content.setSubText(presenceMsg);
     } else {
-        content.setSubText(m_globalPresence->currentPresence().displayString());
+        content.setSubText(m_globalPresence->requestedPresence().displayString());
     }
 
     Plasma::ToolTipManager::self()->setContent(this, content);
