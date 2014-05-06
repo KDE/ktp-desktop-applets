@@ -45,7 +45,6 @@ ConversationDelegateButton {
     
     Component.onCompleted: setVisible(model.conversation.messages.shouldStartOpened)
     
-    //FIXME: put in a loader to not slow down the model
     PlasmaCore.Dialog {
         id: dialog
 //         windowFlags: Qt.WindowStaysOnTopHint
