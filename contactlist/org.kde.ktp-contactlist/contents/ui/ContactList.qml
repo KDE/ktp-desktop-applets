@@ -82,6 +82,10 @@ Item {
 
             delegate: ListContactDelegate {
                 height: root.delegateHeight
+                onClicked: {
+                    plasmoid.expanded = false;
+                    telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid");
+                }
             }
 
             highlight: PlasmaComponents.Highlight {

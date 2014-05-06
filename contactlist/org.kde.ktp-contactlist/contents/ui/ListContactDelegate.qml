@@ -27,8 +27,6 @@ PlasmaComponents.ListItem {
     enabled: true
     property bool isCurrent: delegate.ListView.view.currentIndex==index
 
-    onClicked: telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid")
-
     ExtraComponents.QPixmapItem {
         id: avatarLabel
         width: height
