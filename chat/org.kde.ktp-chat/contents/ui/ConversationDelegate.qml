@@ -47,7 +47,7 @@ ConversationDelegateButton {
     
     PlasmaCore.Dialog {
         id: dialog
-//         windowFlags: Qt.WindowStaysOnTopHint
+        flags: Qt.WindowStaysOnTopHint
         visible: base.currentIndex==index
         location: plasmoid.location
 
