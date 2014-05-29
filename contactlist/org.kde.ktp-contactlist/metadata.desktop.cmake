@@ -93,6 +93,7 @@ Icon=meeting-attending
 X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/main.qml
 X-Plasma-DefaultSize=200,300
+X-Plasma-NotificationArea=true
 
 X-KDE-PluginInfo-Name=org.kde.ktp-contactlist
 X-KDE-PluginInfo-Category=Online Services
