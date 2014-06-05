@@ -65,6 +65,7 @@ Comment[ko]=특정한 인스턴트 메시지 대화 상대를 위한 애플릿
 Comment[lt]=Programėlė vienam iš jūsų pokalbių kontaktų
 Comment[mr]=तुमच्या एका त्वरित संदेश संपर्काकरिता एप्लेट
 Comment[nb]=Miniprogram for en av dine lynmeldingskontakter
+Comment[nds]=Lüttprogramm för een vun Dien Kortnarichtenkontakten
 Comment[nl]=Applet voor één van uw contactpersonen van Instant Messaging
 Comment[pl]=Aplet dla jednego z kontaktów twojego komunikatora internetowego
 Comment[pt]='Applet' para um dos seus contactos das mensagens instantâneas

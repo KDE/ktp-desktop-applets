@@ -20,6 +20,7 @@ Name[ko]=인스턴트 메시지 상태
 Name[lt]=TP matomumas
 Name[mr]=त्वरित संदेश उपस्थिती
 Name[nb]=Tilstede for lynmeldingssystemet
+Name[nds]=Kortnarichten-Praatschap
 Name[nl]=Aanwezigheid van Instant Messaging
 Name[pl]=Obecność w komunikatorze internetowym
 Name[pt]=Presença nas Mensagens Instantâneas
