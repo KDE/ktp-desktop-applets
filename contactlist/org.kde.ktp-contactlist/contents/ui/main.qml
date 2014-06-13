@@ -31,7 +31,7 @@ Item
 
     Plasmoid.fullRepresentation: ContactList {}
     Plasmoid.compactRepresentation: Presence {
-        source: ktpPresence.currentPresenceIcon
+        source: ktpPresence.currentPresenceIconName
     }
 
     KTp.PresenceModel {
