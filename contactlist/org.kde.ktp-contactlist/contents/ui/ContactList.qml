@@ -65,7 +65,7 @@ Item {
             bottom:parent.bottom
         }
 
-        flickableItem: ListView {
+        contentItem: ListView {
             id: contactsList
 
             clip: true
