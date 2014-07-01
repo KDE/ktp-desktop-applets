@@ -179,6 +179,9 @@ void TelepathyPresenceApplet::setupContextMenuActions()
     for (int i = 0; i < m_presences->rowCount(); i++) {
         KTp::Presence presence = m_presences->data(i).value<KTp::Presence>();
         QString menuentry = m_presences->index(i, 0).data(Qt::DisplayRole).toString();
+        if (menuentry.size() > 60) {
+            menuentry =  menuentry.left(60).append("...");
+        }
         KAction* action = new KAction(getThemedIcon(presence.iconName(false)), menuentry, this);
         action->setData(QVariant::fromValue(presence));
         connect(action, SIGNAL(triggered()), this, SLOT(onPresenceActionClicked()));
