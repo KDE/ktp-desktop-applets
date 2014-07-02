@@ -37,6 +37,15 @@ Item {
             filterLineEdit.forceActiveFocus();
     }
 
+    PlasmaComponents.Button {
+        id: goOnlineButton
+
+        text: i18n("Go online")
+        anchors.centerIn: parent
+        visible: ktpPresence.presenceType == KTp.GlobalPresence.Offline
+        onClicked: ktpPresence.setPresence(KTp.GlobalPresence.Available, "")
+    }
+
     PlasmaComponents.TextField {
         id: filterLineEdit
         anchors {
@@ -45,6 +54,7 @@ Item {
             top:parent.top
         }
 
+        visible: !goOnlineButton.visible
         focus: true
         clearButtonShown: true
 
@@ -58,6 +68,7 @@ Item {
     }
 
     PlasmaExtras.ScrollArea {
+        visible: !goOnlineButton.visible
         anchors {
             top:filterLineEdit.bottom
             left:parent.left
