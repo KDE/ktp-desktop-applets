@@ -97,6 +97,12 @@ Item {
                     plasmoid.expanded = false;
                     telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid");
                 }
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    propagateComposedEvents: true
+                    onEntered: contactsList.currentIndex = index
+                }
             }
 
             highlight: PlasmaComponents.Highlight {
