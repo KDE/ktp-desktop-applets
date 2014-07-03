@@ -102,6 +102,7 @@ Item {
             highlight: PlasmaComponents.Highlight {
                 hover: contactsList.focus
             }
+            highlightMoveDuration: 0
         }
     }
 }
