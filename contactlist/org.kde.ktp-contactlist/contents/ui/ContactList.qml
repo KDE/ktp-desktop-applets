@@ -20,6 +20,7 @@
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
 import org.kde.telepathy 0.1 as KTp
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.plasmoid 2.0
@@ -37,13 +38,24 @@ Item {
             filterLineEdit.forceActiveFocus();
     }
 
-    PlasmaComponents.Button {
-        id: goOnlineButton
-
-        text: i18n("Go online")
+    Column {
+        id: goOnlineItem
         anchors.centerIn: parent
         visible: ktpPresence.presenceType == KTp.GlobalPresence.Offline
-        onClicked: ktpPresence.setPresence(KTp.GlobalPresence.Available, "")
+
+        PlasmaCore.IconItem {
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: goOnlineButton.width
+            height: width
+            source: "user-online"
+        }
+
+        PlasmaComponents.Button {
+            id: goOnlineButton
+
+            text: i18n("Go online")
+            onClicked: ktpPresence.setPresence(KTp.GlobalPresence.Available, "")
+        }
     }
 
     PlasmaComponents.TextField {
@@ -54,7 +66,7 @@ Item {
             top:parent.top
         }
 
-        visible: !goOnlineButton.visible
+        visible: !goOnlineItem.visible
         focus: true
         clearButtonShown: true
 
@@ -68,7 +80,7 @@ Item {
     }
 
     PlasmaExtras.ScrollArea {
-        visible: !goOnlineButton.visible
+        visible: !goOnlineItem.visible
         anchors {
             top:filterLineEdit.bottom
             left:parent.left
