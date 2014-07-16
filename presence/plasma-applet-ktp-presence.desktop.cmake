@@ -7,6 +7,7 @@ Name[cs]=Widget stavu komunikátoru
 Name[da]=Instant messaging-tilstedeværelse
 Name[de]=Instant-Messenger-Anwesenheit
 Name[el]=Παρουσία με στιγμιαίο μήνυμα
+Name[en_GB]=Instant Messaging Presence
 Name[es]=Presencia de mensajería instantánea
 Name[et]=Kiirsuhtluse olek
 Name[fi]=Pikaviestinnän läsnäolo
