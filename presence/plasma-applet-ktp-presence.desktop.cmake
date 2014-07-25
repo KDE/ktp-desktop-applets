@@ -9,6 +9,7 @@ Name[de]=Instant-Messenger-Anwesenheit
 Name[el]=Παρουσία με στιγμιαίο μήνυμα
 Name[en_GB]=Instant Messaging Presence
 Name[es]=Presencia de mensajería instantánea
+Name[et]=Kiirsuhtluse olek
 Name[fi]=Pikaviestinnän läsnäolo
 Name[fr]=Présence de la messagerie instantanée
 Name[gl]=Presenza da mensaxería instantánea
