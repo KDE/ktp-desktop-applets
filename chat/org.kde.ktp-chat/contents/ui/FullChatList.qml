@@ -56,6 +56,10 @@ Grid {
         base.currentIndex = conversationsModel.nextActiveConversation(base.currentIndex+1 % conversationsModel.count)
     }
 
+    function closeAllConversations() {
+        conversationsModel.closeAllConversations()
+    }
+
     KTp.ConversationsModel {
         id: conversationsModel
     }

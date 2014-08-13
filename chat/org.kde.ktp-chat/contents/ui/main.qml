@@ -28,4 +28,10 @@ QtObject
     Plasmoid.preferredRepresentation: Plasmoid.fullRepresentation
     Plasmoid.fullRepresentation: FullChatList {}
     Plasmoid.onActivated: Plasmoid.fullRepresentationItem.activate()
+
+    function action_clearChatList() { Plasmoid.fullRepresentationItem.closeAllConversations(); }
+    Component.onCompleted: {
+        plasmoid.setAction("clearChatList", i18n("Close All Conversations"), "edit-clear");
+        plasmoid.setActionSeparator("actions");
+    }
 }
