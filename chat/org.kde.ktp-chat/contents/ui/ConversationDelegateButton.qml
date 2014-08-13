@@ -34,13 +34,13 @@ PlasmaComponents.ToolButton
     property var presenceIconName
     property alias overlay: overlayLoader.sourceComponent
     checked: base.currentIndex==index
+    checkable: checked
 
     PlasmaCore.IconItem {
         id: icon
         opacity: dropArea.dragging ? 0.5 : 1
         anchors {
             fill: parent
-            margins: 5
         }
 
         Behavior on opacity { SmoothedAnimation { duration: 250; velocity: 0.01 } }
