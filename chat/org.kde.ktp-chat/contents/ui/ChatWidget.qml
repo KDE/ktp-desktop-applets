@@ -180,6 +180,7 @@ FocusScope {
     PlasmaComponents.Label {
         id: disconnectedLabel
         visible: !conv.valid
+        height: visible ? contentHeight : 0
 
         anchors {
             left: parent.left
