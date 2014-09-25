@@ -53,8 +53,8 @@ ConversationDelegateButton {
 
         mainItem: ChatWidget {
             id: chatWidget
-            width: 250
-            height: 350
+            width: units.gridUnit*20
+            height: units.gridUnit*25
             conv: model.conversation
 
             onCloseRequested: closeConversation()
