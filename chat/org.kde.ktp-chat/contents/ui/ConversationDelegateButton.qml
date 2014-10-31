@@ -22,7 +22,6 @@ import QtQuick 2.1
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.draganddrop 2.0 as DnD
 import org.kde.telepathy 0.1
 
 PlasmaComponents.ToolButton
@@ -38,7 +37,7 @@ PlasmaComponents.ToolButton
 
     PlasmaCore.IconItem {
         id: icon
-        opacity: dropArea.dragging ? 0.5 : 1
+        opacity: dropArea.containsDrag ? 0.5 : 1
         anchors {
             fill: parent
         }
@@ -55,17 +54,14 @@ PlasmaComponents.ToolButton
 //         acceptedButtons: null
 //     }
     
-    DnD.DropArea {
+    DropArea {
         id: dropArea
-        property bool dragging: false
 
         anchors.fill: parent
-        onDrop: if (event.mimeData.url!="") {
-            telepathyManager.startFileTransfer(parent.account, parent.contact, event.mimeData.url);
-            dragging=false
+        onDropped: {
+            for(var url in drop.urls)
+                telepathyManager.startFileTransfer(parent.account, parent.contact, url);
         }
-        onDragEnter: dragging=true
-        onDragLeave: dragging=false
     }
     
     Loader {
