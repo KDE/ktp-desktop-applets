@@ -27,17 +27,15 @@ import org.kde.telepathy 0.1
 MouseArea
 {
     id: mouseArea
-    hoverEnabled: true
 
     property variant account
     property variant contact
     property alias avatar: icon.source
-    property string title
-    property string presenceIconName
+    property alias title: toolTip.mainText
+    property alias presenceIconName: toolTip.icon
     property alias overlay: overlayLoader.sourceComponent
     property bool needsAttention: false
-//     checked: base.currentIndex==index
-//     checkable: checked
+    property bool focused: base.currentIndex==index
 
     PlasmaCore.FrameSvgItem {
         id: frame
@@ -45,8 +43,8 @@ MouseArea
         anchors.fill: parent
 
         imagePath: "widgets/tasks"
-        prefix: taskPrefix(base.currentIndex==index ? "focus" :
-                           mouseArea.containsMouse  ? "hover" :
+        prefix: taskPrefix(mouseArea.focused        ? "focus" :
+                           toolTip.containsMouse    ? "hover" :
                            mouseArea.needsAttention ? "attention"
                                                     : "normal")
 
@@ -81,15 +79,12 @@ MouseArea
         }
     }
 
-//     //The MouseArea is just a workaround because otherwise the ToolTip steals the mouse hover events
-//     //and the button doesn't get painted properly
-//     MouseArea {
-//         PlasmaCore.ToolTip {
-//             id: tooltip
-//             target: parent
-//         }
-//         acceptedButtons: null
-//     }
+    PlasmaCore.ToolTipArea {
+        id: toolTip
+
+        active: !mouseArea.focused
+        anchors.fill: parent
+    }
     
     DropArea {
         id: dropArea
