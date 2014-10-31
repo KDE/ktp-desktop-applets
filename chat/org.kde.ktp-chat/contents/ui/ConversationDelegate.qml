@@ -33,6 +33,7 @@ ConversationDelegateButton {
     account: model.conversation.account
     contact: model.conversation.targetContact
     onClicked: toggleVisibility()
+    needsAttention: model.conversation.messages.unreadCount !== 0
     
     function toggleVisibility() { setVisible(!isCurrentConversation) }
     function openConversation() { base.currentIndex = index }
@@ -109,6 +110,6 @@ ConversationDelegateButton {
             verticalAlignment: Text.AlignVCenter
         }
 
-        visible: model.conversation.messages.unreadCount !== 0
+        visible: convButton.needsAttention
     }
 }

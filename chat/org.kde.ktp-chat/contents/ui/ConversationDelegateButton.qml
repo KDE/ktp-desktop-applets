@@ -24,26 +24,63 @@ import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.telepathy 0.1
 
-PlasmaComponents.ToolButton
+MouseArea
 {
+    id: mouseArea
+    hoverEnabled: true
+
     property variant account
     property variant contact
     property alias avatar: icon.source
     property string title
-    property var presenceIconName
+    property string presenceIconName
     property alias overlay: overlayLoader.sourceComponent
-    checked: base.currentIndex==index
-    checkable: checked
+    property bool needsAttention: false
+//     checked: base.currentIndex==index
+//     checkable: checked
 
-    PlasmaCore.IconItem {
-        id: icon
-        opacity: dropArea.containsDrag ? 0.5 : 1
-        anchors {
-            fill: parent
+    PlasmaCore.FrameSvgItem {
+        id: frame
+
+        anchors.fill: parent
+
+        imagePath: "widgets/tasks"
+        prefix: taskPrefix(base.currentIndex==index ? "focus" :
+                           mouseArea.containsMouse  ? "hover" :
+                           mouseArea.needsAttention ? "attention"
+                                                    : "normal")
+
+        function taskPrefix(prefix) {
+            var effectivePrefix;
+            switch (plasmoid.location) {
+                case PlasmaCore.Types.LeftEdge:
+                    effectivePrefix = "west-" + prefix;
+                    break;
+                case PlasmaCore.Types.TopEdge:
+                    effectivePrefix = "north-" + prefix;
+                    break;
+                case PlasmaCore.Types.RightEdge:
+                    effectivePrefix = "east-" + prefix;
+                    break;
+                case PlasmaCore.Types.BottomEdge:
+                    effectivePrefix = "south-" + prefix;
+                    break;
+            }
+            if (!frame.hasElementPrefix(effectivePrefix)) {
+                effectivePrefix = prefix;
+            }
+            return effectivePrefix;
         }
 
-        Behavior on opacity { SmoothedAnimation { duration: 250; velocity: 0.01 } }
+        PlasmaCore.IconItem {
+            id: icon
+            opacity: dropArea.containsDrag ? 0.5 : 1
+            anchors.fill: parent
+
+            Behavior on opacity { SmoothedAnimation { duration: 250; velocity: 0.01 } }
+        }
     }
+
 //     //The MouseArea is just a workaround because otherwise the ToolTip steals the mouse hover events
 //     //and the button doesn't get painted properly
 //     MouseArea {
