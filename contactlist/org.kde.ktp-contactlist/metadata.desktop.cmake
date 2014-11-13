@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Instant Messaging Contact List
+Name=Instant Messaging
 Name[bs]=Lista za instant poruke
 Name[ca]=Llista de contactes de missatgeria instantània
 Name[ca@valencia]=Llista de contactes de missatgeria instantània
@@ -44,7 +44,7 @@ Name[wa]=Djivêye des soçons del messaedjreye sol moumint
 Name[x-test]=xxInstant Messaging Contact Listxx
 Name[zh_CN]=即时通讯联系人列表
 Name[zh_TW]=即時通訊聯絡人清單
-Comment=List instant messaging contacts
+Comment=Displays your presence and contacts
 Comment[bs]=Lista za instant poruke
 Comment[ca]=Llista els contactes de missatgeria instantània
 Comment[ca@valencia]=Llista els contactes de missatgeria instantània
@@ -95,6 +95,8 @@ Icon=meeting-attending
 X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/main.qml
 X-Plasma-DefaultSize=200,300
+X-Plasma-NotificationArea=true
+X-Plasma-DBusActivationService=org.freedesktop.Telepathy.MissionControl5
 
 X-KDE-PluginInfo-Name=org.kde.ktp-contactlist
 X-KDE-PluginInfo-Category=Online Services

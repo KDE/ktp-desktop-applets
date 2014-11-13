@@ -17,18 +17,15 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-import QtQuick 1.1
-import org.kde.plasma.core 0.1 as PlasmaCore
-import org.kde.plasma.components 0.1 as PlasmaComponents
-import org.kde.qtextracomponents 0.1 as ExtraComponents
+import QtQuick 2.1
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
 
 PlasmaComponents.ListItem {
     id: delegate
     enabled: true
-
-    height: Math.ceil(nickLabel.height*1.5)
-
-    onClicked: telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid")
+    property bool isCurrent: delegate.ListView.view.currentIndex==index
 
     ExtraComponents.QPixmapItem {
         id: avatarLabel
@@ -47,8 +44,12 @@ PlasmaComponents.ListItem {
     PlasmaComponents.Label {
         id: nickLabel
         text: model.display
-        font.bold: true
         elide: Text.ElideRight
+
+        //consider this a workaround, because the breeze's listitem doesn't
+        //display very clearly what's the current item
+        styleColor: theme.viewFocusColor
+        style: delegate.isCurrent ? Text.Raised : Text.Normal
 
         anchors {
             left: avatarLabel.right

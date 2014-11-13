@@ -17,15 +17,46 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-import QtQuick 1.1
+import QtQuick 2.1
+import QtQuick.Layouts 1.1
 import org.kde.telepathy 0.1 as KTp
-import org.kde.plasma.components 0.1 as PlasmaComponents
-import org.kde.plasma.extras 0.1 as PlasmaExtras
-
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.plasmoid 2.0
 
 Item {
-    id: contactListContainer
-    anchors.fill: parent
+    id: root
+    Layout.minimumHeight: delegateHeight*3
+    Layout.minimumWidth: 100
+    height: delegateHeight*10
+    width: 300
+    property real delegateHeight: Math.ceil(theme.mSize(theme.defaultFont).height*2)
+
+    onVisibleChanged: {
+        if (visible)
+            filterLineEdit.forceActiveFocus();
+    }
+
+    Column {
+        id: goOnlineItem
+        anchors.centerIn: parent
+        visible: ktpPresence.presenceType == KTp.GlobalPresence.Offline
+
+        PlasmaCore.IconItem {
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: goOnlineButton.width
+            height: width
+            source: "user-online"
+        }
+
+        PlasmaComponents.Button {
+            id: goOnlineButton
+
+            text: i18n("Go online")
+            onClicked: ktpPresence.setPresence(KTp.GlobalPresence.Available, "")
+        }
+    }
 
     PlasmaComponents.TextField {
         id: filterLineEdit
@@ -35,6 +66,7 @@ Item {
             top:parent.top
         }
 
+        visible: !goOnlineItem.visible
         focus: true
         clearButtonShown: true
 
@@ -48,6 +80,7 @@ Item {
     }
 
     PlasmaExtras.ScrollArea {
+        visible: !goOnlineItem.visible
         anchors {
             top:filterLineEdit.bottom
             left:parent.left
@@ -55,7 +88,7 @@ Item {
             bottom:parent.bottom
         }
 
-        flickableItem: ListView {
+        contentItem: ListView {
             id: contactsList
 
             clip: true
@@ -70,20 +103,24 @@ Item {
 
             boundsBehavior: Flickable.StopAtBounds
 
-            delegate: ListContactDelegate {}
+            delegate: ListContactDelegate {
+                height: root.delegateHeight
+                onClicked: {
+                    plasmoid.expanded = false;
+                    telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid");
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    propagateComposedEvents: true
+                    onEntered: contactsList.currentIndex = index
+                }
+            }
 
             highlight: PlasmaComponents.Highlight {
-                hover: contactList.focus
+                hover: contactsList.focus
             }
+            highlightMoveDuration: 0
         }
-    }
-
-    function popupEventSlot(shown) {
-        if (shown)
-            filterLineEdit.forceActiveFocus();
-    }
-
-    Component.onCompleted: {
-        plasmoid.popupEvent.connect(popupEventSlot);
     }
 }

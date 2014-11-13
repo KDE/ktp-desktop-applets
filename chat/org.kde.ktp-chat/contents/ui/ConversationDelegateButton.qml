@@ -18,54 +18,82 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import QtQuick 1.1
-import org.kde.plasma.components 0.1 as PlasmaComponents
-import org.kde.qtextracomponents 0.1 as ExtraComponents
-import org.kde.plasma.core 0.1 as PlasmaCore
-import org.kde.draganddrop 1.0 as DnD
+import QtQuick 2.1
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.telepathy 0.1
 
-PlasmaComponents.ToolButton
+MouseArea
 {
+    id: mouseArea
+
     property variant account
     property variant contact
-    property alias avatar: icon.icon
-    property alias title: tooltip.mainText
-    property alias presenceIconName: tooltip.image
+    property alias avatar: icon.source
+    property alias title: toolTip.mainText
+    property alias presenceIconName: toolTip.icon
     property alias overlay: overlayLoader.sourceComponent
-    checked: base.currentIndex==index
+    property bool needsAttention: false
+    property bool focused: base.currentIndex==index
 
-    ExtraComponents.QIconItem {
-        id: icon
-        opacity: dropArea.dragging ? 0.5 : 1
-        anchors {
-            fill: parent
-            margins: 5
-        }
-
-        Behavior on opacity { SmoothedAnimation { duration: 250; velocity: 0.01 } }
-    }
-    //The MouseArea is just a workaround because otherwise the ToolTip steals the mouse hover events
-    //and the button doesn't get painted properly
-    MouseArea {
-        PlasmaCore.ToolTip {
-            id: tooltip
-            target: parent
-        }
-        acceptedButtons: null
-    }
-    
-    DnD.DropArea {
-        id: dropArea
-        property bool dragging: false
+    PlasmaCore.FrameSvgItem {
+        id: frame
 
         anchors.fill: parent
-        onDrop: if (event.mimeData.url!="") {
-            telepathyManager.startFileTransfer(parent.account, parent.contact, event.mimeData.url);
-            dragging=false
+
+        imagePath: "widgets/tasks"
+        prefix: taskPrefix(mouseArea.focused        ? "focus" :
+                           toolTip.containsMouse    ? "hover" :
+                           mouseArea.needsAttention ? "attention"
+                                                    : "normal")
+
+        function taskPrefix(prefix) {
+            var effectivePrefix;
+            switch (plasmoid.location) {
+                case PlasmaCore.Types.LeftEdge:
+                    effectivePrefix = "west-" + prefix;
+                    break;
+                case PlasmaCore.Types.TopEdge:
+                    effectivePrefix = "north-" + prefix;
+                    break;
+                case PlasmaCore.Types.RightEdge:
+                    effectivePrefix = "east-" + prefix;
+                    break;
+                case PlasmaCore.Types.BottomEdge:
+                    effectivePrefix = "south-" + prefix;
+                    break;
+            }
+            if (!frame.hasElementPrefix(effectivePrefix)) {
+                effectivePrefix = prefix;
+            }
+            return effectivePrefix;
         }
-        onDragEnter: dragging=true
-        onDragLeave: dragging=false
+
+        PlasmaCore.IconItem {
+            id: icon
+            opacity: dropArea.containsDrag ? 0.5 : 1
+            anchors.fill: parent
+
+            Behavior on opacity { SmoothedAnimation { duration: 250; velocity: 0.01 } }
+        }
+    }
+
+    PlasmaCore.ToolTipArea {
+        id: toolTip
+
+        active: !mouseArea.focused
+        anchors.fill: parent
+    }
+    
+    DropArea {
+        id: dropArea
+
+        anchors.fill: parent
+        onDropped: {
+            for(var url in drop.urls)
+                telepathyManager.startFileTransfer(parent.account, parent.contact, url);
+        }
     }
     
     Loader {

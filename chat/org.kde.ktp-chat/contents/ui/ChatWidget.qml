@@ -18,11 +18,11 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import QtQuick 1.1
+import QtQuick 2.1
+import QtQuick.Layouts 1.1
 import org.kde.telepathy 0.1
-import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
-import org.kde.qtextracomponents 0.1 as ExtraComponents
-import org.kde.plasma.components 0.1 as PlasmaComponents
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
 
 FocusScope {
     id: chatWidget
@@ -30,55 +30,39 @@ FocusScope {
 
     signal closeRequested
 
-    Item {
+    RowLayout {
         id: titleArea
+        clip: true
         anchors {
-            margins: 5
             top: parent.top
             left: parent.left
             right: parent.right
         }
-        height: 24
+        spacing: 3
+        height: 30
 
-        ExtraComponents.QIconItem {
-            id: contactIcon
-            anchors {
-                top: parent.top
-                left: parent.left
-                bottom: parent.bottom
-                margins: 3
-            }
-            width: height
+        PlasmaCore.IconItem {
+            Layout.fillHeight: true
 
-            icon: conv.presenceIcon
+            source: conv.presenceIcon
         }
 
         PlasmaComponents.Label {
-            id: contactName
-            anchors {
-                left: contactIcon.right
-                right: pinButton.left
-                top: parent.top
-                bottom: parent.bottom
-                leftMargin: 5
-            }
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
             text: conv.title
             elide: Text.ElideRight
         }
 
         PlasmaComponents.ToolButton {
-            id: pinButton
-
-            anchors {
-                top: parent.top
-                right: minimizeButton.left
-                bottom: parent.bottom
-            }
+            Layout.fillHeight: true
             checkable: true
             checked: pin.pinned
 
             iconSource: "rating"
             onClicked: pin.toggle()
+            tooltip: i18n("Pin contact")
             ContactPin {
                 id: pin
                 model: pinnedModel
@@ -88,55 +72,18 @@ FocusScope {
         }
 
         PlasmaComponents.ToolButton {
-            id: minimizeButton
-
-            anchors {
-                top: parent.top
-                right: popoutButton.left
-                bottom: parent.bottom
-            }
-
-            iconSource: "arrow-down"
-            onClicked: closeRequested()
-        }
-
-        PlasmaComponents.ToolButton {
-            id: popoutButton
-
-            anchors {
-                top: parent.top
-                right: closeButton.left
-                bottom: parent.bottom
-            }
-
+            Layout.fillHeight: true
             iconSource: "view-conversation-balloon"
-
+            tooltip: i18n("Move conversation into a window")
             onClicked: conv.delegateToProperClient()
         }
 
         PlasmaComponents.ToolButton {
-            id: closeButton
-
-            anchors {
-                top: parent.top
-                right: parent.right
-                bottom: parent.bottom
-            }
-
+            Layout.fillHeight: true
             iconSource: "dialog-close"
-
+            tooltip: i18n("Close conversation")
             onClicked: conv.requestClose()
         }
-    }
-
-    PlasmaWidgets.Separator {
-        id: space
-        anchors {
-            top: titleArea.bottom
-            left: parent.left
-            right: parent.right
-        }
-        orientation: Qt.Horizontal
     }
 
     ListView {
@@ -144,7 +91,7 @@ FocusScope {
         property bool followConversation: true
 
         anchors {
-            top: space.bottom
+            top: titleArea.bottom
             left: parent.left
             right: parent.right
             bottom: disconnectedLabel.top
@@ -191,6 +138,7 @@ FocusScope {
     PlasmaComponents.Label {
         id: disconnectedLabel
         visible: !conv.valid
+        height: visible ? contentHeight : 0
 
         anchors {
             left: parent.left

@@ -18,8 +18,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import QtQuick 1.1
-import org.kde.plasma.core 0.1 as PlasmaCore
+import QtQuick 2.1
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.telepathy 0.1
 
 ConversationDelegateButton {
@@ -33,6 +33,7 @@ ConversationDelegateButton {
     account: model.conversation.account
     contact: model.conversation.targetContact
     onClicked: toggleVisibility()
+    needsAttention: model.conversation.messages.unreadCount !== 0
     
     function toggleVisibility() { setVisible(!isCurrentConversation) }
     function openConversation() { base.currentIndex = index }
@@ -45,35 +46,30 @@ ConversationDelegateButton {
     
     Component.onCompleted: setVisible(model.conversation.messages.shouldStartOpened)
     
-    //FIXME: put in a loader to not slow down the model
     PlasmaCore.Dialog {
         id: dialog
-        windowFlags: Qt.WindowStaysOnTopHint
+        flags: Qt.WindowStaysOnTopHint
         visible: base.currentIndex==index
+        location: plasmoid.location
 
         mainItem: ChatWidget {
             id: chatWidget
-            width: 250
-            height: 350
+            width: units.gridUnit*20
+            height: units.gridUnit*25
             conv: model.conversation
 
             onCloseRequested: closeConversation()
         }
 
+        //if we are opening the dialog right away (e.g. started chat from pinned)
+        //when we open the dialog by the button plasma will collapse because the
+        //item is not positioned yet. Use the plasmoid root instead, in those cases
+        visualParent: convButton.state==Component.Ready ? convButton : base
+
         onVisibleChanged: {
             if(visible) {
                 windowHide.hideWindowFromTaskbar(dialog.windowId)
-
-                //if we are opening the dialog right away (e.g. started chat from pinned)
-                //when we open the dialog by the button plasma will collapse because the
-                //item is not positioned yet. Use the plasmoid root instead, in those cases
-                var item = convButton.state==Component.Ready ? convButton : base;
-                var point = dialog.popupPosition(item, convButton.popupSide);
-                console.log("Showing dialog at (" + point.x + "," + point.y + ")");
-
-                dialog.x = point.x;
-                dialog.y = point.y;
-                dialog.activateWindow();
+                dialog.requestActivate();
             } else if(base.currentIndex == index) {
                 closeConversation();
             }
@@ -114,6 +110,6 @@ ConversationDelegateButton {
             verticalAlignment: Text.AlignVCenter
         }
 
-        visible: model.conversation.messages.unreadCount !== 0
+        visible: convButton.needsAttention
     }
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2011 by Francesco Nwokeka <francesco.nwokeka@gmail.com> *
+ *   Copyright (C) 2014 by Aleix Pol Gonzalez <aleixpol@kde.org>           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,39 +17,18 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
  ***************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.0
+import org.kde.kquickcontrolsaddons 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.graphicswidgets 0.1 as PlasmaWidgets
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.telepathy 0.1
 
-Item {
-    id: label;
+PlasmaCore.IconItem
+{
+    id: panelIconWidget
 
-    // this property holds which side the label is to be viewed. Default is left
-    // and changes when user changes screen edge from settings ui.
-    property string orientation: "left";
-    signal orientationChanged();
-    property QtObject theme: PlasmaCore.Theme {}
-
-    PlasmaWidgets.IconWidget {
-        id: labelIcon;
-        icon: QIcon("kde-telepathy");
-        drawBackground: false;
-        text: i18n("ContactList");
-        orientation: QtHorizontal;
-        textBackgroundColor: theme.backgroundColor;
-        anchors.fill: parent;
-    }
-
-    function setOrientation(newOrientation)
-    {
-        if (newOrientation == "left"
-                || newOrientation == "right"
-                || newOrientation == "bottom"
-                || newOrientation == "top") {
-            label.orientation = newOrientation;
-            label.orientationChanged();
-        } else {
-            console.log("CAN'T SET FAILED ORIENTATION!");
-        }
+    MouseArea {
+        anchors.fill: parent
+        onClicked: plasmoid.expanded = !plasmoid.expanded
     }
 }
