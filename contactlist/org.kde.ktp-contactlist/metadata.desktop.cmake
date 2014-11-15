@@ -1,6 +1,16 @@
 [Desktop Entry]
 Name=Instant Messaging
+Name[cs]=Instant Messaging
+Name[nl]=Instant Messaging
+Name[pt]=Mensagens Instantâneas
+Name[uk]=Миттєвий обмін повідомленнями
+Name[x-test]=xxInstant Messagingxx
 Comment=Displays your presence and contacts
+Comment[cs]=Zobrazuje vaši dostupnost a kontakty
+Comment[nl]=Toont uw aanwezigheid en contactpersonen
+Comment[pt]=Mostra a sua presença e contactos
+Comment[uk]=Показувати дані щодо вашої присутності та контактів
+Comment[x-test]=xxDisplays your presence and contactsxx
 Type=Service
 ServiceTypes=Plasma/Applet
 Icon=meeting-attending
