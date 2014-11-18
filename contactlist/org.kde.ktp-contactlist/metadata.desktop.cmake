@@ -2,6 +2,7 @@
 Name=Instant Messaging
 Name[cs]=Instant Messaging
 Name[de]=Instant-Messaging
+Name[fi]=Pikaviestintä
 Name[nl]=Instant Messaging
 Name[pl]=Komunikator internetowy
 Name[pt]=Mensagens Instantâneas
@@ -15,6 +16,7 @@ Name[x-test]=xxInstant Messagingxx
 Comment=Displays your presence and contacts
 Comment[cs]=Zobrazuje vaši dostupnost a kontakty
 Comment[de]=Zeigt Ihre Anwesenheit und Kontakte
+Comment[fi]=Näyttää läsnäolon ja yhteystiedot
 Comment[nl]=Toont uw aanwezigheid en contactpersonen
 Comment[pl]=Wyświetla twoją dostępności i kontakty
 Comment[pt]=Mostra a sua presença e contactos
