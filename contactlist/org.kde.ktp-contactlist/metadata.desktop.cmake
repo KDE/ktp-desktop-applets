@@ -5,6 +5,7 @@ Name[de]=Instant-Messaging
 Name[en_GB]=Instant Messaging
 Name[fi]=Pikaviestintä
 Name[it]=Messaggistica istantanea
+Name[nb]=Lynmelding
 Name[nl]=Instant Messaging
 Name[pl]=Komunikator internetowy
 Name[pt]=Mensagens Instantâneas
