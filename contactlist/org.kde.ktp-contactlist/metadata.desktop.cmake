@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=Instant Messaging
+Name[ca]=Missatgeria instantània
 Name[cs]=Instant Messaging
 Name[de]=Instant-Messaging
 Name[en_GB]=Instant Messaging
+Name[es]=Mensajería instantánea
 Name[fi]=Pikaviestintä
 Name[it]=Messaggistica istantanea
 Name[nb]=Lynmelding
@@ -19,9 +21,11 @@ Name[sr@latin]=Brzo glasništvo
 Name[uk]=Миттєвий обмін повідомленнями
 Name[x-test]=xxInstant Messagingxx
 Comment=Displays your presence and contacts
+Comment[ca]=Mostra la vostra presència i els contactes
 Comment[cs]=Zobrazuje vaši dostupnost a kontakty
 Comment[de]=Zeigt Ihre Anwesenheit und Kontakte
 Comment[en_GB]=Displays your presence and contacts
+Comment[es]=Muestra su estado y sus contactos
 Comment[fi]=Näyttää läsnäolon ja yhteystiedot
 Comment[it]=Mostra la tua presenza e i tuoi contatti
 Comment[nl]=Toont uw aanwezigheid en contactpersonen
