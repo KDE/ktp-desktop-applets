@@ -13,6 +13,5 @@ include(KDECompilerSettings)
 
 add_subdirectory(chat)
 add_subdirectory(contactlist)
-# add_subdirectory(presence)
 
 plasma_install_package(person org.kde.person)
