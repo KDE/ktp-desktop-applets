@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2011 by Francesco Nwokeka <francesco.nwokeka@gmail.com> *
+ *   Copyright (C) 2014 by Aleix Pol Gonzalez <aleixpol@blue-systems.com>  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -14,20 +14,50 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA            *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.people 1.0
 
-Item {
-    id: mainWidget;
+ColumnLayout
+{
+    id: configRoot
+    property string cfg_personId
 
-    // default contact size (also in metadata file) just to be sure
-    property int minimumWidth: 128;
-    property int minimumHeight: 128;
+    Label {
+        text: i18n("Selected Person:")
+    }
 
-    Contact {
-        id: contact;
-        anchors.fill: parent
+    ComboBox {
+        id: combo
+        Layout.fillWidth: true
+        model: PersonsModel {}
+        textRole: "display"
+        onActivated: {
+            configRoot.cfg_personId = model.get(index, PersonsModel.PersonIdRole);
+        }
+    }
+
+    Item {
+        Layout.fillHeight: true
+    }
+
+    onCfg_personIdChanged: {
+        restore();
+    }
+    function restore() {
+        if (configRoot.cfg_personId == "")
+            return;
+
+        for(var i=0; i<combo.count; ++i) {
+            var f = combo.model.get(i, PersonsModel.PersonIdRole);
+            if (f == configRoot.cfg_personId) {
+                combo.currentIndex = combo.find(combo.model.get(i, Qt.DisplayRole));
+            }
+        }
     }
 }
