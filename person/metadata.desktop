@@ -1,6 +1,18 @@
 [Desktop Entry]
 Name=Person
+Name[cs]=Osoba
+Name[nl]=Persoon
+Name[pt]=Pessoa
+Name[pt_BR]=Pessoa
+Name[uk]=Особа
+Name[x-test]=xxPersonxx
 Comment=Makes a person easily accessible
+Comment[cs]=Usnadňuje přístup k osobám
+Comment[nl]=Maakt een persoon gemakkelijk toegankelijk
+Comment[pt]=Torna uma pessoa facilmente acessível
+Comment[pt_BR]=Torna uma pessoa facilmente acessível
+Comment[uk]=Спрощує доступ до особи
+Comment[x-test]=xxMakes a person easily accessiblexx
 
 Icon=applications-system
 Type=Service
