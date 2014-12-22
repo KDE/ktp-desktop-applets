@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Person
+Name[ca]=Persona
 Name[cs]=Osoba
 Name[fi]=Henkilö
 Name[nl]=Persoon
@@ -10,6 +11,7 @@ Name[sk]=Osoba
 Name[uk]=Особа
 Name[x-test]=xxPersonxx
 Comment=Makes a person easily accessible
+Comment[ca]=Fa accessible una persona fàcilment
 Comment[cs]=Usnadňuje přístup k osobám
 Comment[nl]=Maakt een persoon gemakkelijk toegankelijk
 Comment[pl]=Czyni osobę łatwo dostępną
