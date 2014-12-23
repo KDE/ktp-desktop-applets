@@ -2,6 +2,7 @@
 Name=Instant Messaging
 Name[ca]=Missatgeria instantània
 Name[cs]=Instant Messaging
+Name[da]=Instant messaging
 Name[de]=Instant-Messaging
 Name[en_GB]=Instant Messaging
 Name[es]=Mensajería instantánea
@@ -25,6 +26,7 @@ Name[x-test]=xxInstant Messagingxx
 Comment=Displays your presence and contacts
 Comment[ca]=Mostra la vostra presència i els contactes
 Comment[cs]=Zobrazuje vaši dostupnost a kontakty
+Comment[da]=Viser din tilstedeværelse og kontakter
 Comment[de]=Zeigt Ihre Anwesenheit und Kontakte
 Comment[en_GB]=Displays your presence and contacts
 Comment[es]=Muestra su estado y sus contactos

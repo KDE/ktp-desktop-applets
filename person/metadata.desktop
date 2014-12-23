@@ -2,6 +2,7 @@
 Name=Person
 Name[ca]=Persona
 Name[cs]=Osoba
+Name[da]=Person
 Name[fi]=Henkilö
 Name[nl]=Persoon
 Name[pl]=Osoba
@@ -13,6 +14,7 @@ Name[x-test]=xxPersonxx
 Comment=Makes a person easily accessible
 Comment[ca]=Fa accessible una persona fàcilment
 Comment[cs]=Usnadňuje přístup k osobám
+Comment[da]=Gør en person nemt tilgængelig
 Comment[nl]=Maakt een persoon gemakkelijk toegankelijk
 Comment[pl]=Czyni osobę łatwo dostępną
 Comment[pt]=Torna uma pessoa facilmente acessível
