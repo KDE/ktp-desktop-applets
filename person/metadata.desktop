@@ -15,6 +15,7 @@ Name[sr]=Особа
 Name[sr@ijekavian]=Особа
 Name[sr@ijekavianlatin]=Osoba
 Name[sr@latin]=Osoba
+Name[sv]=Person
 Name[uk]=Особа
 Name[x-test]=xxPersonxx
 Comment=Makes a person easily accessible
@@ -32,6 +33,7 @@ Comment[sr]=Чини особу лако доступном
 Comment[sr@ijekavian]=Чини особу лако доступном
 Comment[sr@ijekavianlatin]=Čini osobu lako dostupnom
 Comment[sr@latin]=Čini osobu lako dostupnom
+Comment[sv]=Gör en person lätt tillgänglig
 Comment[uk]=Спрощує доступ до особи
 Comment[x-test]=xxMakes a person easily accessiblexx
 
