@@ -34,6 +34,8 @@ Item
         source: ktpPresence.currentPresenceIconName
     }
 
+    Plasmoid.busy: ktpPresence.isChangingPresence
+
     KTp.PresenceModel {
         id: presenceModel
     }
@@ -41,10 +43,36 @@ Item
     KTp.GlobalPresence {
         id: ktpPresence
         accountManager: telepathyManager.accountManager
+
+        onRequestedPresenceChanged: {
+            updateTooltip();
+        }
+
+        onCurrentPresenceChanged: {
+            updateTooltip();
+        }
+
+        onIsChangingPresenceChanged: {
+            updateTooltip();
+        }
     }
 
     function setPresence(row) {
         ktpPresence.requestedPresence = presenceModel.get(row, "presence");
+
+    }
+
+    function updateTooltip() {
+        if (ktpPresence.isChangingPresence) {
+            if (ktpPresence.presenceType == KTp.GlobalPresence.Offline) {
+                Plasmoid.toolTipSubText = i18nc("Means 'Connecting your IM accounts', it's in the applet tooltip", "Connecting...");
+            } else {
+                Plasmoid.toolTipSubText = i18nc("The arg is the presence name (as is in ktp-common-internals.po, eg. Changing Presence to Away..., it's in the applet tooltip",
+                                                "Changing Presence to %1...", ktpPresence.requestedPresenceName);
+            }
+        } else {
+            Plasmoid.toolTipSubText = ktpPresence.currentPresenceName;
+        }
     }
 
     Component.onCompleted: {
