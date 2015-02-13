@@ -29,7 +29,7 @@ ConversationDelegateButton {
     
     avatar: model.conversation.avatar
     title: model.conversation.title
-    presenceIconName: model.conversation.presenceIcon.name
+    presenceIcon: model.conversation.presenceIcon
     account: model.conversation.account
     contact: model.conversation.targetContact
     onClicked: toggleVisibility()

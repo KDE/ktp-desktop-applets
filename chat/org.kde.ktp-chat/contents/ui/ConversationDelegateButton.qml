@@ -32,7 +32,7 @@ MouseArea
     property variant contact
     property alias avatar: icon.source
     property alias title: toolTip.mainText
-    property alias presenceIconName: toolTip.icon
+    property alias presenceIcon: toolTip.icon
     property alias overlay: overlayLoader.sourceComponent
     property bool needsAttention: false
     property bool focused: base.currentIndex==index
