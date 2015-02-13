@@ -105,7 +105,7 @@ FocusScope {
 
         //we need this so that scrolling down to the last element works properly
         //this means that all the list is in memory
-        cacheBuffer: contentHeight
+        cacheBuffer: Math.max(0, contentHeight)
 
         delegate: Loader {
             Component.onCompleted: {
