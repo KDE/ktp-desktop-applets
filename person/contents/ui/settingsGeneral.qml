@@ -38,7 +38,7 @@ ColumnLayout
         model: PersonsModel {}
         textRole: "display"
         onActivated: {
-            configRoot.cfg_personId = model.get(index, PersonsModel.PersonIdRole);
+            configRoot.cfg_personId = model.get(index, PersonsModel.PersonUriRole);
         }
     }
 
@@ -54,8 +54,8 @@ ColumnLayout
             return;
 
         for(var i=0; i<combo.count; ++i) {
-            var f = combo.model.get(i, PersonsModel.PersonIdRole);
             if (f == configRoot.cfg_personId) {
+            var f = combo.model.get(i, PersonsModel.PersonUriRole);
                 combo.currentIndex = combo.find(combo.model.get(i, Qt.DisplayRole));
             }
         }
