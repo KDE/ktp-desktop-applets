@@ -26,7 +26,7 @@ import org.kde.people 1.0
 ColumnLayout
 {
     id: configRoot
-    property string cfg_personId
+    property string cfg_personUri
 
     Label {
         text: i18n("Selected Person:")
@@ -38,7 +38,7 @@ ColumnLayout
         model: PersonsModel {}
         textRole: "display"
         onActivated: {
-            configRoot.cfg_personId = model.get(index, PersonsModel.PersonUriRole);
+            configRoot.cfg_personUri = model.get(index, PersonsModel.PersonUriRole);
         }
     }
 
@@ -46,16 +46,16 @@ ColumnLayout
         Layout.fillHeight: true
     }
 
-    onCfg_personIdChanged: {
+    onCfg_personUriChanged: {
         restore();
     }
     function restore() {
-        if (configRoot.cfg_personId == "")
+        if (configRoot.cfg_personUri == "")
             return;
 
         for(var i=0; i<combo.count; ++i) {
-            if (f == configRoot.cfg_personId) {
             var f = combo.model.get(i, PersonsModel.PersonUriRole);
+            if (f == configRoot.cfg_personUri) {
                 combo.currentIndex = combo.find(combo.model.get(i, Qt.DisplayRole));
             }
         }

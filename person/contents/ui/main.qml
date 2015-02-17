@@ -30,7 +30,7 @@ PlasmaCore.IconItem {
 
     PersonData {
         id: p
-        personUri: plasmoid.configuration.personId
+        personUri: plasmoid.configuration.personUri
     }
 
     PlasmaCore.ToolTipArea {
@@ -55,7 +55,7 @@ PlasmaCore.IconItem {
         Repeater {
             model: PersonActions {
                 id: actions
-                personUri: plasmoid.configuration.personId
+                personUri: plasmoid.configuration.personUri
             }
             delegate: PlasmaComponents.Button {
                 text: display

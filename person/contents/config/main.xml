@@ -6,7 +6,7 @@
   <kcfgfile name=""/>
 
   <group name="Appearance">
-      <entry name="personId" type="String" />
+      <entry name="personUri" type="String" />
   </group>
 
 </kcfg>
