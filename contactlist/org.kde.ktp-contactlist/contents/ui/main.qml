@@ -82,12 +82,8 @@ Item
         //TODO: The PresenceModel might change, this will never react to such changes
         for(var i=0; i<presenceModel.count; ++i) {
             var disp = presenceModel.get(i, "display");
-            var actionName = "setStatus"+disp;
+            var actionName = i;
             plasmoid.setAction(actionName, disp, presenceModel.get(i, "iconName"));
-
-            //NOTE: This is done like this only because we don't know better
-            var f = eval("function() { root.setPresence("+i+"); }");
-            plasmoid.action(actionName).triggered.connect(f);
         }
         plasmoid.setActionSeparator("statuses");
 
@@ -114,4 +110,13 @@ Item
     function action_joinChatRoom() { telepathyManager.joinChatRoom(); }
     function action_openContactList() { telepathyManager.toggleContactList(); }
     function action_openIMSettings() {telepathyManager.showSettingsKCM(); }
+
+    function actionTriggered(actionName) {
+        var number = parseInt(actionName)
+        if (number !== null) {
+            root.setPresence(number)
+        } else {
+            console.log("Unknown action", actionName);
+        }
+    }
 }
