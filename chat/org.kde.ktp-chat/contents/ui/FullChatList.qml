@@ -21,6 +21,7 @@
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
 import org.kde.telepathy 0.1 as KTp
+import org.kde.ktpchat 0.1 as KTpChat
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
@@ -64,7 +65,7 @@ Grid {
         id: conversationsModel
     }
 
-    KTp.HideWindowComponent {
+    KTpChat.HideWindowComponent {
         id: windowHide
     }
 

@@ -7,3 +7,4 @@ install(DIRECTORY org.kde.ktp-chat DESTINATION ${PLASMA_DATA_INSTALL_DIR}/plasmo
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.ktp-chat/metadata.desktop DESTINATION ${PLASMA_DATA_INSTALL_DIR}/plasmoids/org.kde.ktp-chat/)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.ktp-chat/metadata.desktop DESTINATION ${SERVICES_INSTALL_DIR} RENAME plasma-applet-ktp-chat.desktop)
 
+add_subdirectory(qmlplugin)
