@@ -106,21 +106,16 @@ Grid {
                 id: pinnedModel
                 conversations: conversationsModel
                 accountManager: telepathyManager.accountManager
+                state: plasmoid.configuration.pinnedContacts
 
-                Component.onCompleted: plasmoid.configuration.valueChanged.connect(
-                                        function() {
-                                            var v = plasmoid.readConfig("pinnedContacts");
-                                            console.log("loading state", v)
-                                            if(v!="")
-                                                pinnedModel.state = v
-                                        });
-                onCountChanged: {
-                    plasmoid.writeConfig("pinnedContacts", pinnedModel.state)
+                Component.onDestruction: {
                     console.log("saving state", pinnedModel.state)
+                    plasmoid.configuration.pinnedContacts = pinnedModel.state;
                 }
             }
         }
     }
+
     property variant popupSide:   plasmoid.location === PlasmaCore.Types.TopEdge ?Qt.AlignBottom
                                 : plasmoid.location === PlasmaCore.Types.BottomEdge ? Qt.AlignTop
                                 : plasmoid.location === PlasmaCore.Types.LeftEdge ? Qt.AlignRight
