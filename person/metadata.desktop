@@ -44,9 +44,9 @@ Comment[x-test]=xxMakes a person easily accessiblexx
 
 Icon=applications-system
 Type=Service
-ServiceTypes=Plasma/Applet
+X-KDE-ServiceTypes=Plasma/Applet
+X-Plasma-API=declarativeappletscript
 
-X-KDE-Library=plasma_applet_person
 X-KDE-PluginInfo-Author=Aleix Pol Gonzalez
 X-KDE-PluginInfo-Email=aleixpol@blue-systems.com
 X-KDE-PluginInfo-Name=person
@@ -57,8 +57,6 @@ X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-Name=org.kde.person
 
-X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/main.qml
-X-Plasma-Requires-FileDialog=Unused
 X-Plasma-Requires-LaunchApp=Unused
 X-Plasma-DefaultSize=200,300
