@@ -17,7 +17,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.4
 import QtQuick.Layouts 1.1
 
 import org.kde.people 1.0
@@ -25,47 +25,13 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.plasmoid 2.0
 
-PlasmaCore.IconItem {
-    source: p.person.photo
+Item {
+    id: main
 
-    PersonData {
-        id: p
-        personUri: plasmoid.configuration.personUri
-    }
+    Plasmoid.switchWidth: units.gridUnit * 4
+    Plasmoid.switchHeight: units.gridUnit * 4
 
-    PlasmaCore.ToolTipArea {
-        anchors.fill: parent
-        mainText: p.person.name
-        icon: p.person.presenceIconName
-    }
+    Plasmoid.compactRepresentation: Person {}
+    Plasmoid.fullRepresentation: Person {}
 
-    function actionTriggered(id)
-    {
-        actions.triggerAction(id);
-    }
-
-    GridLayout {
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
-        visible: height<parent.height
-
-        Repeater {
-            model: PersonActions {
-                id: actions
-                personUri: plasmoid.configuration.personUri
-            }
-            delegate: PlasmaComponents.Button {
-                text: display
-                iconName: model.iconName
-                onClicked: model.action.trigger()
-
-                Component.onCompleted: {
-                    plasmoid.setAction(index, model.action.text, model.iconName)
-                }
-            }
-        }
-    }
 }
