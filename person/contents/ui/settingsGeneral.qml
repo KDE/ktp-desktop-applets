@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2014 by Aleix Pol Gonzalez <aleixpol@blue-systems.com>  *
+ *   Copyright (C) 2015 by Martin Klapetek <mklapetek@kde.org>             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,7 +21,8 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core 2.1 as PlasmaCore
+import org.kde.kquickcontrolsaddons 2.0 as ExtraComponents
 import org.kde.people 1.0
 
 ColumnLayout
@@ -28,35 +30,162 @@ ColumnLayout
     id: configRoot
     property string cfg_personUri
 
-    Label {
-        text: i18n("Selected Person:")
-    }
-
-    ComboBox {
-        id: combo
-        Layout.fillWidth: true
-        model: PersonsModel {}
-        textRole: "display"
-        onActivated: {
-            configRoot.cfg_personUri = model.get(index, PersonsModel.PersonUriRole);
+    onCfg_personUriChanged: {
+        if (cfg_personUri != "" && configItemSelector.filterString == "") {
+            configItemSelector.filterString = cfg_personUri;
         }
     }
 
-    Item {
+    SystemPalette { id: sysPalette; colorGroup: SystemPalette.Active }
+
+    PersonsModel {
+        id: personsModel
+
+        onModelInitialized: {
+            contactsList.enabled = true
+        }
+    }
+
+    PlasmaCore.SortFilterModel {
+        id: configItemSelector
+        sourceModel: personsModel
+        filterRole: "personUri"
+
+        onFilterStringChanged: {
+            if (filterString != "") {
+                contactsList.currentIndex = sortProxy.mapRowFromSource(configItemSelector.mapRowToSource(0));
+                contactsList.positionViewAtIndex(contactsList.currentIndex, GridView.Center);
+            }
+        }
+    }
+
+    Label {
+        text: i18n("Select a person from the list below")
+    }
+
+    TextField {
+        id: filterLineEdit
+
+        Layout.fillWidth: true
+
+        placeholderText: i18n("Search contacts...")
+        onActiveFocusChanged: filterLineEdit.selectAll();
+    }
+
+    ScrollView {
+        Layout.fillWidth: true
         Layout.fillHeight: true
-    }
 
-    onCfg_personUriChanged: {
-        restore();
-    }
-    function restore() {
-        if (configRoot.cfg_personUri == "")
-            return;
+        frameVisible: true
+        highlightOnFocus: true
 
-        for(var i=0; i<combo.count; ++i) {
-            var f = combo.model.get(i, PersonsModel.PersonUriRole);
-            if (f == configRoot.cfg_personUri) {
-                combo.currentIndex = combo.find(combo.model.get(i, Qt.DisplayRole));
+
+        GridView {
+            id: contactsList
+
+            width: parent.width
+            activeFocusOnTab: true
+            enabled: false
+            focus: true
+            currentIndex: -1
+
+            cellWidth: units.gridUnit * 6
+            cellHeight: units.gridUnit * 7
+
+            model: PlasmaCore.SortFilterModel {
+                id: sortProxy
+                sourceModel: personsModel
+                filterRole: "display"
+                sortRole: "display"
+                filterRegExp: filterLineEdit.text
+            }
+
+            boundsBehavior: Flickable.StopAtBounds
+            highlightFollowsCurrentItem: true
+            highlight: Rectangle {
+                width: contactsList.cellWidth
+                height: contactsList.cellHeight
+                color: sysPalette.highlight
+            }
+
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Left) {
+                    contactsList.moveCurrentIndexLeft()
+                } else if (event.key == Qt.Key_Right) {
+                    contactsList.moveCurrentIndexRight()
+                } else if (event.key == Qt.Key_Up) {
+                    contactsList.moveCurrentIndexUp()
+                } else if (event.key == Qt.Key_Down) {
+                    contactsList.moveCurrentIndexDown()
+                }
+            }
+
+            onCurrentIndexChanged: {
+                if (currentIndex >= 0) {
+                    configRoot.cfg_personUri = personsModel.get(model.mapRowToSource(currentIndex), PersonsModel.PersonUriRole);
+                }
+            }
+
+
+            delegate: MouseArea {
+                id: mouseArea
+
+                width: contactsList.cellWidth
+                height: contactsList.cellHeight
+
+                onClicked: {
+                    GridView.view.currentIndex = index
+                }
+
+                Column {
+                    spacing: units.smallSpacing
+                    anchors.fill: parent
+
+                    // This is a padding item
+                    Item {
+                        height: units.smallSpacing
+                        width: units.smallSpacing
+
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                    }
+
+                    ExtraComponents.QPixmapItem {
+                        id: avatarLabel
+
+                        width: height
+                        height: units.gridUnit * 4
+
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                        }
+
+                        pixmap: decoration
+                        fillMode: ExtraComponents.QPixmapItem.PreserveAspectFit
+                        smooth: true
+                    }
+
+                    Label {
+                        id: nickLabel
+
+                        width: mouseArea.width - (2 * units.smallSpacing)
+
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                        }
+
+                        text: model.display
+                        elide: Text.ElideRight
+                        wrapMode: Text.WordWrap
+                        horizontalAlignment: TextInput.AlignHCenter
+                        maximumLineCount: 2
+                    }
+                }
+            }
+
+            Component.onCompleted: {
+                forceActiveFocus();
             }
         }
     }
