@@ -108,6 +108,7 @@ Item {
                 onClicked: {
                     plasmoid.expanded = false;
                     telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid");
+                    filterLineEdit.text = "";
                 }
                 MouseArea {
                     anchors.fill: parent
