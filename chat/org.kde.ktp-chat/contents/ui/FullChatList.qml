@@ -91,7 +91,9 @@ Grid {
         delegate: ConversationDelegateButton {
             width: base.itemWidth
             height: base.itemHeight
-            onClicked: telepathyManager.startChat(account, contact)
+            onClicked: {
+                telepathyManager.startChat(account, contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid")
+            }
             avatar: decoration
             overlay: ExtraComponents.QIconItem {
                     anchors.fill: parent
@@ -106,11 +108,14 @@ Grid {
                 id: pinnedModel
                 conversations: conversationsModel
                 accountManager: telepathyManager.accountManager
-                state: plasmoid.configuration.pinnedContacts
 
-                Component.onDestruction: {
-                    console.log("saving state", pinnedModel.state)
-                    plasmoid.configuration.pinnedContacts = pinnedModel.state;
+                Component.onCompleted: {
+                    state = plasmoid.configuration.pinnedContacts
+                }
+
+                onStateChanged: {
+                    console.log("saving state", plasmoid.configuration.pinnedContacts)
+                    plasmoid.configuration.pinnedContacts = pinnedModel.state
                 }
             }
         }
