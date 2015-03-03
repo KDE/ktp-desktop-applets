@@ -95,11 +95,9 @@ Grid {
                 telepathyManager.startChat(account, contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid")
             }
             avatar: decoration
-            overlay: ExtraComponents.QIconItem {
-                    anchors.fill: parent
-                    anchors.margins: parent.width/3
-                    icon: presenceIcon
-                }
+            title: display
+            overlay: PlasmaCore.IconItem { source: "rating" }
+            presenceIcon: model.presenceIcon
             account: model.account
             contact: model.contact
         }
