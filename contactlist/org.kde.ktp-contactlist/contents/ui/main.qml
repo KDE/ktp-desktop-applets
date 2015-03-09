@@ -88,8 +88,8 @@ Item
         plasmoid.setActionSeparator("statuses");
 
         // application actions
-        plasmoid.setAction("openIMSettings", i18n("Instant Messaging Settings..."), "telepathy-kde");
-        plasmoid.setAction("openContactList", i18n("Contact List..."), "meeting-attending");
+        plasmoid.setAction("openIMSettings", i18n("Instant Messaging Settings..."), "configure");
+        plasmoid.setAction("openContactList", i18n("Contact List..."), "telepathy-kde");
         plasmoid.setActionSeparator("applications");
 
         plasmoid.setAction("addContact", i18n("Add New Contacts..."), "list-add-user");
