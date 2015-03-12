@@ -57,7 +57,6 @@ X-Plasma-API=declarativeappletscript
 
 X-KDE-PluginInfo-Author=Aleix Pol Gonzalez
 X-KDE-PluginInfo-Email=aleixpol@blue-systems.com
-X-KDE-PluginInfo-Name=person
 X-KDE-PluginInfo-Version=@KTP_DESKTOP_APPLETS_VERSION@
 X-KDE-PluginInfo-Website=http://plasma.kde.org/
 X-KDE-PluginInfo-Category=Utilities
