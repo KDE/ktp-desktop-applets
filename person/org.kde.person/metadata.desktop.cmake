@@ -4,6 +4,7 @@ Name[ast]=Persona
 Name[ca]=Persona
 Name[cs]=Osoba
 Name[da]=Person
+Name[de]=Person
 Name[el]=Πρόσωπο
 Name[en_GB]=Person
 Name[es]=Persona
