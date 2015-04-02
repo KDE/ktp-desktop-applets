@@ -52,7 +52,7 @@ Item
             updateTooltip();
         }
 
-        onIsChangingPresenceChanged: {
+        onConnectionStatusChanged: {
             updateTooltip();
         }
     }
