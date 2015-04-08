@@ -1,6 +1,5 @@
 [Desktop Entry]
 Name=Instant Messaging
-Name[ast]=Mensaxería nel intre
 Name[ca]=Missatgeria instantània
 Name[cs]=Instant Messaging
 Name[da]=Instant messaging
@@ -29,7 +28,6 @@ Name[x-test]=xxInstant Messagingxx
 Name[zh_CN]=即时通讯
 Name[zh_TW]=即時訊息
 Comment=Displays your presence and contacts
-Comment[ast]=Amuesa la to presencia y contautos
 Comment[ca]=Mostra la vostra presència i els contactes
 Comment[cs]=Zobrazuje vaši dostupnost a kontakty
 Comment[da]=Viser din tilstedeværelse og kontakter
