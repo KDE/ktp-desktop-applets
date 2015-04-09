@@ -14,6 +14,7 @@ Name[nl]=Persoon
 Name[pl]=Osoba
 Name[pt]=Pessoa
 Name[pt_BR]=Pessoa
+Name[ru]=Человек
 Name[sk]=Osoba
 Name[sl]=Oseba
 Name[sr]=Особа
