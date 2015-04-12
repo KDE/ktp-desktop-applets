@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Person
+Name[ar]=شخص
 Name[ca]=Persona
 Name[cs]=Osoba
 Name[da]=Person

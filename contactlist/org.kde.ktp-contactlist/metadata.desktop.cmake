@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Instant Messaging
+Name[ar]=التّراسل المباشر
 Name[ca]=Missatgeria instantània
 Name[cs]=Instant Messaging
 Name[da]=Instant messaging
