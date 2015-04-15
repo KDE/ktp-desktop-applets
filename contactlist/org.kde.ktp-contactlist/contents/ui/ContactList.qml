@@ -39,9 +39,34 @@ Item {
     }
 
     Column {
+        id: addAccountItem
+        anchors.centerIn: parent
+        width: parent.width
+        visible: !ktpPresence.hasEnabledAccounts
+
+        PlasmaComponents.Label {
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            text: i18n("It appears that you do not have any accounts configured");
+
+            wrapMode: Text.WordWrap
+            horizontalAlignment: Text.AlignHCenter
+        }
+
+        PlasmaComponents.Button {
+            id: addAccountItemButton
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            text: i18n("Configure Now...")
+            onClicked: telepathyManager.showSettingsKCM();
+        }
+    }
+
+    Column {
         id: goOnlineItem
         anchors.centerIn: parent
-        visible: ktpPresence.presenceType == KTp.GlobalPresence.Offline
+        visible: ktpPresence.presenceType == KTp.GlobalPresence.Offline && ktpPresence.hasEnabledAccounts
 
         PlasmaCore.IconItem {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -66,7 +91,7 @@ Item {
             top:parent.top
         }
 
-        visible: !goOnlineItem.visible
+        visible: !goOnlineItem.visible && !addAccountItem.visible
         focus: true
         clearButtonShown: true
 
@@ -80,7 +105,7 @@ Item {
     }
 
     PlasmaExtras.ScrollArea {
-        visible: !goOnlineItem.visible
+        visible: !goOnlineItem.visible && !addAccountItem.visible
         anchors {
             top:filterLineEdit.bottom
             left:parent.left
