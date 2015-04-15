@@ -78,7 +78,7 @@ Item {
         PlasmaComponents.Button {
             id: goOnlineButton
 
-            text: i18n("Go online")
+            text: i18n("Go Online")
             onClicked: ktpPresence.setPresence(KTp.GlobalPresence.Available, "")
         }
     }
@@ -95,7 +95,7 @@ Item {
         focus: true
         clearButtonShown: true
 
-        placeholderText: i18n("Search contacts...")
+        placeholderText: i18n("Search Contacts...")
 
         Keys.onDownPressed: contactsList.incrementCurrentIndex();
         Keys.onUpPressed: contactsList.decrementCurrentIndex();
