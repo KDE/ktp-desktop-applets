@@ -132,7 +132,7 @@ Item {
                 height: root.delegateHeight
                 onClicked: {
                     plasmoid.expanded = false;
-                    telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid");
+                    telepathyManager.startChat(model.account, model.contact, "org.freedesktop.Telepathy.Client.KTp.ChatPlasmoid");
                     filterLineEdit.text = "";
                 }
                 MouseArea {

@@ -92,7 +92,7 @@ Grid {
             width: base.itemWidth
             height: base.itemHeight
             onClicked: {
-                telepathyManager.startChat(account, contact, "org.freedesktop.Telepathy.Client.KTp.chatPlasmoid")
+                telepathyManager.startChat(account, contact, "org.freedesktop.Telepathy.Client.KTp.ChatPlasmoid")
             }
             avatar: decoration
             title: display
