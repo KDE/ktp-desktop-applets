@@ -2,7 +2,7 @@ project(ktp-desktop-applets)
 
 cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
-set(KTP_DESKTOP_APPLETS_VERSION "15.04.1")
+set(KTP_DESKTOP_APPLETS_VERSION "15.04.2")
 
 find_package(ECM 0.0.11 REQUIRED NO_MODULE)
 set (CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
