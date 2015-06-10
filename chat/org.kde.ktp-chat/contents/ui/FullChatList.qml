@@ -58,6 +58,7 @@ Grid {
     }
 
     function closeAllConversations() {
+        base.currentIndex = -1
         conversationsModel.closeAllConversations()
     }
 
@@ -105,7 +106,6 @@ Grid {
             sourceModel: KTp.PinnedContactsModel {
                 id: pinnedModel
                 conversations: conversationsModel
-                accountManager: telepathyManager.accountManager
 
                 Component.onCompleted: {
                     state = plasmoid.configuration.pinnedContacts
