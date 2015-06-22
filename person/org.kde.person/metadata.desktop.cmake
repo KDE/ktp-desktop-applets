@@ -32,6 +32,7 @@ Comment[ast]=Fai d'accesu cenciellu una persona
 Comment[ca]=Fa accessible una persona fàcilment
 Comment[cs]=Usnadňuje přístup k osobám
 Comment[da]=Gør en person nemt tilgængelig
+Comment[de]=Ermöglicht den einfachen Zugriff auf eine Person
 Comment[en_GB]=Makes a person easily accessible
 Comment[es]=Hace a una persona fácilmente accesible
 Comment[fi]=Helppo pääsy henkilöön
