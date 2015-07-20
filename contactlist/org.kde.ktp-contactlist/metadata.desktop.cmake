@@ -73,6 +73,7 @@ X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/main.qml
 X-Plasma-DefaultSize=200,300
 X-Plasma-NotificationArea=true
+X-Plasma-NotificationAreaCategory=Communications
 X-Plasma-DBusActivationService=org.freedesktop.Telepathy.MissionControl5
 
 X-KDE-PluginInfo-Name=org.kde.ktp-contactlist
