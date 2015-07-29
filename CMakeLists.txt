@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 2.8.9)
 project(ktp-desktop-applets)
 
 set(CMAKE_MODULE_PATH
