@@ -14,6 +14,7 @@ Name[fr]=Personne
 Name[gl]=Persoa
 Name[it]=Persona
 Name[ko]=사람
+Name[lt]=Asmuo
 Name[nl]=Persoon
 Name[pl]=Osoba
 Name[pt]=Pessoa
