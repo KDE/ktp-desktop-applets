@@ -120,7 +120,7 @@ Item {
             model: KTp.ContactsModel {
                 id: contactsModel
                 accountManager: telepathyManager.accountManager
-                presenceTypeFilterFlags: KTp.ContactsModel.HideAllOffline
+                presenceTypeFilterFlags: (filterLineEdit.text == "") ? KTp.ContactsModel.HideAllOffline : KTp.ContactsModel.DoNotFilterByPresence
                 globalFilterString: filterLineEdit.text
                 sortRoleString: "presenceType"
             }
