@@ -17,7 +17,7 @@ find_package(KF5 REQUIRED COMPONENTS Plasma WindowSystem)
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDECompilerSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
 
 add_subdirectory(chat)
 add_subdirectory(contactlist)
