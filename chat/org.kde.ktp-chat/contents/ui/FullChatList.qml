@@ -76,7 +76,7 @@ Grid {
         value: (base.currentIndex >= 0                  ? PlasmaCore.Types.AcceptingInputStatus
                 : conversationsModel.totalUnreadCount>0 ? PlasmaCore.Types.NeedsAttentionStatus
                 : conversationsView.count>0             ? PlasmaCore.Types.ActiveStatus
-                                                        : PlasmaCore.Types.PassiveStatus)
+                                                        : PlasmaCore.Types.HiddenStatus)
     }
 
     Component.onCompleted: {
