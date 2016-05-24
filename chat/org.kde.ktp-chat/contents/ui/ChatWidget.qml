@@ -165,5 +165,13 @@ FocusScope {
             view.model.sendNewMessage(text);
             text = "";
         }
+
+        Keys.onEscapePressed: {
+            if (length > 0) {
+                text = ""
+            } else {
+                chatWidget.closeRequested()
+            }
+        }
     }
 }
