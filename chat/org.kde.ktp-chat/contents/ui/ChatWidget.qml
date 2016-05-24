@@ -161,7 +161,7 @@ FocusScope {
             bottom: parent.bottom
         }
 
-        Keys.onReturnPressed: {
+        onAccepted: {
             view.model.sendNewMessage(text);
             text = "";
         }
