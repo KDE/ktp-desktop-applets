@@ -64,6 +64,7 @@ Grid {
 
     KTp.ConversationsModel {
         id: conversationsModel
+        onActiveChatIndexChanged: base.currentIndex = activeChatIndex
     }
 
     KTpChat.HideWindowComponent {
