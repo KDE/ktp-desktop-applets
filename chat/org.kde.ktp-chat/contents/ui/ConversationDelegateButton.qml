@@ -91,8 +91,10 @@ MouseArea
 
         anchors.fill: parent
         onDropped: {
-            for(var url in drop.urls)
+            for (var i = 0, count = drop.urls.length; i < count; ++i) {
+                var url = drop.urls[i];
                 telepathyManager.startFileTransfer(parent.account, parent.contact, url);
+            }
         }
     }
     
