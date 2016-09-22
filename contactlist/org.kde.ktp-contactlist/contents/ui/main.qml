@@ -30,10 +30,8 @@ Item
     Plasmoid.switchHeight: 300
 
     Plasmoid.fullRepresentation: ContactList {}
-    Plasmoid.compactRepresentation: Presence {
-        source: ktpPresence.currentPresenceIconName
-    }
 
+    Plasmoid.icon: ktpPresence.currentPresenceIconName
     Plasmoid.busy: ktpPresence.isChangingPresence
 
     KTp.PresenceModel {
