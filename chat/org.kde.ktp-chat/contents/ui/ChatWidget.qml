@@ -29,6 +29,8 @@ FocusScope {
     property Conversation conv
 
     signal closeRequested
+    signal previousConversationRequested
+    signal nextConversationRequested
 
     RowLayout {
         id: titleArea
@@ -171,6 +173,18 @@ FocusScope {
                 text = ""
             } else {
                 chatWidget.closeRequested()
+            }
+        }
+
+        Keys.onPressed: {
+            if (event.modifiers & Qt.ControlModifier) {
+                if (event.key === Qt.Key_Tab) {
+                    nextConversationRequested()
+                    event.accepted = true
+                } else if (event.key === Qt.Key_Backtab) {
+                    previousConversationRequested()
+                    event.accepted = true
+                }
             }
         }
     }

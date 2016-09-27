@@ -43,7 +43,13 @@ ConversationDelegateButton {
             base.currentIndex = -1
         }
     }
-    
+    function openPreviousConversation() {
+        base.currentIndex = (base.currentIndex + conversationsView.count - 1) % conversationsView.count
+    }
+    function openNextConversation() {
+        base.currentIndex = (base.currentIndex + 1) % conversationsView.count
+    }
+
     Component.onCompleted: setVisible(model.conversation.messages.shouldStartOpened)
     
     PlasmaCore.Dialog {
@@ -59,6 +65,8 @@ ConversationDelegateButton {
             conv: model.conversation
 
             onCloseRequested: closeConversation()
+            onPreviousConversationRequested: openPreviousConversation()
+            onNextConversationRequested: openNextConversation()
         }
 
         //if we are opening the dialog right away (e.g. started chat from pinned)
