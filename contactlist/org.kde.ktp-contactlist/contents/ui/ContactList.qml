@@ -100,6 +100,7 @@ Item {
         Keys.onDownPressed: contactsList.incrementCurrentIndex();
         Keys.onUpPressed: contactsList.decrementCurrentIndex();
         Keys.onReturnPressed: contactsList.currentItem.clicked();
+        Keys.onEnterPressed: contactsList.currentItem.clicked();
 
         onActiveFocusChanged: filterLineEdit.selectAll();
     }
