@@ -27,7 +27,7 @@ PlasmaComponents.Label {
 
     text: model.text
     textFormat: Text.RichText
-    height: paintedHeight
+    height: undefined
 
     onLinkActivated: {
         console.log("opening link: " + link);
@@ -36,6 +36,7 @@ PlasmaComponents.Label {
 
     //Hover to display the time when hovering a message
     PlasmaComponents.Label {
+        height: undefined
         text: Qt.formatTime(model.time)
         anchors {
             top: parent.top
