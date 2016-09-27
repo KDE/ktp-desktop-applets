@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2013  Aleix Pol Gonzalez <aleixpol@kde.org>
+    Copyright (C) 2016 Kai Uwe Broulik <kde@privat.broulik.de>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -16,28 +16,18 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include <QQmlExtensionPlugin>
-#include <qqml.h>
-#include "hide-window-component.h"
-#include "htmlhelper.h"
+#pragma once
 
-static QObject *htmlHelper_singleton_provider(QQmlEngine *, QJSEngine *)
-{
-    return new HtmlHelper();
-}
+#include <QObject>
 
-class QmlPlugins : public QQmlExtensionPlugin
+class HtmlHelper : public QObject
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
 
-    public:
-        virtual void initializeEngine(QQmlEngine */*engine*/, const char */*uri*/) {}
-        virtual void registerTypes(const char *uri) {
-            qmlRegisterType<HideWindowComponent>(uri, 0, 1, "HideWindowComponent");
-            qmlRegisterSingletonType<HtmlHelper>(uri, 0, 1, "HtmlHelper", htmlHelper_singleton_provider);
-        }
+  public:
+    explicit HtmlHelper(QObject *parent = nullptr);
+    ~HtmlHelper() override;
+
+    Q_INVOKABLE QString decode(const QString &text) const;
 
 };
-
-#include "qmlplugin.moc"

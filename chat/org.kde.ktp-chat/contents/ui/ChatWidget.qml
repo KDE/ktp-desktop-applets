@@ -23,6 +23,8 @@ import QtQuick.Layouts 1.1
 import org.kde.telepathy 0.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.kquickcontrolsaddons 2.0 as KQC
+import org.kde.ktpchat 0.1 as KTpChat
 
 FocusScope {
     id: chatWidget
@@ -125,6 +127,14 @@ FocusScope {
                         source = "TextDelegate.qml";
                 }
             }
+
+            Connections {
+                target: item
+                ignoreUnknownSignals: true
+                onContextMenuRequested: {
+                    contextMenu.show(item, x, y, item.linkAt(x, y))
+                }
+            }
         }
 
         model: conv.messages
@@ -134,6 +144,39 @@ FocusScope {
             if(followConversation && contentHeight>height) {
                 view.positionViewAtEnd()
             }
+        }
+    }
+
+    KQC.Clipboard {
+        id: clipboard
+    }
+
+    PlasmaComponents.ContextMenu {
+        id: contextMenu
+        property url link
+
+        function show(item, x, y, link) {
+            contextMenu.link = link || ""
+            visualParent = item
+            open(x, y)
+        }
+
+        PlasmaComponents.MenuItem {
+            text: i18n("Copy Link")
+            visible: contextMenu.link != ""
+            onClicked: clipboard.content = contextMenu.link
+        }
+
+        PlasmaComponents.MenuItem {
+            separator: true
+            visible: contextMenu.link != ""
+        }
+
+        PlasmaComponents.MenuItem {
+            text: i18n("Copy Text")
+            icon: "edit-copy"
+            enabled: contextMenu.visualParent && contextMenu.visualParent.text !== ""
+            onClicked: clipboard.content = KTpChat.HtmlHelper.decode(contextMenu.visualParent.text)
         }
     }
 

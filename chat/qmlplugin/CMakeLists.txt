@@ -1,4 +1,4 @@
-add_library (ktpchatplugin SHARED hide-window-component.cpp qmlplugin.cpp)
+add_library (ktpchatplugin SHARED hide-window-component.cpp htmlhelper.cpp qmlplugin.cpp)
 
 target_link_libraries (ktpchatplugin
     Qt5::Qml
