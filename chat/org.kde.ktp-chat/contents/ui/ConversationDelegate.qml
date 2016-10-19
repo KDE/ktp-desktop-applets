@@ -25,7 +25,6 @@ import org.kde.telepathy 0.1
 ConversationDelegateButton {
     id: convButton
     property alias isCurrentConversation: dialog.visible
-    property variant popupSide
     
     avatar: model.conversation.avatar
     title: model.conversation.title

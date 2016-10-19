@@ -120,18 +120,11 @@ Grid {
         }
     }
 
-    property variant popupSide:   plasmoid.location === PlasmaCore.Types.TopEdge ?Qt.AlignBottom
-                                : plasmoid.location === PlasmaCore.Types.BottomEdge ? Qt.AlignTop
-                                : plasmoid.location === PlasmaCore.Types.LeftEdge ? Qt.AlignRight
-                                : plasmoid.location === PlasmaCore.Types.RightEdge ? Qt.AlignLeft
-                                : base.flow === Flow.LeftToRight ? Qt.AlignBottom : Qt.AlignRight
-
     Repeater {
         id: conversationsView
         delegate: ConversationDelegate {
             width: base.itemWidth
             height: base.itemHeight
-            popupSide: base.popupSide
         }
         model: conversationsModel
         onCountChanged: if(base.currentIndex>=conversationsView.count) {
