@@ -52,6 +52,7 @@ Comment[fr]=Rendre une personne facilement accessible
 Comment[gl]=Permite acceder facilmente a unha persoa.
 Comment[it]=Rende una persona facilmente accessibile
 Comment[ko]=특정 사람과 빠르게 대화합니다
+Comment[lt]=Leidžia greitai pasiekti asmenį
 Comment[nl]=Maakt een persoon gemakkelijk toegankelijk
 Comment[nn]=Gjer ein person lett tilgjengeleg
 Comment[pl]=Czyni ludzi łatwo dostępnymi
