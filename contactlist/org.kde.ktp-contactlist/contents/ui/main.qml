@@ -21,6 +21,7 @@
 import QtQuick 2.1
 import org.kde.telepathy 0.1 as KTp
 import org.kde.plasma.plasmoid 2.0
+import org.kde.ktpcontactlist 0.1 as KTpContactList
 
 Item
 {
@@ -33,6 +34,10 @@ Item
 
     Plasmoid.icon: ktpPresence.currentPresenceIconName
     Plasmoid.busy: ktpPresence.isChangingPresence
+
+    KTpContactList.RegisterContactApplet {
+        id: registerApplet
+    }
 
     KTp.PresenceModel {
         id: presenceModel

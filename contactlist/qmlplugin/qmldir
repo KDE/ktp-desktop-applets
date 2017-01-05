@@ -1,0 +1,4 @@
+module org.kde.ktpcontactlist
+
+plugin ktpcontactlistplugin
+
