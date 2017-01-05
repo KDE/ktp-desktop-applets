@@ -55,6 +55,10 @@ Item
             updateTooltip();
         }
 
+        onIsChangingPresenceChanged: {
+            updateTooltip();
+        }
+
         onConnectionStatusChanged: {
             updateTooltip();
         }
@@ -62,7 +66,6 @@ Item
 
     function setPresence(row) {
         ktpPresence.requestedPresence = presenceModel.get(row, "presence");
-
     }
 
     function updateTooltip() {
