@@ -41,6 +41,9 @@ Item
 
     KTp.PresenceModel {
         id: presenceModel
+        onCountChanged: {
+            buildMenu();
+        }
     }
 
     KTp.GlobalPresence {
@@ -81,11 +84,9 @@ Item
         }
     }
 
-    Component.onCompleted: {
-        telepathyManager.addContactListFeatures();
-        telepathyManager.becomeReady();
-
-        //TODO: The PresenceModel might change, this will never react to such changes
+    function buildMenu() {
+        // remove any already existing actions
+        plasmoid.clearActions();
         for(var i=0; i<presenceModel.count; ++i) {
             var disp = presenceModel.get(i, "display");
             var actionName = i;
@@ -108,6 +109,13 @@ Item
             plasmoid.setAction("sendFile", i18n("Send a File..."), "mail-attachment");
         }
         plasmoid.setActionSeparator("actions");
+    }
+
+    Component.onCompleted: {
+        telepathyManager.addContactListFeatures();
+        telepathyManager.becomeReady();
+
+        buildMenu();
     }
 
     function action_dial() { telepathyManager.openDialUi(); }
