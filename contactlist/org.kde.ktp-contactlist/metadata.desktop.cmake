@@ -96,5 +96,5 @@ X-KDE-PluginInfo-Website=http://telepathy.freedesktop.org/
 X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
-X-KDE-ServiceTypes=Plasma/Applet,Plasma/PopupApplet
+X-KDE-ServiceTypes=Plasma/Applet
 Type=Service
