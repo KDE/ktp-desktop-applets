@@ -176,7 +176,7 @@ FocusScope {
             text: i18n("Copy Text")
             icon: "edit-copy"
             enabled: contextMenu.visualParent && contextMenu.visualParent.text !== ""
-            onClicked: clipboard.content = KTpChat.HtmlHelper.decode(contextMenu.visualParent.text)
+            onClicked: clipboard.content = KTpChat.HtmlHelper.decode(contextMenu.visualParent.text).trim()
         }
     }
 
