@@ -32,8 +32,7 @@ Item
 
     Plasmoid.fullRepresentation: ContactList {}
 
-    Plasmoid.icon: ktpPresence.currentPresenceIconName
-    Plasmoid.busy: ktpPresence.isChangingPresence
+    Plasmoid.busy : true;
 
     KTpContactList.RegisterContactApplet {
         id: registerApplet
@@ -41,29 +40,32 @@ Item
 
     KTp.PresenceModel {
         id: presenceModel
-        onCountChanged: {
-            buildMenu();
+        onRowsInserted: {
+            updateMenu();
+        }
+        onRowsRemoved: {
+            updateMenu();
         }
     }
 
     KTp.GlobalPresence {
         id: ktpPresence
-        accountManager: telepathyManager.accountManager
-
-        onRequestedPresenceChanged: {
-            updateTooltip();
+        onAccountManagerChanged: {
+            update();
+            updateMenu();
         }
 
         onCurrentPresenceChanged: {
-            updateTooltip();
+            update();
         }
 
         onIsChangingPresenceChanged: {
-            updateTooltip();
+            update();
         }
 
         onConnectionStatusChanged: {
-            updateTooltip();
+            update();
+            updateMenu();
         }
     }
 
@@ -71,26 +73,26 @@ Item
         ktpPresence.requestedPresence = presenceModel.get(row, "presence");
     }
 
-    function updateTooltip() {
-        if (ktpPresence.isChangingPresence) {
-            if (ktpPresence.presenceType == KTp.GlobalPresence.Offline) {
-                Plasmoid.toolTipSubText = i18nc("Means 'Connecting your IM accounts', it's in the applet tooltip", "Connecting...");
-            } else {
-                Plasmoid.toolTipSubText = i18nc("The arg is the presence name (as is in ktp-common-internals.po, eg. Changing Presence to Away..., it's in the applet tooltip",
-                                                "Changing Presence to %1...", ktpPresence.requestedPresenceName);
-            }
-        } else {
-            Plasmoid.toolTipSubText = ktpPresence.currentPresenceName;
+    function update() {
+        Plasmoid.busy = ktpPresence.isChangingPresence;
+        Plasmoid.icon = ktpPresence.currentPresenceIconName;
+        Plasmoid.toolTipMainText = ktpPresence.currentPresenceName;
+        Plasmoid.toolTipSubText = ktpPresence.presenceMessage;
+
+        if (ktpPresence.connectionStatus == KTp.GlobalPresence.Connecting) {
+            Plasmoid.toolTipSubText = i18nc("Means 'Connecting your IM accounts', it's in the applet tooltip", "Connecting...");
+        } else if (ktpPresence.isChangingPresence && !ktpPresence.hasConnectionError) {
+            Plasmoid.toolTipSubText = i18nc("The arg is the presence name (as is in ktp-common-internals.po, eg. Changing Presence to Away..., it's in the applet tooltip",
+                                            "Changing Presence to %1...", ktpPresence.requestedPresenceName);
         }
     }
 
-    function buildMenu() {
+    function updateMenu() {
         // remove any already existing actions
         plasmoid.clearActions();
+
         for(var i=0; i<presenceModel.count; ++i) {
-            var disp = presenceModel.get(i, "display");
-            var actionName = i;
-            plasmoid.setAction(actionName, disp, presenceModel.get(i, "iconName"));
+            plasmoid.setAction(i, presenceModel.get(i, "display"), presenceModel.get(i, "iconName"));
         }
         plasmoid.setActionSeparator("statuses");
 
@@ -98,6 +100,10 @@ Item
         plasmoid.setAction("openIMSettings", i18n("Instant Messaging Settings..."), "configure");
         plasmoid.setAction("openContactList", i18n("Contact List..."), "telepathy-kde");
         plasmoid.setActionSeparator("applications");
+
+        if (ktpPresence.connectionStatus < KTp.GlobalPresence.Connected) {
+            return;
+        }
 
         plasmoid.setAction("addContact", i18n("Add New Contacts..."), "list-add-user");
         plasmoid.setAction("joinChatRoom", i18n("Join Chat Room..."), "im-irc");
@@ -113,13 +119,11 @@ Item
 
     Component.onCompleted: {
         telepathyManager.addContactListFeatures();
-        telepathyManager.becomeReady();
-
-        buildMenu();
+        ktpPresence.accountManager = telepathyManager.accountManager;
     }
 
     function action_dial() { telepathyManager.openDialUi(); }
-    function action_sendFile() { telepathyManager.openDialUi(); }
+    function action_sendFile() { telepathyManager.openSendFileUi(); }
     function action_addContact() { telepathyManager.addContact(); }
     function action_joinChatRoom() { telepathyManager.joinChatRoom(); }
     function action_openContactList() { telepathyManager.toggleContactList(); }
