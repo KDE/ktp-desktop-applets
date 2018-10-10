@@ -1,7 +1,6 @@
 [Desktop Entry]
 Name=Person
 Name[ar]=شخص
-Name[ast]=Persona
 Name[ca]=Persona
 Name[ca@valencia]=Persona
 Name[cs]=Osoba
@@ -39,7 +38,6 @@ Name[x-test]=xxPersonxx
 Name[zh_CN]=个人
 Name[zh_TW]=人物
 Comment=Makes a person easily accessible
-Comment[ast]=Acenciella l'accesu a una persona
 Comment[ca]=Fa accessible una persona fàcilment
 Comment[ca@valencia]=Fa accessible una persona fàcilment
 Comment[cs]=Usnadňuje přístup k osobám
