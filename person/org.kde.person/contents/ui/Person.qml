@@ -27,13 +27,17 @@ import org.kde.plasma.plasmoid 2.0
 
 PlasmaCore.IconItem {
     id: personPhoto
-    source: personData.person.photo
+    property bool isPersonSelected: (personData.personUri != "")
+    source: isPersonSelected ? personData.person.photo : "user"
 
     property int minActionWidth
 
     function actionTriggered(id)
     {
-        actions.triggerAction(id);
+        if (isPersonSelected)
+            actions.triggerAction(id);
+        else
+            plasmoid.action("configure").trigger();
     }
 
     MouseArea {
