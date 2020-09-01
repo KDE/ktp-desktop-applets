@@ -103,7 +103,6 @@ X-KDE-PluginInfo-Category=Online Services
 X-KDE-PluginInfo-Name=org.kde.ktp-chat
 X-KDE-PluginInfo-Version=@KTP_DESKTOP_APPLETS_VERSION@
 
-# X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
 X-KDE-ServiceTypes=Plasma/Applet

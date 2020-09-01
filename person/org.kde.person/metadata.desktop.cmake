@@ -88,7 +88,6 @@ X-KDE-PluginInfo-Name=person
 X-KDE-PluginInfo-Version=@KTP_DESKTOP_APPLETS_VERSION@
 X-KDE-PluginInfo-Website=http://plasma.kde.org/
 X-KDE-PluginInfo-Category=Utilities
-X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-Name=org.kde.person
 

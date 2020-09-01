@@ -95,7 +95,6 @@ X-KDE-PluginInfo-Email=kde@davidedmundson.co.uk
 X-KDE-PluginInfo-Version=@KTP_DESKTOP_APPLETS_VERSION@
 X-KDE-PluginInfo-Website=http://telepathy.freedesktop.org/
 
-X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
 X-KDE-ServiceTypes=Plasma/Applet
