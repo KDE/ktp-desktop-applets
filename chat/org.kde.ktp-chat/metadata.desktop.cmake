@@ -90,7 +90,7 @@ Comment[sv]=Enkel chatt från arbetsytan
 Comment[tr]=Çalışma alanınızdan basit sohbetler
 Comment[uk]=Прості вікна спілкування з вашого робочого простору
 Comment[x-test]=xxSimple chats from your workspacexx
-Comment[zh_CN]=从您的工作区方便进行聊天
+Comment[zh_CN]=从您的工作区上进行简单的聊天
 Comment[zh_TW]=從您的工作空間發起聊天
 Icon=telepathy-kde
 

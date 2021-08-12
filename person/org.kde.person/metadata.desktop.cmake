@@ -37,7 +37,7 @@ Name[sv]=Person
 Name[tr]=Kişi
 Name[uk]=Особа
 Name[x-test]=xxPersonxx
-Name[zh_CN]=个人
+Name[zh_CN]=联系人
 Name[zh_TW]=人物
 Comment=Makes a person easily accessible
 Comment[ca]=Fa accessible una persona amb facilitat
@@ -76,7 +76,7 @@ Comment[sv]=Gör en person lätt tillgänglig
 Comment[tr]=Bir kişiyi kolay erişilebilir yapar
 Comment[uk]=Спрощує доступ до особи
 Comment[x-test]=xxMakes a person easily accessiblexx
-Comment[zh_CN]=访问他人变得简单
+Comment[zh_CN]=轻松访问联系人信息
 Comment[zh_TW]=輕鬆與人互動
 
 Icon=applications-system
