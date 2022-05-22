@@ -22,3 +22,5 @@ include(KDECompilerSettings NO_POLICY_SCOPE)
 add_subdirectory(chat)
 add_subdirectory(contactlist)
 add_subdirectory(person)
+
+ki18n_install(po)
