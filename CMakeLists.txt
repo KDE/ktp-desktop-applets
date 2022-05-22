@@ -13,7 +13,7 @@ find_package(ECM 0.0.11 REQUIRED NO_MODULE)
 set (CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 find_package(Qt5 REQUIRED COMPONENTS Qml DBus)
-find_package(KF5 REQUIRED COMPONENTS Plasma WindowSystem)
+find_package(KF5 REQUIRED COMPONENTS I18n Plasma WindowSystem)
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
