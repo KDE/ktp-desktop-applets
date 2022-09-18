@@ -6,5 +6,5 @@ target_link_libraries (ktpchatplugin
     KF5::WindowSystem
 )
 
-install (TARGETS ktpchatplugin DESTINATION ${QML_INSTALL_DIR}/org/kde/ktpchat)
-install (FILES qmldir DESTINATION ${QML_INSTALL_DIR}/org/kde/ktpchat)
+install (TARGETS ktpchatplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/ktpchat)
+install (FILES qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/ktpchat)

@@ -6,5 +6,5 @@ target_link_libraries (ktpcontactlistplugin
     Qt5::DBus
 )
 
-install (TARGETS ktpcontactlistplugin DESTINATION ${QML_INSTALL_DIR}/org/kde/ktpcontactlist)
-install (FILES qmldir DESTINATION ${QML_INSTALL_DIR}/org/kde/ktpcontactlist)
+install (TARGETS ktpcontactlistplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/ktpcontactlist)
+install (FILES qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/ktpcontactlist)
