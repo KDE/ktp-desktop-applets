@@ -1,0 +1,53 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Vít Pelčák <vit@pelcak.org>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2015-03-18 08:28+0100\n"
+"Last-Translator: Vít Pelčák <vit@pelcak.org>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:69
+#, kde-format
+msgid "Pin contact"
+msgstr "Připnout kontakt"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:81
+#, kde-format
+msgid "Move conversation into a window"
+msgstr "Přesunout konverzaci do okna"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:88
+#, kde-format
+msgid "Close conversation"
+msgstr "Zavřít konverzaci"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:165
+#, kde-format
+msgid "Copy Link"
+msgstr "Kopírovat odkaz"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:176
+#, kde-format
+msgid "Copy Text"
+msgstr "Kopírovat text"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:194
+#, kde-format
+msgid "Chat is not connected. You cannot send messages at this time"
+msgstr "Rozhovor není připojen. Teď nemůžete poslat zprávy"
+
+#: org.kde.ktp-chat/contents/ui/main.qml:34
+#, kde-format
+msgid "Close All Conversations"
+msgstr "Zavřít všechny konverzace"

@@ -1,0 +1,54 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Volkan Gezer <volkangezer@gmail.com>, 2017.
+# Emir SARI <emir_sari@icloud.com>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2022-06-23 10:38+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
+"Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 22.04.2\n"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:69
+#, kde-format
+msgid "Pin contact"
+msgstr "Kişiyi sabitle"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:81
+#, kde-format
+msgid "Move conversation into a window"
+msgstr "Sohbeti bir pencereye taşı"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:88
+#, kde-format
+msgid "Close conversation"
+msgstr "Sohbeti kapat"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:165
+#, kde-format
+msgid "Copy Link"
+msgstr "Bağlantıyı kopyala"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:176
+#, kde-format
+msgid "Copy Text"
+msgstr "Metni Kopyala"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:194
+#, kde-format
+msgid "Chat is not connected. You cannot send messages at this time"
+msgstr "Sohbet bağlı değil. Şu anda ileti gönderemezsiniz"
+
+#: org.kde.ktp-chat/contents/ui/main.qml:34
+#, kde-format
+msgid "Close All Conversations"
+msgstr "Tüm Konuşmaları Kapat"

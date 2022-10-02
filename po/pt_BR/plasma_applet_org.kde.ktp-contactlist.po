@@ -1,0 +1,83 @@
+# Translation of plasma-applet_org.kde.ktp-contactlist.po to Brazilian Portuguese
+# Copyright (C) 2015 This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# André Marcelo Alvarenga <alvarenga@kde.org>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-applet_org.kde.ktp-contactlist\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2015-07-04 21:26-0300\n"
+"Last-Translator: André Marcelo Alvarenga <alvarenga@kde.org>\n"
+"Language-Team: Brazilian Portuguese <kde-i18n-pt_br@kde.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:51
+#, kde-format
+msgid "It appears that you do not have any accounts configured"
+msgstr "Parece que você não tem nenhuma conta configurada"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:61
+#, kde-format
+msgid "Configure Now..."
+msgstr "Configurar agora..."
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:81
+#, kde-format
+msgid "Go Online"
+msgstr "Conectar"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:98
+#, kde-format
+msgid "Search Contacts..."
+msgstr "Procurar contatos..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:83
+#, kde-format
+msgctxt "Means 'Connecting your IM accounts', it's in the applet tooltip"
+msgid "Connecting..."
+msgstr "Conectando..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:86
+#, kde-format
+msgctxt ""
+"The arg is the presence name (as is in ktp-common-internals.po, eg. Changing "
+"Presence to Away..., it's in the applet tooltip"
+msgid "Changing Presence to %1..."
+msgstr "Mudar a presença para %1..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:100
+#, kde-format
+msgid "Instant Messaging Settings..."
+msgstr "Configurações de mensagens instantâneas..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:101
+#, kde-format
+msgid "Contact List..."
+msgstr "Lista de contatos..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:108
+#, kde-format
+msgid "Add New Contacts..."
+msgstr "Adicionar novos contatos..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:109
+#, kde-format
+msgid "Join Chat Room..."
+msgstr "Entrar na sala de bate-papo..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:112
+#, kde-format
+msgid "Make a Call..."
+msgstr "Fazer uma chamada..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:115
+#, kde-format
+msgid "Send a File..."
+msgstr "Enviar um arquivo..."

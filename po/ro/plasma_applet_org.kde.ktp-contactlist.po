@@ -1,0 +1,85 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Sergiu Bivol <sergiu@cip.md>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2015-04-26 14:18+0300\n"
+"Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
+"Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:51
+#, kde-format
+msgid "It appears that you do not have any accounts configured"
+msgstr "Se pare că nu aveți niciun cont configurat"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:61
+#, kde-format
+msgid "Configure Now..."
+msgstr "Configurează acum..."
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:81
+#, kde-format
+msgid "Go Online"
+msgstr "Conectare"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:98
+#, kde-format
+msgid "Search Contacts..."
+msgstr "Căutare contacte..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:83
+#, kde-format
+msgctxt "Means 'Connecting your IM accounts', it's in the applet tooltip"
+msgid "Connecting..."
+msgstr "Se conectează..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:86
+#, kde-format
+msgctxt ""
+"The arg is the presence name (as is in ktp-common-internals.po, eg. Changing "
+"Presence to Away..., it's in the applet tooltip"
+msgid "Changing Presence to %1..."
+msgstr "Se modifică prezența la %1..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:100
+#, kde-format
+msgid "Instant Messaging Settings..."
+msgstr "Configurări mesagerie instantanee..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:101
+#, kde-format
+msgid "Contact List..."
+msgstr "Listă de contacte..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:108
+#, kde-format
+msgid "Add New Contacts..."
+msgstr "Adăugare contacte noi..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:109
+#, kde-format
+msgid "Join Chat Room..."
+msgstr "Alăturare la camera de discuții..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:112
+#, kde-format
+msgid "Make a Call..."
+msgstr "Efectuare apel..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:115
+#, kde-format
+msgid "Send a File..."
+msgstr "Expediere fișier..."
+
+#~ msgid "ContactList"
+#~ msgstr "ListăContacte"

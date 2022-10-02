@@ -1,0 +1,83 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Volkan Gezer <volkangezer@gmail.com>, 2017.
+# Emir SARI <emir_sari@icloud.com>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2022-06-23 10:37+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
+"Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 22.04.2\n"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:51
+#, kde-format
+msgid "It appears that you do not have any accounts configured"
+msgstr "Yapılandırılmış herhangi bir hesabınız olmadığını görünüyor"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:61
+#, kde-format
+msgid "Configure Now..."
+msgstr "Şimdi Yapılandır..."
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:81
+#, kde-format
+msgid "Go Online"
+msgstr "Çevrimiçi Ol"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:98
+#, kde-format
+msgid "Search Contacts..."
+msgstr "Kişileri Bul..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:83
+#, kde-format
+msgctxt "Means 'Connecting your IM accounts', it's in the applet tooltip"
+msgid "Connecting..."
+msgstr "Bağlanılıyor..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:86
+#, kde-format
+msgctxt ""
+"The arg is the presence name (as is in ktp-common-internals.po, eg. Changing "
+"Presence to Away..., it's in the applet tooltip"
+msgid "Changing Presence to %1..."
+msgstr "Durum %1 Olarak Ayarlanıyor..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:100
+#, kde-format
+msgid "Instant Messaging Settings..."
+msgstr "Anında İletileşme Ayarları..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:101
+#, kde-format
+msgid "Contact List..."
+msgstr "Kişi Listesi..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:108
+#, kde-format
+msgid "Add New Contacts..."
+msgstr "Yeni Kişiler Ekle..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:109
+#, kde-format
+msgid "Join Chat Room..."
+msgstr "Sohbet Odasına Katıl..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:112
+#, kde-format
+msgid "Make a Call..."
+msgstr "Arama Yap..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:115
+#, kde-format
+msgid "Send a File..."
+msgstr "Dosya Gönder..."

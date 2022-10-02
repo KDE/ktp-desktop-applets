@@ -1,0 +1,83 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the ktp-desktop-applets package.
+#
+# Sameer Singh <lumarzeli30@gmail.com>, 2021.
+# Raghavendra Kamath <raghu@raghukamath.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: ktp-desktop-applets\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2021-06-27 15:37+0530\n"
+"Last-Translator: Raghavendra Kamath <raghu@raghukamath.com>\n"
+"Language-Team: kde-hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Lokalize 21.04.2\n"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:51
+#, kde-format
+msgid "It appears that you do not have any accounts configured"
+msgstr "एसा प्रतीत होता है कि आपने कोई भी खातों को विन्यस्त नहीं किया है"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:61
+#, kde-format
+msgid "Configure Now..."
+msgstr "अभी विन्यस्त करें..."
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:81
+#, kde-format
+msgid "Go Online"
+msgstr "ऑनलाइन हो जाएँ"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:98
+#, kde-format
+msgid "Search Contacts..."
+msgstr "सम्पर्कों में ढुंढ़े..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:83
+#, kde-format
+msgctxt "Means 'Connecting your IM accounts', it's in the applet tooltip"
+msgid "Connecting..."
+msgstr "जुड़ रहे हैं..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:86
+#, kde-format
+msgctxt ""
+"The arg is the presence name (as is in ktp-common-internals.po, eg. Changing "
+"Presence to Away..., it's in the applet tooltip"
+msgid "Changing Presence to %1..."
+msgstr "अपनी उपस्थिति %1 में बदलें..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:100
+#, kde-format
+msgid "Instant Messaging Settings..."
+msgstr "त्वरित संदेश सेटिंग्स..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:101
+#, kde-format
+msgid "Contact List..."
+msgstr "सम्पर्क सूची..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:108
+#, kde-format
+msgid "Add New Contacts..."
+msgstr "नए सम्पर्क जोड़ें..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:109
+#, kde-format
+msgid "Join Chat Room..."
+msgstr "वार्तालाप मंडली से जुड़ें"
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:112
+#, kde-format
+msgid "Make a Call..."
+msgstr "कॉल करें..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:115
+#, kde-format
+msgid "Send a File..."
+msgstr "फ़ाइल भेजें..."

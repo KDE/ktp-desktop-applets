@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2016-09-28 10:26+0100\n"
+"Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
+"Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:69
+#, kde-format
+msgid "Pin contact"
+msgstr "Fixar o contacto"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:81
+#, kde-format
+msgid "Move conversation into a window"
+msgstr "Mover a conversa para uma janela"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:88
+#, kde-format
+msgid "Close conversation"
+msgstr "Fechar a conversa"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:165
+#, kde-format
+msgid "Copy Link"
+msgstr "Copiar a Ligação"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:176
+#, kde-format
+msgid "Copy Text"
+msgstr "Copiar o Texto"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:194
+#, kde-format
+msgid "Chat is not connected. You cannot send messages at this time"
+msgstr "A conversa não está ligada. Não pode enviar ficheiros nesta altura"
+
+#: org.kde.ktp-chat/contents/ui/main.qml:34
+#, kde-format
+msgid "Close All Conversations"
+msgstr "Fechar Todas as Conversas"

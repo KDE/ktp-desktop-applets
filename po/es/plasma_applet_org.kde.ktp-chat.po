@@ -1,0 +1,56 @@
+# Spanish translations for plasma_applet_org.kde.ktp-chat.po package.
+# Copyright (C) 2015 This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Automatically generated, 2015.
+# Eloy Cuadra <ecuadra@eloihr.net>, 2015, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2016-09-29 13:02+0200\n"
+"Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
+"Language-Team: Spanish <kde-l10n-es@kde.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:69
+#, kde-format
+msgid "Pin contact"
+msgstr "Fijar contacto"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:81
+#, kde-format
+msgid "Move conversation into a window"
+msgstr "Mover conversación a una ventana"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:88
+#, kde-format
+msgid "Close conversation"
+msgstr "Cerrar conversación"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:165
+#, kde-format
+msgid "Copy Link"
+msgstr "Copiar enlace"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:176
+#, kde-format
+msgid "Copy Text"
+msgstr "Copiar texto"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:194
+#, kde-format
+msgid "Chat is not connected. You cannot send messages at this time"
+msgstr ""
+"No está conectado a la conversación. No puede enviar mensajes en este momento"
+
+#: org.kde.ktp-chat/contents/ui/main.qml:34
+#, kde-format
+msgid "Close All Conversations"
+msgstr "Cerrar todas las conversaciones"

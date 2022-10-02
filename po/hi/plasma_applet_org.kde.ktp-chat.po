@@ -1,0 +1,54 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the ktp-desktop-applets package.
+#
+# Sameer Singh <lumarzeli30@gmail.com>, 2021.
+# Raghavendra Kamath <raghu@raghukamath.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: ktp-desktop-applets\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2021-06-27 15:35+0530\n"
+"Last-Translator: Raghavendra Kamath <raghu@raghukamath.com>\n"
+"Language-Team: kde-hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Lokalize 21.04.2\n"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:69
+#, kde-format
+msgid "Pin contact"
+msgstr "सम्पर्क को पिन करें"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:81
+#, kde-format
+msgid "Move conversation into a window"
+msgstr "वार्तालाप को एक विंडो में खिसकाएँ"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:88
+#, kde-format
+msgid "Close conversation"
+msgstr "वार्तालाप बंद करें"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:165
+#, kde-format
+msgid "Copy Link"
+msgstr "कड़ी की प्रतिलिपि बनाएँ"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:176
+#, kde-format
+msgid "Copy Text"
+msgstr "पाठ की प्रतिलिपि बनाएँ"
+
+#: org.kde.ktp-chat/contents/ui/ChatWidget.qml:194
+#, kde-format
+msgid "Chat is not connected. You cannot send messages at this time"
+msgstr "वार्तालाप से संयोजित नहीं। आप इस समय संदेश नहीं भेज सकते"
+
+#: org.kde.ktp-chat/contents/ui/main.qml:34
+#, kde-format
+msgid "Close All Conversations"
+msgstr "सभी वार्तालाप बंद करें"

@@ -1,0 +1,82 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Shinjo Park <kde@peremen.name>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2015-07-30 16:56+0200\n"
+"Last-Translator: Shinjo Park <kde@peremen.name>\n"
+"Language-Team: Korean <kde-kr@kde.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:51
+#, kde-format
+msgid "It appears that you do not have any accounts configured"
+msgstr "계정이 설정되지 않은 것 같습니다"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:61
+#, kde-format
+msgid "Configure Now..."
+msgstr "지금 설정하기..."
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:81
+#, kde-format
+msgid "Go Online"
+msgstr "온라인으로 전환"
+
+#: org.kde.ktp-contactlist/contents/ui/ContactList.qml:98
+#, kde-format
+msgid "Search Contacts..."
+msgstr "대화 상대에서 찾기..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:83
+#, kde-format
+msgctxt "Means 'Connecting your IM accounts', it's in the applet tooltip"
+msgid "Connecting..."
+msgstr "연결 중..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:86
+#, kde-format
+msgctxt ""
+"The arg is the presence name (as is in ktp-common-internals.po, eg. Changing "
+"Presence to Away..., it's in the applet tooltip"
+msgid "Changing Presence to %1..."
+msgstr "%1(으)로 온라인 상태 전환 중..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:100
+#, kde-format
+msgid "Instant Messaging Settings..."
+msgstr "인스턴트 메시지 설정..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:101
+#, kde-format
+msgid "Contact List..."
+msgstr "대화 상대 목록..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:108
+#, kde-format
+msgid "Add New Contacts..."
+msgstr "새 대화 상대 추가..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:109
+#, kde-format
+msgid "Join Chat Room..."
+msgstr "대화방에 참가하기..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:112
+#, kde-format
+msgid "Make a Call..."
+msgstr "전화 걸기..."
+
+#: org.kde.ktp-contactlist/contents/ui/main.qml:115
+#, kde-format
+msgid "Send a File..."
+msgstr "파일 보내기..."

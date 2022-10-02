@@ -1,0 +1,31 @@
+# translation of plasma_applet_org.kde.person.po to Slovak
+# Roman Paholik <wizzardsk@gmail.com>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.kde.person\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:11+0200\n"
+"PO-Revision-Date: 2015-03-15 12:22+0100\n"
+"Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
+"Language-Team: Slovak <kde-sk@linux.sk>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.5\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: org.kde.person/contents/config/config.qml:25
+#, kde-format
+msgid "General"
+msgstr "Všeobecné"
+
+#: org.kde.person/contents/ui/settingsGeneral.qml:63
+#, kde-format
+msgid "Select a person from the list below"
+msgstr "Vyberte osobu zo zoznamu nižšie"
+
+#: org.kde.person/contents/ui/settingsGeneral.qml:71
+#, kde-format
+msgid "Search contacts..."
+msgstr "Hľadať kontakty..."
