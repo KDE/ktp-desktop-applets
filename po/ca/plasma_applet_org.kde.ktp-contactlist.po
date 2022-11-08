@@ -84,6 +84,3 @@ msgstr "Fes una trucada..."
 #, kde-format
 msgid "Send a File..."
 msgstr "Envia un fitxer..."
-
-#~ msgid "ContactList"
-#~ msgstr "ContactList"
