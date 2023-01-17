@@ -58,7 +58,7 @@ msgstr "S'està canviant la presència a %1..."
 #: org.kde.ktp-contactlist/contents/ui/main.qml:100
 #, kde-format
 msgid "Instant Messaging Settings..."
-msgstr "Configuració de la missatgeria instantània..."
+msgstr "Configureu la missatgeria instantània..."
 
 #: org.kde.ktp-contactlist/contents/ui/main.qml:101
 #, kde-format
