@@ -8,6 +8,7 @@ Name[da]=Instant messaging
 Name[de]=Instant-Messaging
 Name[el]=Στιγμιαία μηνύματα
 Name[en_GB]=Instant Messaging
+Name[eo]=Tuja Mesaĝado
 Name[es]=Mensajería instantánea
 Name[et]=Kiirsuhtlus
 Name[eu]=Bat-bateko mezularitza
