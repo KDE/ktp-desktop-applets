@@ -50,6 +50,7 @@ Comment[da]=Viser din tilstedeværelse og kontakter
 Comment[de]=Zeigt Ihre Anwesenheit und Kontakte
 Comment[el]=Εμφανίζει τις επαφές και την παρουσία σας
 Comment[en_GB]=Displays your presence and contacts
+Comment[eo]=Montras vian ĉeeston kaj kontaktojn
 Comment[es]=Muestra su estado y sus contactos
 Comment[et]=Oleku ja kontaktide näitamine
 Comment[eu]=Azaldu zure presentzia eta kontaktua
