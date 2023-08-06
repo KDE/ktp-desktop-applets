@@ -70,7 +70,7 @@ msgstr "Engadir contactos novos…"
 #: org.kde.ktp-contactlist/contents/ui/main.qml:109
 #, kde-format
 msgid "Join Chat Room..."
-msgstr "Entrar unha sala de conversas…"
+msgstr "Entrar unha sala de charlas…"
 
 #: org.kde.ktp-contactlist/contents/ui/main.qml:112
 #, kde-format

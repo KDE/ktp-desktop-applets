@@ -46,7 +46,7 @@ msgstr "Copiar o texto"
 #, kde-format
 msgid "Chat is not connected. You cannot send messages at this time"
 msgstr ""
-"O sistema de conversas non está conectado. Non pode enviar mensaxes nestes "
+"O sistema de charlas non está conectado. Non pode enviar mensaxes nestes "
 "momentos."
 
 #: org.kde.ktp-chat/contents/ui/main.qml:34
